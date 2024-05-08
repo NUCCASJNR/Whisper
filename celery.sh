@@ -1,1 +1,1 @@
-celery -A SyncWrite worker -l DEBUG --logfile=celery.log
+python3 manage.py celery_worker
