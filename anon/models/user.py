@@ -22,8 +22,9 @@ class MainUser(AbstractUser, BaseModel):
     User model
     """
 
-    username = models.TextField(max_length=50, unique=True)
-    password = models.TextField(max_length=100)
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=100)
+    ready_to_chat = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'users'

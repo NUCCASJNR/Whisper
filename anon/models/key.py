@@ -8,14 +8,20 @@ from uuid import uuid4
 
 class EncryptionKey(BaseModel):
     """Model for storing users encrypted key"""
-    user = models.OneToOneField(MainUser, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(MainUser, on_delete=models.CASCADE)
     key_value = models.BinaryField()
+
+    class Meta:
+        db_table = 'encryption_keys'
 
 
 class PublicKeyDirectory(models.Model):
     """PublicKey Directory models for storing users public keys"""
     user = models.OneToOneField(MainUser, on_delete=models.CASCADE, related_name='public_key_directory')
     public_keys = models.JSONField(default=dict)
+
+    class Meta:
+        db_table = 'public_keys'
 
     def update_public_key(self, user_id: uuid4, public_key: bytes):
         """

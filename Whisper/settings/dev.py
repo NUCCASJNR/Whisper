@@ -63,7 +63,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "SyncWrite.urls"
+ROOT_URLCONF = "Whisper.urls"
 
 TEMPLATES = [
     {
@@ -148,7 +148,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "sync.MainUser"
+AUTH_USER_MODEL = "anon.MainUser"
 
 # CORS_ALLOW_ALL_ORIGINS=True
 
