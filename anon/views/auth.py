@@ -5,6 +5,7 @@
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
+from anon.utils.task import generate_key_async
 from anon.serializers.auth import (
     MainUser,
     SignUpSerializer
@@ -29,7 +30,8 @@ class SignUpViewSet(viewsets.ModelViewSet):
         """
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            MainUser.custom_save(**serializer.validated_data)
+            user = MainUser.custom_save(**serializer.validated_data)
+            generate_key_async(user.id)
             return Response({
                 'message': 'Signup successful, You can now login',
                 'status': status.HTTP_201_CREATED
