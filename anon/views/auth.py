@@ -11,7 +11,8 @@ from django.contrib.auth import login
 from rest_framework_simplejwt.tokens import RefreshToken
 from anon.serializers.auth import (
     MainUser,
-    SignUpSerializer
+    SignUpSerializer,
+    LoginSerializer
 )
 
 
@@ -49,3 +50,35 @@ class LoginView(views.APIView):
     """
     View for logging in a user
     """
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        """
+        Post request Handler
+        :param request: Request obj
+        :param args: Args
+        :param kwargs: Keyword Args
+        :return: 200 or 400
+        """
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print(serializer.initial_data)
+            username = serializer.validated_data["username"]
+            password = serializer.validated_data["password"]
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    "message": "You have successfully logged in",
+                    "access_token": str(refresh.access_token),
+                    "status": status.HTTP_200_OK,
+                })
+            return Response({
+                'error': 'Invalid username or password',
+                'status': status.HTTP_400_BAD_REQUEST
+            })
+        return Response({
+            'error': serializer.errors,
+            'status': status.HTTP_400_BAD_REQUEST
+        })
