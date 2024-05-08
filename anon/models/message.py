@@ -10,7 +10,8 @@ class Message(BaseModel):
     """
     sender = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='sent_messages')
     recipient = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='received_messages')
-    content = models.TextField()
+    encrypted_content = models.BinaryField()
+    encrypted_session_key = models.BinaryField()
     is_read = models.BooleanField(default=True)
 
     class Meta:
