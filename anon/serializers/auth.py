@@ -11,3 +11,10 @@ class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainUser
         fields = ('username', 'password')
+
+
+class LoginSerializer(serializers.ModelSerializer):
+    """Serializer for handling user login"""
+    class Meta:
+        model = MainUser
+        fields = ('username', 'password')

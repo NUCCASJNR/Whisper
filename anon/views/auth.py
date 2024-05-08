@@ -3,9 +3,12 @@
 """Contains Authentication related views"""
 
 from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import viewsets, views
 from rest_framework.response import Response
 from anon.utils.task import generate_key_async
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from rest_framework_simplejwt.tokens import RefreshToken
 from anon.serializers.auth import (
     MainUser,
     SignUpSerializer
@@ -40,3 +43,9 @@ class SignUpViewSet(viewsets.ModelViewSet):
             'error': serializer.error_messages,
             'status': status.HTTP_400_BAD_REQUEST
         })
+
+
+class LoginView(views.APIView):
+    """
+    View for logging in a user
+    """
