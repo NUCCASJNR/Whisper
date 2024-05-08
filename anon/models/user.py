@@ -24,6 +24,9 @@ class MainUser(AbstractUser, BaseModel):
 
     username = models.TextField(max_length=50, unique=True)
     password = models.TextField(max_length=100)
+    
+    class Meta:
+        db_table = 'users'
 
     # Overide the custom_save nethod
     @classmethod

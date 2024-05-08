@@ -13,6 +13,9 @@ class Message(BaseModel):
     content = models.TextField()
     is_read = models.BooleanField(default=True)
 
+    class Meta:
+        db_table = 'messages'
+
     def __str__(self):
         """
         String representation of the message.
