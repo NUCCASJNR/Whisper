@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from anon.views.auth import SignUpViewSet
+from rest_framework import routers
+router = routers.DefaultRouter()
+router.register('auth/signup', SignUpViewSet, basename='signup')
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]

@@ -191,7 +191,7 @@ CORS_ALLOW_HEADERS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "sync.utils.auth.CustomBackend",
+        # "sync.utils.auth.CustomBackend",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
@@ -211,8 +211,8 @@ SIMPLE_JWT = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    "sync.utils.auth.CustomBackend",
-    # 'django.contrib.auth.backends.ModelBackend',
+    # "sync.utils.auth.CustomBackend",
+    'django.contrib.auth.backends.ModelBackend',
 ]
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

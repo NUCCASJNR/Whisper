@@ -15,7 +15,7 @@ class EncryptionKey(BaseModel):
         db_table = 'encryption_keys'
 
 
-class PublicKeyDirectory(models.Model):
+class PublicKeyDirectory(BaseModel):
     """PublicKey Directory models for storing users public keys"""
     user = models.OneToOneField(MainUser, on_delete=models.CASCADE, related_name='public_key_directory')
     public_keys = models.JSONField(default=dict)
