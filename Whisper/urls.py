@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from anon.views.auth import (
     SignUpViewSet,
-    LoginView
+    LoginView,
+    LogoutView,
+    ProtectedRoute
 )
 from rest_framework import routers
 router = routers.DefaultRouter()
@@ -25,5 +27,7 @@ router.register('auth/signup', SignUpViewSet, basename='signup')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('auth/login/', LoginView.as_view())
+    path('auth/login/', LoginView.as_view()),
+    path('auth/logout', LogoutView.as_view()),
+    path('route', ProtectedRoute.as_view())
 ]
