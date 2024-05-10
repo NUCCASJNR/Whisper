@@ -21,6 +21,7 @@ from anon.views.auth import (
     LogoutView,
     ProtectedRoute
 )
+from anon.views.profile import ProfileView
 from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('auth/signup', SignUpViewSet, basename='signup')
@@ -29,5 +30,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('auth/login/', LoginView.as_view()),
     path('auth/logout', LogoutView.as_view()),
-    path('route', ProtectedRoute.as_view())
+    path('route', ProtectedRoute.as_view()),
+    path('profile/', ProfileView.as_view())
 ]
