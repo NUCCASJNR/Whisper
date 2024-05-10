@@ -42,7 +42,7 @@ class SignUpViewSet(viewsets.ModelViewSet):
                 'status': status.HTTP_201_CREATED
             })
         return Response({
-            'error': serializer.error_messages,
+            'error': serializer.errors,
             'status': status.HTTP_400_BAD_REQUEST
         })
 
