@@ -21,7 +21,11 @@ from anon.views.auth import (
     LogoutView,
     ProtectedRoute
 )
-from anon.views.profile import ProfileView, ReadyToChatView
+from anon.views.profile import (
+    ProfileView,
+    ReadyToChatView,
+    ListUsersReadyToChat
+)
 from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('auth/signup', SignUpViewSet, basename='signup')
@@ -32,5 +36,6 @@ urlpatterns = [
     path('auth/logout', LogoutView.as_view()),
     path('route', ProtectedRoute.as_view()),
     path('profile/', ProfileView.as_view()),
-    path('ready-to-chat/', ReadyToChatView.as_view())
+    path('ready-to-chat/', ReadyToChatView.as_view()),
+    path('online-users/', ListUsersReadyToChat.as_view())
 ]

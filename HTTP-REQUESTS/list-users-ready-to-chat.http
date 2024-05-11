@@ -1,7 +1,4 @@
-POST http://127.0.0.1:8000/ready-to-chat/
+GET http://127.0.0.1:8000/online-users/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MDM5MTMzLCJpYXQiOjE3MTU0MzQzMzMsImp0aSI6ImU5NDA5Mjk3NjExMzRkNWRhNTJhYTcxNDVmM2U4ZjNlIiwidXNlcl9pZCI6IjJmYTdiMTkzLTY1ODItNDk1MS04M2Y3LWYyMzg2YjA5YjUxZCJ9.-FFdLDPIPh0fwB0HwsWjVV1I2c_UUGx4zDizbHIXV00
 
-{
-    "Option": "True"
-}

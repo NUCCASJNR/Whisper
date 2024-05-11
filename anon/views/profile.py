@@ -4,9 +4,10 @@
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from anon.serializers.profile import ProfileSerializer, ReadyToChatSerializer, MainUser
+from anon.serializers.profile import ProfileSerializer, MainUser, ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import status
+from anon.models.key import PublicKeyDirectory, MainUser
 
 
 class ProfileView(APIView):
@@ -46,3 +47,34 @@ class ReadyToChatView(APIView):
             'message': 'Status Successfully Updated',
             'status': status.HTTP_200_OK
         })
+
+
+class ListUsersReadyToChat(APIView):
+    """
+    View for listing users that are reday to chat
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+        List all the users that have their ready-to-chat ON
+        :param request:
+        :return: Public key of the users that are ready to chat
+        """
+        try:
+            # Retrieve all users ready to chat
+            users = MainUser.find_objs_by(**{'ready_to_chat': True})
+            exclude_user_id = str(request.user.id)
+            user_ids = [str(user.id) for user in users if str(user.id) != exclude_user_id]
+            public_keys_list = []
+            for user_id in user_ids:
+                public_keys = PublicKeyDirectory.custom_get(**{'user_id': user_id}).public_keys.values()
+                public_keys_list.extend(public_keys)
+            return Response({
+                "public_keys": public_keys_list,
+                "status": status.HTTP_200_OK
+            })
+        except ObjectDoesNotExist:
+            return Response({
+                'message': 'Nobody wan follow you talk'
+            })
