@@ -22,3 +22,12 @@ class Message(BaseModel):
         String representation of the message.
         """
         return f"From: {self.sender.username} | To: {self.recipient.username} | Content: {self.content}"
+
+
+class PlainTextMessage(BaseModel):
+    sender = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='sent_plain_messages')
+    recipient = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='received_plain_messages')
+    content = models.TextField()
+
+    class Meta:
+        db_table = 'plain_text_messages'
