@@ -5,7 +5,8 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from anon.serializers.profile import ProfileSerializer, ReadyToChatSerializer, MainUser
-from rest_framework.response import Response+
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class ProfileView(APIView):
@@ -43,5 +44,5 @@ class ReadyToChatView(APIView):
                                update_kwargs={'ready_to_chat': option})
         return Response({
             'message': 'Status Successfully Updated',
-            'status':
+            'status': status.HTTP_200_OK
         })

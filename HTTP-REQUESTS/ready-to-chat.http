@@ -1,0 +1,7 @@
+POST http://127.0.0.1:8000/ready-to-chat/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MDM3ODQxLCJpYXQiOjE3MTU0MzMwNDEsImp0aSI6ImI5ZTlmNmNhY2QwNDRmZmE5NjhlYzYwYmUxOGJjMThkIiwidXNlcl9pZCI6ImUwMjc4NmU4LTBmN2YtNDg5NC05MzRmLTMyNWFmZmZjNDQzOCJ9.vkkdhxOD5dF7PTihbac0F98Ox2IE-X9Kx6yKZE0J_ZY
+
+{
+    "Option": "True"
+}
