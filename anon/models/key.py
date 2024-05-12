@@ -9,7 +9,7 @@ from uuid import uuid4
 class EncryptionKey(BaseModel):
     """Model for storing users encrypted key"""
     user = models.OneToOneField(MainUser, on_delete=models.CASCADE)
-    private_key = models.BinaryField()
+    private_key = models.TextField()
 
     class Meta:
         db_table = 'encryption_keys'

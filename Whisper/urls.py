@@ -39,6 +39,6 @@ urlpatterns = [
     path('profile/', ProfileView.as_view()),
     path('ready-to-chat/', ReadyToChatView.as_view()),
     path('online-users/', ListUsersReadyToChat.as_view()),
-    path('send-message/', MessageView.as_view()),
+    path('send-message/<str:user_id>/', MessageView.as_view()),
     path('messages/<str:user_id>/', RecieveMessageView.as_view())
 ]

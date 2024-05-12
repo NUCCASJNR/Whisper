@@ -1,8 +1,7 @@
-POST http://127.0.0.1:8000/send-message/
+POST http://127.0.0.1:8000/send-message/cef34f7c-204b-416c-8397-a7c94dffd134/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MDM5MTMzLCJpYXQiOjE3MTU0MzQzMzMsImp0aSI6ImU5NDA5Mjk3NjExMzRkNWRhNTJhYTcxNDVmM2U4ZjNlIiwidXNlcl9pZCI6IjJmYTdiMTkzLTY1ODItNDk1MS04M2Y3LWYyMzg2YjA5YjUxZCJ9.-FFdLDPIPh0fwB0HwsWjVV1I2c_UUGx4zDizbHIXV00
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MTA5MTEzLCJpYXQiOjE3MTU1MDQzMTMsImp0aSI6IjVhNGZlNjgwN2IxNjRlZjg5OGY5YjQ5MTg4OTdkYzBjIiwidXNlcl9pZCI6IjVmOTQwNjE5LWE0OTctNDc5Yi04NTI5LThkYzM5MjQzM2E4MCJ9.6hWoaGTHBjonsexXmzmDAOQNz68ANRukuaAn1-p_Cj0
 
 {
-   "recipient": "Al-Areef",
-    "content": "Hey brr i hope you get this!!"
+    "content": "Got your message idanmhiiii"
 }

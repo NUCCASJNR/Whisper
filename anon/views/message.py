@@ -5,6 +5,8 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from anon.serializers.message import MessageSerializer, PlainTextMessage, RecieveMessageSerializer
 from anon.models.user import MainUser
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 
 class MessageView(views.APIView):
@@ -12,25 +14,24 @@ class MessageView(views.APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = MessageSerializer
 
-    def post(self, request):
+    def post(self, request, user_id):
         """
         Post request handler
+        :param user_id: id of the user to send the message to
         :param request: Request object
         :return: Response object
         """
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            print(serializer.validated_data)
-            username = serializer.validated_data['recipient']
             sender = request.user
-            if sender.username == username:
+            if str(sender.id) == user_id:
                 return Response({
                     'message': 'You cannot send message to yourself',
                     'status': status.HTTP_400_BAD_REQUEST
                 })
             try:
-                receipent = MainUser.custom_get(**{'username': serializer.validated_data['recipient']})
-            except MainUser.DoesNotExist:
+                receipent = MainUser.custom_get(**{'id': user_id})
+            except ObjectDoesNotExist:
                 return Response({
                     'message': 'User not found',
                     'status': status.HTTP_404_NOT_FOUND
@@ -67,6 +68,9 @@ class RecieveMessageView(views.APIView):
         :return: Response object
         """
         user = request.user
-        messages = PlainTextMessage.find_objs_by(**{'recipient': user.id, "sender": user_id}).order_by('-updated_at')
+        messages = PlainTextMessage.objects.filter(
+            (Q(recipient=user.id) & Q(sender=user_id)) | (Q(recipient=user_id) & Q(sender=user.id))
+        ).order_by('-updated_at')
+
         serializer = RecieveMessageSerializer(messages, many=True)
         return Response(serializer.data)

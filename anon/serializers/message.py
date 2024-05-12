@@ -8,17 +8,17 @@ from anon.models.message import PlainTextMessage
 
 class MessageSerializer(serializers.ModelSerializer):
     """Message Serializer"""
-    recipient = serializers.CharField()
 
     class Meta:
         model = PlainTextMessage
-        fields = ('recipient', 'content')
+        fields = ('content', )
 
 
 class RecieveMessageSerializer(serializers.ModelSerializer):
     """Receive Message Serializer"""
     sender = serializers.CharField()
     content = serializers.CharField()
+    # recipient = serializers.SerializerMethodField()
 
     class Meta:
         model = PlainTextMessage

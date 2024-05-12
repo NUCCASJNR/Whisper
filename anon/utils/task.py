@@ -26,7 +26,7 @@ def generate_key_async(user_id: uuid4):
         print('Operation about to start!!!')
         EncryptionKey.custom_save(**{'user': user, 'private_key': private_key})
         PublicKeyDirectory.custom_save(**{'user': user, 'public_keys': {str(user.id):
-                                                                        public_key.decode('utf-8')}})
+                                                                        public_key}})
         logger.error({'success': True, 'message': f'Keys generated successfully for user {user_id}'})
     except Exception as e:
         logger.error({'success': False, 'message': f'Error generating keys for user {user_id}: {str(e)}'})

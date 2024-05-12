@@ -13,14 +13,17 @@ def generate_key_pair():
         backend=default_backend()
     )
     public_key = private_key.public_key()
-    return {'public_key':
-            public_key.public_bytes(
-             encoding=serialization.Encoding.PEM,
-             format=serialization.PublicFormat.SubjectPublicKeyInfo
-            ),
-            'private_key': private_key.private_bytes(
-             encoding=serialization.Encoding.PEM,
-             format=serialization.PrivateFormat.PKCS8,
-             encryption_algorithm=serialization.NoEncryption()
-            )
-            }
+
+    # Convert keys to PEM format strings
+    public_key_pem = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    ).decode('utf-8')
+
+    private_key_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    ).decode('utf-8')
+
+    return {'public_key': public_key_pem, 'private_key': private_key_pem}
