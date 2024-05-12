@@ -65,5 +65,4 @@ def decrypt_message(encrypted_message, private_key):
             label=None
         )
     )
-
     return decrypted_message
