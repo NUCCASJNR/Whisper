@@ -3,7 +3,11 @@
 """Contains message related serializers"""
 
 from rest_framework import serializers
-from anon.models.message import PlainTextMessage
+from anon.models.message import PlainTextMessage, Message
+
+
+class SendMessageSerializer(serializers.ModelSerializer):
+    """Serializer for sending encrypted messages"""
 
 
 class MessageSerializer(serializers.ModelSerializer):
