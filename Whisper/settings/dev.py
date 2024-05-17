@@ -35,8 +35,10 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
+
 INSTALLED_APPS = [
     "daphne",
+    "channels",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,8 +50,7 @@ INSTALLED_APPS = [
     "anon",
     "rest_framework",
     "rest_framework_simplejwt",
-    "drf_yasg",
-    "channels"
+    "drf_yasg"
 ]
 BASE_URL = "http://localhost:8000"
 MIDDLEWARE = [
@@ -80,6 +81,7 @@ TEMPLATES = [
         },
     },
 ]
+ASGI_APPLICATION = "Whisper.asgi.application"
 
 WSGI_APPLICATION = "Whisper.wsgi.application"
 
@@ -225,7 +227,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = os.getenv("PROD_CELERY_RESULT_BACKEND")
 
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
-ASGI_APPLICATION = "Whisper.asgi.application"
+
 
 CHANNEL_LAYERS = {
     "default": {

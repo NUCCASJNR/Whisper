@@ -8,7 +8,7 @@ from uuid import uuid4
 
 class EncryptionKey(BaseModel):
     """Model for storing users encrypted key"""
-    user = models.OneToOneField(MainUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(MainUser, on_delete=models.CASCADE, related_name='private_key')
     private_key = models.TextField()
 
     class Meta:

@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 
 
+
 class MessageView(views.APIView):
     """Message View"""
     permission_classes = [IsAuthenticated]
@@ -30,16 +31,16 @@ class MessageView(views.APIView):
                     'status': status.HTTP_400_BAD_REQUEST
                 })
             try:
-                receipent = MainUser.custom_get(**{'id': user_id})
+                recipient = MainUser.custom_get(**{'id': user_id})
             except ObjectDoesNotExist:
                 return Response({
                     'message': 'User not found',
                     'status': status.HTTP_404_NOT_FOUND
                 })
-            message = PlainTextMessage.custom_save(sender=sender, recipient=receipent,
+            message = PlainTextMessage.custom_save(sender=sender, recipient=recipient,
                                                    content=serializer.validated_data['content'])
             channel_layer = get_channel_layer()
-            room_name = f"chat_{receipent.username}"
+            room_name = f"chat_{recipient.id}"
             async_to_sync(channel_layer.group_send)(
                 room_name, {
                     "type": "chat.message",
@@ -56,7 +57,7 @@ class MessageView(views.APIView):
         })
 
 
-class RecieveMessageView(views.APIView):
+class ReceiveMessageView(views.APIView):
     """Receive Message View"""
     permission_classes = [IsAuthenticated]
 

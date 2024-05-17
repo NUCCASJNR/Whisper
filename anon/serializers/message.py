@@ -9,6 +9,10 @@ from anon.models.message import PlainTextMessage, Message
 class SendMessageSerializer(serializers.ModelSerializer):
     """Serializer for sending encrypted messages"""
 
+    class Meta:
+        model = Message
+        fields = ('encrypted_content', )
+
 
 class MessageSerializer(serializers.ModelSerializer):
     """Message Serializer"""

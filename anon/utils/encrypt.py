@@ -15,7 +15,7 @@ def load_public_key(public_key_bytes):
     Load public key from PEM-encoded data
     :param public_key_bytes: Public key bytes
     :return: Public key object
-    """
+1    """
     public_key = serialization.load_pem_public_key(public_key_bytes, backend=default_backend())
     return public_key
 
