@@ -2,6 +2,6 @@ POST http://127.0.0.1:8000/auth/login/
 Content-Type: application/json
 
 {
-    "username": "Al-Areef",
+    "username": "Ayomipo",
     "password": "test123@"
 }

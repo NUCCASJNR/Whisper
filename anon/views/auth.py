@@ -39,6 +39,7 @@ class SignUpViewSet(viewsets.ModelViewSet):
             generate_key_async(user.id)
             return Response({
                 'message': 'Signup successful, You can now login',
+                'id': user.id,
                 'status': status.HTTP_201_CREATED
             })
         return Response({

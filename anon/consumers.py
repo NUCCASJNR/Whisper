@@ -49,10 +49,11 @@ class MessageConsumer(AsyncWebsocketConsumer):
         self.sender_id = self.scope['url_route']['kwargs']['sender_id']
         token = self.scope.get("query_string").decode().split("Bearer%20")[1]
         auth_info = await self.get_auth_info(token)
-        if not auth_info:
+        print(auth_info)
+        if not auth_info['status']:
             await self.close()
-            return
-        self.user_id = auth_info['user_id']
+            return f'Error: {auth_info["response"]}'
+        self.user_id = auth_info.get('user_id', None)
         self.user = await self.get_user_by_id(auth_info['user_id'])
         self.room_group_name = f"chat_{self.sender_id}_{self.receiver_id}"
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -82,7 +83,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             send = str(text_data_json.get("sender", self.user.id))
             sender_id = await self.get_user_by_id(send)
             logging.info("Received message '%s' from sender '%s' in room '%s'", message, sender, self.room_group_name)
-            response = await self.save_message(message, sender_id, await self.get_user_by_id(receiver))
+            response = await self.save_message(message, sender_id, str(self.user_id))
             obj = datetime.fromisoformat(str(response.updated_at))
             time = obj.strftime("%A, %d %B %Y, %I:%M %p")
             await self.channel_layer.group_send(
@@ -128,7 +129,10 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 }
             return False
         except Exception as e:
-            return f'Error: {e}'
+            return {
+                "status": False,
+                "response": str(e)
+            }
 
     @sync_to_async
     def get_user_by_id(self, user_id):
