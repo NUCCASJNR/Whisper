@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Contains Authentcation related serializers"""
+"""Contains Authentication related serializers"""
 
 from rest_framework import serializers
 from anon.models.user import MainUser
