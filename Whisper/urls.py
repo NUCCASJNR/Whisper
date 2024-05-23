@@ -18,8 +18,7 @@ from django.urls import path, include
 from anon.views.auth import (
     SignUpViewSet,
     LoginView,
-    LogoutView,
-    ProtectedRoute
+    LogoutView
 )
 from anon.views.profile import (
     ProfileView,
@@ -34,7 +33,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('auth/login/', LoginView.as_view()),
     path('auth/logout', LogoutView.as_view()),
-    path('route', ProtectedRoute.as_view()),
     path('profile/', ProfileView.as_view()),
     path('ready-to-chat/', ReadyToChatView.as_view()),
     path('online-users/', ListUsersReadyToChat.as_view()),
