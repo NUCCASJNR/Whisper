@@ -47,6 +47,7 @@ jobs:
           DEV_NAME: ${{ secrets.DEV_NAME }}
           DEV_USER: ${{ secrets.DEV_USER }}
           DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+          DEV_HOST: ${{ secrets.DEV_HOST }}
         run: |
           python3 manage.py migrate
 
@@ -57,5 +58,6 @@ jobs:
           DEV_NAME: ${{ secrets.DEV_NAME }}
           DEV_USER: ${{ secrets.DEV_USER }}
           DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+          DEV_HOST: ${{ secrets.DEV_HOST }}
         run: |
           pytest
