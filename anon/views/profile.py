@@ -14,7 +14,7 @@ class ProfileView(APIView):
     """User Profile View"""
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
-    
+
     def get(self, request):
         """
         Get request handler

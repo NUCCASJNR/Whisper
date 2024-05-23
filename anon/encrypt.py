@@ -3,19 +3,24 @@
 import json
 import websocket
 
+
 def on_message(ws, message):
     print(f"Received message: {message}")
+
 
 def on_error(ws, error):
     print(f"Error: {error}")
 
+
 def on_close(ws, *args):
     print("WebSocket connection closed")
+
 
 def on_open(ws):
     print("WebSocket connection opened")
     # Send a message after opening the connection
     ws.send(json.dumps({"message": "Hello, WebSocket!", "sender": "Client"}))
+
 
 if __name__ == "__main__":
     websocket.enableTrace(True)

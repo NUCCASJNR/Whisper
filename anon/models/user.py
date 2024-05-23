@@ -25,11 +25,11 @@ class MainUser(AbstractUser, BaseModel):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=100)
     ready_to_chat = models.BooleanField(default=False)
-    
+
     class Meta:
         db_table = 'users'
 
-    # Overide the custom_save nethod
+    # Override the custom_save method
     @classmethod
     def custom_save(cls, **kwargs):
         """

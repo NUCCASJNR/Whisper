@@ -18,7 +18,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainUser
         fields = ('username', 'public_key', 'ready_to_chat')
-    
+
     def get_public_key(self, obj):
         """
         Get the public key of the  current user
@@ -36,7 +36,7 @@ class ReadyToChatSerializer(serializers.Serializer):
     """
     ReadyToChat Serializer
     """
-    
+
     class Meta:
         model = MainUser
         fields = ('ready_to_chat', )

@@ -26,7 +26,6 @@ from anon.views.profile import (
     ReadyToChatView,
     ListUsersReadyToChat
 )
-from anon.views.message import MessageView, ReceiveMessageView
 from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('auth/signup', SignUpViewSet, basename='signup')
@@ -39,6 +38,4 @@ urlpatterns = [
     path('profile/', ProfileView.as_view()),
     path('ready-to-chat/', ReadyToChatView.as_view()),
     path('online-users/', ListUsersReadyToChat.as_view()),
-    path('send-message/<str:user_id>/', MessageView.as_view()),
-    path('messages/<str:user_id>/', ReceiveMessageView.as_view())
 ]
