@@ -103,14 +103,14 @@ class BaseModel(models.Model):
         Counts the number of instances of the class
         """
         return cls.objects.count()
-    
+
     @classmethod
     def filter_objects(cls, **kwargs: Dict[str, Any]):
         """
         Retrieves queryset of instances of the class based on provided filter criteria
         """
         return cls.objects.filter(**kwargs)
-    
+
     @classmethod
     def handle_cloudinary_resource(cls, cloudinary_resource: CloudinaryResource) -> Dict[str, Any]:
         """
@@ -146,6 +146,3 @@ class BaseModel(models.Model):
             model_dict[field_name] = field_value
 
         return model_dict
-
-
-    
