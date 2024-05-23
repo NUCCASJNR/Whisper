@@ -40,24 +40,24 @@ jobs:
         run: |
           pycodestyle .
 
-      - name: Run migrations
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEV_PORT: ${{ secrets.DEV_PORT }}
-          DEV_NAME: ${{ secrets.DEV_NAME }}
-          DEV_USER: ${{ secrets.DEV_USER }}
-          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
-          DEV_HOST: ${{ secrets.DEV_HOST }}
-        run: |
-          python3 manage.py migrate
+#      - name: Run migrations
+#        env:
+#          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#          DEV_PORT: ${{ secrets.DEV_PORT }}
+#          DEV_NAME: ${{ secrets.DEV_NAME }}
+#          DEV_USER: ${{ secrets.DEV_USER }}
+#          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+#          DEV_HOST: ${{ secrets.DEV_HOST }}
+#        run: |
+#          python3 manage.py migrate
 
       - name: Test with pytest
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEV_PORT: ${{ secrets.DEV_PORT }}
-          DEV_NAME: ${{ secrets.DEV_NAME }}
-          DEV_USER: ${{ secrets.DEV_USER }}
-          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
-          DEV_HOST: ${{ secrets.DEV_HOST }}
+#        env:
+#          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#          DEV_PORT: ${{ secrets.DEV_PORT }}
+#          DEV_NAME: ${{ secrets.DEV_NAME }}
+#          DEV_USER: ${{ secrets.DEV_USER }}
+#          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+#          DEV_HOST: ${{ secrets.DEV_HOST }}
         run: |
           pytest

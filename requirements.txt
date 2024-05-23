@@ -39,7 +39,7 @@ mysqlclient==2.2.1
 oauthlib==3.2.2
 packaging==23.2
 pillow==10.2.0
-prompt-toolkit==3.0.43
+prompt-toolkit==3.{0.43
 psutil==5.9.8
 psycopg2-binary==2.9.9
 pyasn1==0.5.1
