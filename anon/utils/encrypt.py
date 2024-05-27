@@ -11,7 +11,8 @@ def load_private_key(private_key_bytes: bytes):
     :param private_key_bytes: Private key bytes
     :return: Private key object
     """
-    private_key = serialization.load_pem_private_key(private_key_bytes.encode(), password=None, backend=default_backend())
+    private_key = serialization.load_pem_private_key(private_key_bytes.encode(),
+                                                     password=None, backend=default_backend())
     return private_key
 
 

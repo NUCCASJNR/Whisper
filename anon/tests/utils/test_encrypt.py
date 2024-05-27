@@ -54,6 +54,7 @@ def test_decrypt_with_invalid_private_key():
     with pytest.raises(ValueError):
         decrypt_message(encrypted_message, key_pair2['private_key'])
 
+
 def test_decrypt_with_wrong_key():
     key_pair1 = generate_key_pair()
     key_pair2 = generate_key_pair()
@@ -63,6 +64,7 @@ def test_decrypt_with_wrong_key():
 
     with pytest.raises(ValueError):
         decrypt_message(encrypted_message, key_pair2['private_key'])
+
 
 if __name__ == "__main__":
     pytest.main()
