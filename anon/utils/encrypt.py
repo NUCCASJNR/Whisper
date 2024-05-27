@@ -1,23 +1,8 @@
-#!/usr/bin/env python3
-
-"""Contains functions for encrypting an decrypting messages"""
-
-
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import padding
+
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.asymmetric import padding as asymmetric_padding
-
-
-def load_public_key(public_key_bytes):
-    """
-    Load public key from PEM-encoded data
-    :param public_key_bytes: Public key bytes
-    :return: Public key object
-1    """
-    public_key = serialization.load_pem_public_key(public_key_bytes, backend=default_backend())
-    return public_key
 
 
 def load_private_key(private_key_bytes: bytes):
@@ -26,15 +11,25 @@ def load_private_key(private_key_bytes: bytes):
     :param private_key_bytes: Private key bytes
     :return: Private key object
     """
-    private_key = serialization.load_pem_private_key(private_key_bytes, password=None, backend=default_backend())
+    private_key = serialization.load_pem_private_key(private_key_bytes.encode(), password=None, backend=default_backend())
     return private_key
 
 
-def encrypt_message(message, recipient_public_key):
+def load_public_key(public_key_bytes: bytes):
     """
-    Encrypt message using recipient's public key
-    :param message:
-    :param recipient_public_key: Public key bytes
+    Load public key from PEM-encoded data
+    :param public_key_bytes: Public key bytes
+    :return: Public key object
+    """
+    public_key = serialization.load_pem_public_key(public_key_bytes.encode(), backend=default_backend())
+    return public_key
+
+
+def encrypt_message(message: str, recipient_public_key: str) -> bytes:
+    """
+    Encrypt a message using the recipient's public key.
+    :param message: The message to encrypt
+    :param recipient_public_key: The recipient's public key in PEM format
     :return: Encrypted message
     """
     public_key = load_public_key(recipient_public_key)
@@ -46,21 +41,21 @@ def encrypt_message(message, recipient_public_key):
             label=None
         )
     )
-
     return encrypted_message
 
 
-def decrypt_message(encrypted_message, private_key):
+def decrypt_message(encrypted_message: bytes, private_key: str) -> bytes:
     """
-    Decrypt message using private key
-    :param encrypted_message: Encrypted message
-    :param private_key: recipient private key
+    Decrypt a message using the private key.
+    :param encrypted_message: The encrypted message
+    :param private_key: The private key in PEM format
     :return: Decrypted message
     """
+    private_key = load_private_key(private_key)
     decrypted_message = private_key.decrypt(
         encrypted_message,
-        asymmetric_padding.OAEP(
-            mgf=asymmetric_padding.MGF1(algorithm=hashes.SHA256()),
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
             label=None
         )
