@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "anon",
     "rest_framework",
     "rest_framework_simplejwt",
-    "drf_yasg"
+    "drf_yasg",
+    "pytest"
 ]
 BASE_URL = "http://localhost:8000"
 MIDDLEWARE = [
