@@ -41,6 +41,8 @@ jobs:
           pycodestyle .
       
       - name: Test with pytest
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           pytest
 
