@@ -2,7 +2,6 @@ import pytest
 from rest_framework.test import APIRequestFactory
 from anon.views.auth import SignUpViewSet
 from anon.serializers.auth import SignUpSerializer
-from anon.utils.task import generate_key_async
 from django.contrib.auth import get_user_model
 from rest_framework import status
 
