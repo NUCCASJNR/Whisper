@@ -23,7 +23,6 @@ class SignUpViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = SignUpSerializer
-    queryset = MainUser.objects.all()
 
     def create(self, request, *args, **kwargs):
         """

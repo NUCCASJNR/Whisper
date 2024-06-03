@@ -8,8 +8,9 @@ from anon.models.user import MainUser
 
 class SignUpSerializer(serializers.ModelSerializer):
     """Serializer for handling user signup"""
+    id = serializers.ReadOnlyField()
+
     class Meta:
-        id = serializers.ReadOnlyField()
         model = MainUser
         fields = ('username', 'password', 'id')
 
