@@ -31,7 +31,8 @@ from asgiref.sync import sync_to_async
 from django.db.models import Q
 from anon.models.message import MainUser, PlainTextMessage
 from datetime import datetime
-
+from anon.utils.encrypt import encrypt_message, decrypt_message
+from anon.models.key import PublicKeyDirectory, EncryptionKey
 logging.basicConfig(level=logging.DEBUG, filename='app.log')
 
 
@@ -102,6 +103,12 @@ class MessageConsumer(AsyncWebsocketConsumer):
             else:
                 logging.error("User ID does not match sender or receiver")
                 return
+            print()
+            receiver_user = await sync_to_async(MainUser.custom_get)(id=self.message_receiver)
+            print(receiver_user.id)
+            receiver_public_key = await sync_to_async(PublicKeyDirectory.custom_get)(user=receiver_user)
+            print(f'Receiver Public Key: {receiver_public_key.public_keys.get(str(receiver_user.id))}')
+
             response = await self.save_message(message, self.message_sender, self.message_receiver)
             if response is not None:
                 obj = datetime.fromisoformat(str(response.updated_at))
