@@ -22,6 +22,7 @@ def test_encrypt_decrypt_message():
 
     # Encrypt the message using the public key
     encrypted_message = encrypt_message(message, key_pair['public_key'])
+    print(f'Message: {encrypted_message}')
     assert isinstance(encrypted_message, bytes)
 
     # Load the private key
