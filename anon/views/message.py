@@ -1,7 +1,7 @@
 from rest_framework import status, views
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-# from channels.layers import get_channel_layer
+from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from anon.serializers.message import MessageSerializer, PlainTextMessage, RecieveMessageSerializer
 from anon.models.user import MainUser
