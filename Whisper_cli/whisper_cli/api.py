@@ -1,4 +1,5 @@
 import requests
+from whisper_cli.utils import save_token
 
 
 class WhisperAPI:
@@ -8,7 +9,6 @@ class WhisperAPI:
         response = requests.post(f'{self.BASE_URL}/auth/signup/', data={'username': username, 'password': password})
         try:
             response_data = response.json()
-            # Check the status field in the response JSON
             if response_data.get('status') == 201:
                 print("Signup successful!")
                 print(f"User ID: {response_data.get('id')}")
@@ -27,6 +27,8 @@ class WhisperAPI:
             if response_data.get('status') == 200:
                 print("Login Successful")
                 print(f"Token: {response_data.get('access_token')}")
+                res = save_token(username, response_data.get('access_token'))
+                print(res)
             else:
                 print(f"Login Failed: {response_data}")
         except Exception as e:
