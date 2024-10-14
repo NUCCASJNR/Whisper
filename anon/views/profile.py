@@ -7,14 +7,14 @@ from rest_framework.views import APIView
 from anon.serializers.profile import ProfileSerializer, MainUser, ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import status
-from anon.models.key import PublicKeyDirectory, MainUser
+from anon.models.key import PublicKeyDirectory
 
 
 class ProfileView(APIView):
     """User Profile View"""
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
-    
+
     def get(self, request):
         """
         Get request handler

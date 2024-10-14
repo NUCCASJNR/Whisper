@@ -9,7 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 
 
-
 class MessageView(views.APIView):
     """Message View"""
     permission_classes = [IsAuthenticated]
