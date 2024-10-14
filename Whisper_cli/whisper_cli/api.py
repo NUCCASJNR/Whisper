@@ -27,8 +27,7 @@ class WhisperAPI:
             if response_data.get('status') == 200:
                 print("Login Successful")
                 print(f"Token: {response_data.get('access_token')}")
-                res = save_token(username, response_data.get('access_token'))
-                print(res)
+                save_token(username, response_data.get('access_token'))
             else:
                 print(f"Login Failed: {response_data}")
         except Exception as e:
