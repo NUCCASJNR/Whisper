@@ -1,0 +1,5 @@
+Metadata-Version: 2.1
+Name: whisper-cli
+Version: 0.1
+Requires-Dist: requests
+Requires-Dist: argparse

@@ -1,0 +1,82 @@
+INFO:daphne.server:HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO:daphne.server:Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO:daphne.server:Listening on TCP address 127.0.0.1:8000
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40490]
+INFO:django.channels.server:[mHTTP GET / 200 [0.37, 127.0.0.1:40490][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40494]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40498]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40498]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40494]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40492]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/css/bootstrap-tweaks.css 200 [0.06, 127.0.0.1:40492][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40500]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/js/ajax-form.js 200 [0.05, 127.0.0.1:40500][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40496]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/css/default.css 200 [0.06, 127.0.0.1:40496][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40490]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/css/bootstrap.min.css 200 [0.08, 127.0.0.1:40490][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40494]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40494]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40494]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/css/prettify.css 200 [0.07, 127.0.0.1:40494][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40498]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40498]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40498]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40498]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/js/jquery-3.5.1.min.js 200 [0.07, 127.0.0.1:40498][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40496]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/js/prettify-min.js 200 [0.03, 127.0.0.1:40496][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40492]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40492]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/js/csrf.js 200 [0.04, 127.0.0.1:40492][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40500]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40500]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/js/bootstrap.min.js 200 [0.04, 127.0.0.1:40500][0m
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40490]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40490]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/js/default.js 200 [0.04, 127.0.0.1:40490][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40496]
+INFO:django.channels.server:[mHTTP GET /static/rest_framework/img/grid.png 200 [0.05, 127.0.0.1:40496][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40496]
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:daphne.http_protocol:HTTP 404 response started for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40496]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40496]
+WARNING:django.channels.server:[33mHTTP GET /favicon.ico 404 [0.10, 127.0.0.1:40496][0m
