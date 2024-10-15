@@ -86,6 +86,5 @@ urllib3==2.1.0
 vine==5.1.0
 wcwidth==0.2.13
 wheel==0.44.0
--e git+ssh://git@github.com/NUCCASJNR/Whisper.git@0e4a3a3e56eaf7127cddac2a80655cad5bcbc683#egg=whisper_cli&subdirectory=Whisper_cli
 zipp==3.20.2
 zope.interface==6.2
