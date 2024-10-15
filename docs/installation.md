@@ -17,3 +17,5 @@ pip install whisper-cli
 ```bash
 whisper --help
 ```
+
+### This will display the available commands if the installation was successful.
