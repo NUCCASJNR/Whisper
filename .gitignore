@@ -4,3 +4,5 @@
 .linux-venv
 **/__pycache__/
 /.app.log
+logs/djnago.log
+anon/migrations
