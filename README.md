@@ -41,6 +41,14 @@ whisper <command> --username <username> --password <password> --option <option>
 
 Each command has specific options and flags as described below.
 
+### Signup
+To create a new user account:
+```bash
+whisper signup --username <your-username> --password <your-password>
+```
+
+This command registers you as a new user in the application. Ensure that both username and password are provided.
+
 ### Login
 To log into the application:
 ```bash
@@ -49,13 +57,6 @@ whisper login --username <your-username> --password <your-password>
 
 This command logs you in using your credentials and returns an authentication token that will be used in subsequent requests.
 
-### Signup
-To create a new user account:
-```bash
-whisper signup --username <your-username> --password <your-password>
-```
-
-This command registers you as a new user in the application. Ensure that both username and password are provided.
 
 ### Ready to Chat
 To set your availability for chatting:
@@ -99,26 +100,25 @@ The CLI supports the following commands:
 
 - **Login**
   ```bash
-  whisper login --username sarah --password mypassword
-  ```
+  whisper login --username Al-Areef --password Wagwan
 - **Signup**
   ```bash
-  whisper signup --username newuser --password newpassword
+  whisper signup --username Al-Areef --password Wagwan
   ```
 - **Set Ready to Chat**
   ```bash
-  whisper ready_to_chat --username sarah
+  whisper ready_to_chat --username Al-Areef
   ```
   Then you will be prompted to type `Yes/Y` or `No/N` to set your availability.
   
 - **View Profile**
   ```bash
-  whisper profile --username sarah
+  whisper profile --username sAl-Areef
   ```
 
 - **List Active Users**
   ```bash
-  whisper active_users --username sarah
+  whisper active_users --username Al-Areef
   ```
 
 ## Contributing
