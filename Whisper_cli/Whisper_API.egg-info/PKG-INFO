@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: whisper-cli
-Version: 0.1.0
+Name: Whisper-API
+Version: 1.0.0
 Summary: Whisper is a secure, anonymous chat application for the command line, enabling private communication, user profile management, and more—all from your terminal.
 Home-page: https://github.com/NUCCASJNR/WhisperCLI
 Author: Al-Areef

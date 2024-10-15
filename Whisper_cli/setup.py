@@ -1,15 +1,18 @@
 from setuptools import setup, find_packages
+import os
 
-with open("README.md", "r", encoding="utf-8") as readme_file:
+readme_path = os.path.join(os.path.dirname(__file__), '..', 'README.md')
+
+with open(readme_path, "r", encoding="utf-8") as readme_file:
     long_description = readme_file.read()
 
 setup(
-    name="WhisperCLI",
-    version="1.0.0",
+    name="whisper-cli",
+    version="0.1.0",
     author="Al-Areef",
     author_email="alareefadegbite@gmail.com",
     description=(
-        "WhisperCLI is a secure, anonymous chat application for the command line, enabling private "
+        "Whisper is a secure, anonymous chat application for the command line, enabling private "
         "communication, user profile management, and more—all from your terminal."
     ),
     long_description=long_description,
