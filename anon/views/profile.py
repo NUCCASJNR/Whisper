@@ -22,7 +22,10 @@ class ProfileView(APIView):
         :return: User profile
         """
         serializer = self.serializer_class(request.user)
-        return Response(serializer.data)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'data': serializer.data
+        })
 
 
 class ReadyToChatView(APIView):

@@ -3,4 +3,4 @@
 /.env
 .linux-venv
 **/__pycache__/
-app.log
+/.app.log
