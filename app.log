@@ -373,3 +373,281 @@ DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40590]
 DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40590]
 ERROR:django.channels.server:[35;1mHTTP POST /ready-to-chat/ 500 [1.22, 127.0.0.1:40590][0m
 INFO:django.utils.autoreload:/mnt/c/Users/HomePC/Codes/Whisper/Whisper/settings/dev.py changed, reloading.
+INFO:daphne.server:HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO:daphne.server:Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO:daphne.server:Listening on TCP address 127.0.0.1:8000
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40592]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40592]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40592]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40592]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.51, 127.0.0.1:40592][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40594]
+ERROR:django.request:Internal Server Error: /ready-to-chat/
+Traceback (most recent call last):
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/anon/views/profile.py", line 47, in post
+    MainUser.custom_update(filter_kwargs={'id': current_user.id},
+  File "/mnt/c/Users/HomePC/Codes/Whisper/anon/models/base_model.py", line 64, in custom_update
+    cls.objects.filter(**filter_kwargs).update(**update_kwargs)
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/query.py", line 1253, in update
+    rows = query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1990, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1549, in execute_sql
+    sql, params = self.as_sql()
+                  ^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/backends/mysql/compiler.py", line 57, in as_sql
+    update_query, update_params = super().as_sql()
+                                  ^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1953, in as_sql
+    val = field.get_db_prep_save(val, connection=self.connection)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 1013, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 1006, in get_db_prep_value
+    value = self.get_prep_value(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 1183, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/HomePC/Codes/Whisper/.linux-venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 1173, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“alse” value must be either True or False.']
+DEBUG:daphne.http_protocol:HTTP 500 response started for ['127.0.0.1', 40594]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40594]
+DEBUG:daphne.http_protocol:HTTP response chunk for ['127.0.0.1', 40594]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40594]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40594]
+ERROR:django.channels.server:[35;1mHTTP POST /ready-to-chat/ 500 [1.59, 127.0.0.1:40594][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40596]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40596]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40596]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40596]
+INFO:django.channels.server:[mHTTP POST /ready-to-chat/ 200 [0.10, 127.0.0.1:40596][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40598]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40598]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40598]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40598]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.06, 127.0.0.1:40598][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40600]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40600]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40600]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40600]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.44, 127.0.0.1:40600][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40602]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40602]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40602]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40602]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.04, 127.0.0.1:40602][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40604]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40604]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40604]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40604]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.05, 127.0.0.1:40604][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40606]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40606]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40606]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40606]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.03, 127.0.0.1:40606][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40608]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40608]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40608]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40608]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.02, 127.0.0.1:40608][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40610]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40610]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40610]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40610]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.04, 127.0.0.1:40610][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40612]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40612]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40612]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40612]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.03, 127.0.0.1:40612][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40614]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40614]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40614]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40614]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.04, 127.0.0.1:40614][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40616]
+WARNING:django.request:Unauthorized: /ready-to-chat/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40616]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40616]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40616]
+WARNING:django.channels.server:[31;1mHTTP POST /ready-to-chat/ 401 [0.03, 127.0.0.1:40616][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40618]
+WARNING:django.request:Unauthorized: /ready-to-chat/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40618]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40618]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40618]
+WARNING:django.channels.server:[31;1mHTTP POST /ready-to-chat/ 401 [0.04, 127.0.0.1:40618][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40620]
+WARNING:django.request:Unauthorized: /ready-to-chat/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40620]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40620]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40620]
+WARNING:django.channels.server:[31;1mHTTP POST /ready-to-chat/ 401 [0.04, 127.0.0.1:40620][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40622]
+WARNING:django.request:Unauthorized: /ready-to-chat/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40622]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40622]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40622]
+WARNING:django.channels.server:[31;1mHTTP POST /ready-to-chat/ 401 [0.05, 127.0.0.1:40622][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40624]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40624]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40624]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40624]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.03, 127.0.0.1:40624][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40626]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40626]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40626]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40626]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.22, 127.0.0.1:40626][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40628]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40628]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40628]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40628]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.95, 127.0.0.1:40628][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40630]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40630]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40630]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40630]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.65, 127.0.0.1:40630][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40632]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40632]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40632]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40632]
+INFO:django.channels.server:[mHTTP POST /ready-to-chat/ 200 [0.03, 127.0.0.1:40632][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40634]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40634]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40634]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40634]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.06, 127.0.0.1:40634][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40636]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40636]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40636]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40636]
+INFO:django.channels.server:[mHTTP POST /ready-to-chat/ 200 [0.06, 127.0.0.1:40636][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40638]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40638]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40638]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40638]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.04, 127.0.0.1:40638][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40640]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40640]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40640]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40640]
+INFO:django.channels.server:[mHTTP GET /profile/ 200 [0.07, 127.0.0.1:40640][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40642]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40642]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40642]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40642]
+INFO:django.channels.server:[mHTTP POST /ready-to-chat/ 200 [0.05, 127.0.0.1:40642][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40644]
+WARNING:django.request:Unauthorized: /profile/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40644]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40644]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40644]
+WARNING:django.channels.server:[31;1mHTTP GET /profile/ 401 [0.02, 127.0.0.1:40644][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40646]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40646]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40646]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40646]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.03, 127.0.0.1:40646][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40648]
+WARNING:django.request:Unauthorized: /online-users/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40648]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40648]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40648]
+WARNING:django.channels.server:[31;1mHTTP POST /online-users/ 401 [0.05, 127.0.0.1:40648][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40650]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40650]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40650]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40650]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.13, 127.0.0.1:40650][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40652]
+WARNING:django.request:Method Not Allowed: /online-users/
+DEBUG:daphne.http_protocol:HTTP 405 response started for ['127.0.0.1', 40652]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40652]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40652]
+WARNING:django.channels.server:[31;1mHTTP POST /online-users/ 405 [0.04, 127.0.0.1:40652][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40654]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40654]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40654]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40654]
+INFO:django.channels.server:[mHTTP GET /online-users/ 200 [0.07, 127.0.0.1:40654][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40656]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40656]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40656]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40656]
+INFO:django.channels.server:[mHTTP GET /online-users/ 200 [0.06, 127.0.0.1:40656][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40658]
+WARNING:django.request:Unauthorized: /online-users/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40658]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40658]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40658]
+WARNING:django.channels.server:[31;1mHTTP GET /online-users/ 401 [0.04, 127.0.0.1:40658][0m
+DEBUG:daphne.http_protocol:HTTP b'POST' request for ['127.0.0.1', 40660]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40660]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40660]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40660]
+INFO:django.channels.server:[mHTTP POST /auth/login/ 200 [1.27, 127.0.0.1:40660][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40662]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40662]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40662]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40662]
+INFO:django.channels.server:[mHTTP GET /online-users/ 200 [0.06, 127.0.0.1:40662][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40664]
+DEBUG:daphne.http_protocol:HTTP 200 response started for ['127.0.0.1', 40664]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40664]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40664]
+INFO:django.channels.server:[mHTTP GET /online-users/ 200 [0.07, 127.0.0.1:40664][0m
+DEBUG:daphne.http_protocol:HTTP b'GET' request for ['127.0.0.1', 40666]
+WARNING:django.request:Unauthorized: /online-users/
+DEBUG:daphne.http_protocol:HTTP 401 response started for ['127.0.0.1', 40666]
+DEBUG:daphne.http_protocol:HTTP close for ['127.0.0.1', 40666]
+DEBUG:daphne.http_protocol:HTTP response complete for ['127.0.0.1', 40666]
+WARNING:django.channels.server:[31;1mHTTP GET /online-users/ 401 [0.04, 127.0.0.1:40666][0m
