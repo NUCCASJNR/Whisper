@@ -8,7 +8,7 @@ with open(readme_path, "r", encoding="utf-8") as readme_file:
 
 setup(
     name="whisper-chat",
-    version="1.0.4",
+    version="1.0.5",
     author="nuccasjr",
     author_email="alareefadegbite@gmail.com",
     description=(

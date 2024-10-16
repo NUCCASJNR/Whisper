@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MODE = getenv("MODE")
+print(f'MODE: {MODE}')
 
 
 class WhisperAPI:
