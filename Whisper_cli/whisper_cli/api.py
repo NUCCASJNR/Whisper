@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MODE = getenv("MODE")
-print(f'MODE: {MODE}')
 
 
 class WhisperAPI:
@@ -17,7 +16,6 @@ class WhisperAPI:
         raise ValueError("LIVE_URL environment variable is not set.")
 
     def signup(self, username, password):
-        print(self.BASE_URL)
         response = requests.post(f'{self.BASE_URL}auth/signup/', data={'username': username, 'password': password})
         try:
             response_data = response.json()
@@ -37,7 +35,6 @@ class WhisperAPI:
         try:
             if response_data.get('status') == 200:
                 print("Login Successful")
-                print(f"Token: {response_data.get('access_token')}")
                 save_token(username, response_data.get('access_token'))
             else:
                 print(f"Login Failed: {response_data}")
@@ -67,7 +64,7 @@ class WhisperAPI:
         Handles user ready to chat option
         Args:
             option: User option
-            username:
+            username: username of the user making the request
         """
         token = get_token(username)
         headers = {'Authorization': f'Bearer {token}'}
