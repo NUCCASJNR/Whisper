@@ -12,9 +12,12 @@ class WhisperAPI:
     if MODE == 'DEV':
         BASE_URL = 'http://localhost:8000'
     else:
-        BASE_URL = getenv("LIVE_URL")
+        BASE_URL = getenv("LIVE_URL", "https://whisper-ul4p.onrender.com/")
+    if not BASE_URL:
+        raise ValueError("LIVE_URL environment variable is not set.")
 
     def signup(self, username, password):
+        print(self.BASE_URL)
         response = requests.post(f'{self.BASE_URL}auth/signup/', data={'username': username, 'password': password})
         try:
             response_data = response.json()
