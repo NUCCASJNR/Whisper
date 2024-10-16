@@ -34,18 +34,31 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          python -m pip install pycodestyle python-dotenv
+          python -m pip install pycodestyle flake8 isort black pytest python-dotenv
 
       - name: Lint with pycodestyle
         run: |
           pycodestyle .
-      
+
+      - name: Lint with flake8
+        run: |
+          flake8 .
+
+      - name: Check code style with black
+        run: |
+          black --check .
+
+      - name: Sort imports with isort
+        run: |
+          isort --check-only .
+
       - name: Test with pytest
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           pytest
 
+# Uncomment if you want to add database migrations before testing
 #      - name: Run migrations
 #        env:
 #          SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -56,7 +69,8 @@ jobs:
 #          DEV_HOST: ${{ secrets.DEV_HOST }}
 #        run: |
 #          python3 manage.py migrate
-#
+
+# Uncomment if you want to test with environment variables
 #      - name: Test with pytest
 #        env:
 #          SECRET_KEY: ${{ secrets.SECRET_KEY }}
