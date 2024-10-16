@@ -3,7 +3,8 @@
 """Contains message related serializers"""
 
 from rest_framework import serializers
-from anon.models.message import PlainTextMessage, Message
+
+from anon.models.message import Message, PlainTextMessage
 
 
 class SendMessageSerializer(serializers.ModelSerializer):
@@ -11,7 +12,7 @@ class SendMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('encrypted_content', )
+        fields = ("encrypted_content",)
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -19,15 +20,16 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlainTextMessage
-        fields = ('content', )
+        fields = ("content",)
 
 
 class RecieveMessageSerializer(serializers.ModelSerializer):
     """Receive Message Serializer"""
+
     sender = serializers.CharField()
     content = serializers.CharField()
     # recipient = serializers.SerializerMethodField()
 
     class Meta:
         model = PlainTextMessage
-        fields = ('sender', 'content')
+        fields = ("sender", "content")

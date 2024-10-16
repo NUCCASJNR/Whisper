@@ -5,6 +5,7 @@ attrs==23.2.0
 autobahn==23.6.2
 Automat==22.10.0
 billiard==4.2.0
+black==24.10.0
 celery==5.3.6
 certifi==2023.11.17
 cffi==1.16.0
@@ -37,6 +38,8 @@ idna==3.6
 importlib_metadata==8.5.0
 incremental==22.10.0
 inflection==0.5.1
+iniconfig==2.0.0
+isort==5.13.2
 jaraco.classes==3.4.0
 jaraco.context==6.0.1
 jaraco.functools==4.1.0
@@ -47,12 +50,16 @@ markdown-it-py==3.0.0
 mdurl==0.1.2
 more-itertools==10.5.0
 msgpack==1.0.8
+mypy-extensions==1.0.0
 mysqlclient==2.2.1
 nh3==0.2.18
 oauthlib==3.2.2
 packaging==23.2
+pathspec==0.12.1
 pillow==10.2.0
 pkginfo==1.10.0
+platformdirs==4.3.6
+pluggy==1.5.0
 prompt-toolkit==3.0.43
 psutil==5.9.8
 psycopg2-binary==2.9.9

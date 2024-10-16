@@ -23,19 +23,22 @@ Methods:
     process_stored_messages: Sends previously stored messages to the client upon connection.
 """
 
+import base64
 import json
 import logging
-import base64
-from channels.generic.websocket import AsyncWebsocketConsumer
-from rest_framework_simplejwt.tokens import AccessToken
-from asgiref.sync import sync_to_async
-from django.db.models import Q
-from anon.models.message import MainUser, PlainTextMessage, Message
 from datetime import datetime
-from anon.utils.encrypt import encrypt_message, decrypt_message
-from anon.models.key import PublicKeyDirectory, EncryptionKey
+
+from asgiref.sync import sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.exceptions import ObjectDoesNotExist
-logging.basicConfig(level=logging.DEBUG, filename='app.log')
+from django.db.models import Q
+from rest_framework_simplejwt.tokens import AccessToken
+
+from anon.models.key import EncryptionKey, PublicKeyDirectory
+from anon.models.message import MainUser, Message, PlainTextMessage
+from anon.utils.encrypt import decrypt_message, encrypt_message
+
+logging.basicConfig(level=logging.DEBUG, filename="app.log")
 
 
 class MessageConsumer(AsyncWebsocketConsumer):
@@ -48,21 +51,21 @@ class MessageConsumer(AsyncWebsocketConsumer):
         Connect method
         :return: Nothing
         """
-        self.receiver_id = self.scope['url_route']['kwargs']['receiver_id']
-        self.sender_id = self.scope['url_route']['kwargs']['sender_id']
+        self.receiver_id = self.scope["url_route"]["kwargs"]["receiver_id"]
+        self.sender_id = self.scope["url_route"]["kwargs"]["sender_id"]
         token = self.scope.get("query_string").decode().split("Bearer%20")[1]
         auth_info = await self.get_auth_info(token)
 
-        if not auth_info['status']:
+        if not auth_info["status"]:
             await self.close()
             return f'Error: {auth_info["response"]}'
 
-        self.user_id = auth_info.get('user_id', None)
-        self.user = await self.get_user_by_id(auth_info['user_id'])
+        self.user_id = auth_info.get("user_id", None)
+        self.user = await self.get_user_by_id(auth_info["user_id"])
 
         if not self.user:
             await self.close()
-            return 'Error: User not found'
+            return "Error: User not found"
 
         self.room_group_name = f"chat_{self.sender_id}_{self.receiver_id}"
 
@@ -75,7 +78,9 @@ class MessageConsumer(AsyncWebsocketConsumer):
         else:
             self.actual_receiver_id = self.receiver_id
 
-        re = await self.process_stored_messages(str(self.user.id), self.actual_receiver_id)
+        re = await self.process_stored_messages(
+            str(self.user.id), self.actual_receiver_id
+        )
         print("messages:", re)
 
     async def disconnect(self, close_code):
@@ -108,17 +113,20 @@ class MessageConsumer(AsyncWebsocketConsumer):
             res = await self.get_user_public_key(self.message_receiver)
             result = encrypt_message(message, res)
             print(result)
-            response = await self.save_message_async(message, self.message_sender, self.message_receiver)
+            response = await self.save_message_async(
+                message, self.message_sender, self.message_receiver
+            )
             if response is not None:
                 obj = datetime.fromisoformat(str(response.updated_at))
                 time = obj.strftime("%A, %d %B %Y, %I:%M %p")
                 await self.channel_layer.group_send(
-                    self.room_group_name, {
+                    self.room_group_name,
+                    {
                         "type": "chat.message",
                         "message": message,
                         "sender": sender,
-                        "time": time
-                    }
+                        "time": time,
+                    },
                 )
             else:
                 logging.error("Failed to save message")
@@ -135,12 +143,17 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         message = event["message"]
         sender = event["sender"]
-        logging.info("Sending message '%s' from sender '%s' to room '%s'", message, sender, self.room_group_name)
-        await self.send(text_data=json.dumps({
-            "message": message,
-            "sender": sender,
-            "time": event["time"]
-        }))
+        logging.info(
+            "Sending message '%s' from sender '%s' to room '%s'",
+            message,
+            sender,
+            self.room_group_name,
+        )
+        await self.send(
+            text_data=json.dumps(
+                {"message": message, "sender": sender, "time": event["time"]}
+            )
+        )
 
     async def get_auth_info(self, token):
         """
@@ -151,16 +164,10 @@ class MessageConsumer(AsyncWebsocketConsumer):
         try:
             decoded_token = AccessToken(token)
             if decoded_token.get("user_id"):
-                return {
-                    "status": True,
-                    "user_id": decoded_token.get("user_id")
-                }
+                return {"status": True, "user_id": decoded_token.get("user_id")}
             return False
         except Exception as e:
-            return {
-                "status": False,
-                "response": str(e)
-            }
+            return {"status": False, "response": str(e)}
 
     @sync_to_async
     def get_user_by_id(self, user_id):
@@ -175,7 +182,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         except MainUser.DoesNotExist:
             return None
         except Exception as e:
-            return f'Error: {e}'
+            return f"Error: {e}"
 
     async def save_message_async(self, content, sender_id, receiver_id):
         """
@@ -196,8 +203,10 @@ class MessageConsumer(AsyncWebsocketConsumer):
             receiver = MainUser.custom_get(id=receiver_id)
             receiver_key = self.get_user_public_key_sync(receiver_id)
             encrypted_message = encrypt_message(content, receiver_key)
-            message = Message.custom_save(encrypted_content=encrypted_message, sender=sender, recipient=receiver)
-            logging.info(f'save response: {message}')
+            message = Message.custom_save(
+                encrypted_content=encrypted_message, sender=sender, recipient=receiver
+            )
+            logging.info(f"save response: {message}")
             return message
         except MainUser.DoesNotExist:
             logging.error("Sender or recipient does not exist")
@@ -216,8 +225,9 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         try:
             messages = Message.objects.filter(
-                (Q(recipient=recipient_id) & Q(sender=sender_id)) | (Q(recipient=sender_id) & Q(sender=recipient_id))
-            ).order_by('-updated_at')
+                (Q(recipient=recipient_id) & Q(sender=sender_id))
+                | (Q(recipient=sender_id) & Q(sender=recipient_id))
+            ).order_by("-updated_at")
             return list(messages)
         except ValueError:
             logging.info(f"These users don't have previous chats")
@@ -237,13 +247,19 @@ class MessageConsumer(AsyncWebsocketConsumer):
             time = obj.strftime("%A, %d %B %Y, %I:%M %p")
 
             # Convert bytes to Base64 encoded string
-            encrypted_content_base64 = base64.b64encode(message.encrypted_content).decode('utf-8')
+            encrypted_content_base64 = base64.b64encode(
+                message.encrypted_content
+            ).decode("utf-8")
 
-            await self.send(text_data=json.dumps({
-                "message": encrypted_content_base64,
-                "sender": sender_user.username if sender_user else "Anonymous",
-                "time": time
-            }))
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "message": encrypted_content_base64,
+                        "sender": sender_user.username if sender_user else "Anonymous",
+                        "time": time,
+                    }
+                )
+            )
 
     async def get_user_public_key(self, user_id):
         """
@@ -262,7 +278,4 @@ class MessageConsumer(AsyncWebsocketConsumer):
             receiver_public_key = PublicKeyDirectory.custom_get(user=user)
             return receiver_public_key.public_keys.get(str(user.id))
         except ObjectDoesNotExist:
-            return ({
-                "error": "No such user found",
-                "status": 404
-            })
+            return {"error": "No such user found", "status": 404}

@@ -1,8 +1,6 @@
-from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
-
-from cryptography.hazmat.primitives import hashes
 
 
 def load_private_key(private_key_bytes: bytes):
@@ -11,8 +9,9 @@ def load_private_key(private_key_bytes: bytes):
     :param private_key_bytes: Private key bytes
     :return: Private key object
     """
-    private_key = serialization.load_pem_private_key(private_key_bytes.encode(),
-                                                     password=None, backend=default_backend())
+    private_key = serialization.load_pem_private_key(
+        private_key_bytes.encode(), password=None, backend=default_backend()
+    )
     return private_key
 
 
@@ -22,7 +21,9 @@ def load_public_key(public_key_bytes: bytes):
     :param public_key_bytes: Public key bytes
     :return: Public key object
     """
-    public_key = serialization.load_pem_public_key(public_key_bytes.encode(), backend=default_backend())
+    public_key = serialization.load_pem_public_key(
+        public_key_bytes.encode(), backend=default_backend()
+    )
     return public_key
 
 
@@ -39,8 +40,8 @@ def encrypt_message(message: str, recipient_public_key: str) -> bytes:
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
-            label=None
-        )
+            label=None,
+        ),
     )
     return encrypted_message
 
@@ -58,7 +59,7 @@ def decrypt_message(encrypted_message: bytes, private_key: str) -> bytes:
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
-            label=None
-        )
+            label=None,
+        ),
     )
     return decrypted_message

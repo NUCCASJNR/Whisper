@@ -1,7 +1,10 @@
-import requests
-from whisper_cli.utils import save_token, get_token, format_response
 from os import getenv
+
+import requests
 from dotenv import load_dotenv
+
+from whisper_cli.utils import format_response, get_token, save_token
+
 load_dotenv()
 
 MODE = getenv("MODE")

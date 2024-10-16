@@ -2,22 +2,24 @@
 
 """Profile Serializer"""
 
-from rest_framework import serializers
-from anon.models.user import MainUser
-from anon.models.key import PublicKeyDirectory
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import serializers
+
+from anon.models.key import PublicKeyDirectory
+from anon.models.user import MainUser
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     """
     User Profile Serializer
     """
+
     public_key = serializers.SerializerMethodField()
     username = serializers.CharField(required=True)
 
     class Meta:
         model = MainUser
-        fields = ('username', 'public_key', 'ready_to_chat')
+        fields = ("username", "public_key", "ready_to_chat")
 
     def get_public_key(self, obj):
         """
@@ -26,10 +28,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         :return: Public key else None
         """
         try:
-            public_key = PublicKeyDirectory.custom_get(**{'user_id': obj.id}).public_keys
+            public_key = PublicKeyDirectory.custom_get(
+                **{"user_id": obj.id}
+            ).public_keys
             return public_key.get(str(obj.id))
         except ObjectDoesNotExist:
-            return 'Not found'
+            return "Not found"
 
 
 class ReadyToChatSerializer(serializers.Serializer):
@@ -39,4 +43,4 @@ class ReadyToChatSerializer(serializers.Serializer):
 
     class Meta:
         model = MainUser
-        fields = ('ready_to_chat', )
+        fields = ("ready_to_chat",)

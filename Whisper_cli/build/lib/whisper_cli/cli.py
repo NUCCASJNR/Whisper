@@ -1,8 +1,8 @@
 import argparse
-from whisper_cli.api import WhisperAPI
 import logging
 import sys
 
+from whisper_cli.api import WhisperAPI
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

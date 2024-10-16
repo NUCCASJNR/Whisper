@@ -31,8 +31,8 @@ def bad_data():
 
 @pytest.mark.django_db
 def test_post_valid_data(request_factory, user_data, mocker):
-    view = SignUpViewSet.as_view({'post': 'create'})
-    request = request_factory.post("/signup/", user_data, format='json')
+    view = SignUpViewSet.as_view({"post": "create"})
+    request = request_factory.post("/signup/", user_data, format="json")
 
     # Ensure the serializer validates the data correctly
     serializer = SignUpSerializer(data=user_data)
@@ -49,14 +49,14 @@ def test_post_valid_data(request_factory, user_data, mocker):
     assert response.data.get("message") == "Signup successful, You can now login"
 
     # Additional check to ensure the user is created
-    user = User.objects.get(username=user_data['username'])
+    user = User.objects.get(username=user_data["username"])
     assert user is not None
 
 
 @pytest.mark.django_db
 def test_post_invalid_data(request_factory, bad_data):
-    view = SignUpViewSet.as_view({'post': 'create'})
-    request = request_factory.post("/signup/", bad_data, format='json')
+    view = SignUpViewSet.as_view({"post": "create"})
+    request = request_factory.post("/signup/", bad_data, format="json")
 
     # Get the response
     response = view(request)

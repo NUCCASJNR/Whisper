@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 
 """Message Model For Whisper"""
-from anon.models.user import BaseModel, models, MainUser
+from anon.models.user import BaseModel, MainUser, models
 
 
 class Message(BaseModel):
     """
     Message Model
     """
-    sender = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='sent_messages')
-    recipient = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='received_messages')
+
+    sender = models.ForeignKey(
+        MainUser, on_delete=models.CASCADE, related_name="sent_messages"
+    )
+    recipient = models.ForeignKey(
+        MainUser, on_delete=models.CASCADE, related_name="received_messages"
+    )
     encrypted_content = models.BinaryField()
     is_read = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'messages'
+        db_table = "messages"
 
     def __str__(self):
         """
@@ -24,9 +29,13 @@ class Message(BaseModel):
 
 
 class PlainTextMessage(BaseModel):
-    sender = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='sent_plain_messages')
-    recipient = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='received_plain_messages')
+    sender = models.ForeignKey(
+        MainUser, on_delete=models.CASCADE, related_name="sent_plain_messages"
+    )
+    recipient = models.ForeignKey(
+        MainUser, on_delete=models.CASCADE, related_name="received_plain_messages"
+    )
     content = models.TextField()
 
     class Meta:
-        db_table = 'plain_text_messages'
+        db_table = "plain_text_messages"
