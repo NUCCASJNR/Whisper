@@ -25,7 +25,7 @@ Make sure you have the following installed:
 
 To install the necessary dependencies, run the following command:
 ```bash
-pip install whisper_cli
+pip install whisper_chat
 ```
 
 ## Usage
