@@ -8,7 +8,7 @@ with open(readme_path, "r", encoding="utf-8") as readme_file:
 
 setup(
     name="whisper-chat",
-    version="1.0.3",
+    version="1.0.4",
     author="nuccasjr",
     author_email="alareefadegbite@gmail.com",
     description=(
@@ -22,6 +22,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "requests>=2.25.1",
+        "python-dotenv"
     ],
     entry_points={
         'console_scripts': [
