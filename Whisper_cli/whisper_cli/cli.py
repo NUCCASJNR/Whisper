@@ -53,7 +53,7 @@ def handle_active_users(api, username):
     """
     if not username:
         logging.error("Username is required to list active users.")
-        sys.exit(1)    
+        sys.exit(1) 
     try:
         api.list_online_users(username)
     except Exception as e:

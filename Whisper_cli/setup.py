@@ -17,7 +17,7 @@ setup(
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/NUCCASJNR/WhisperCLI",
+    url="https://github.com/NUCCASJNR/Whisper",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     include_package_data=True,
     install_requires=[

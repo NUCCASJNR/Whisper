@@ -226,4 +226,3 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 "sender": sender_user.username if sender_user else "Anonymous",
                 "time": time
             }))
-
