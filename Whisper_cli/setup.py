@@ -44,7 +44,7 @@ setup(
     keywords="anonymous-chat cli secure-communication",
     python_requires='>=3.6',
     project_urls={
-        'Documentation': 'https://github.com/NUCCASJNR/Whisper/docs',
+        'Documentation': 'https://github.com/NUCCASJNR/Whisper/tree/main/docs',
         'Source': 'https://github.com/NUCCASJNR/Whisper',
         'Tracker': 'https://github.com/NUCCASJNR/Whisper/issues',
     },
