@@ -1,18 +1,24 @@
 import requests
 from whisper_cli.utils import save_token, get_token, format_response
-from django.core.exceptions import ObjectDoesNotExist
+from os import getenv
+from dotenv import load_dotenv
+load_dotenv()
+
+MODE = getenv("MODE")
 
 
 class WhisperAPI:
-    BASE_URL = 'http://localhost:8000'
+    if MODE == 'DEV':
+        BASE_URL = 'http://localhost:8000'
+    else:
+        BASE_URL = getenv("LIVE_URL")
 
     def signup(self, username, password):
-        response = requests.post(f'{self.BASE_URL}/auth/signup/', data={'username': username, 'password': password})
+        response = requests.post(f'{self.BASE_URL}auth/signup/', data={'username': username, 'password': password})
         try:
             response_data = response.json()
             if response_data.get('status') == 201:
                 print("Signup successful!")
-                print(f"User ID: {response_data.get('id')}")
             else:
                 print(f"Signup failed: {response_data}")
         except requests.exceptions.JSONDecodeError:

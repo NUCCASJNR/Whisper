@@ -7,9 +7,9 @@ with open(readme_path, "r", encoding="utf-8") as readme_file:
     long_description = readme_file.read()
 
 setup(
-    name="whisper-cli",
-    version="0.1.0",
-    author="Al-Areef",
+    name="whisper-chat",
+    version="1.0.1",
+    author="nuccasjr",
     author_email="alareefadegbite@gmail.com",
     description=(
         "Whisper is a secure, anonymous chat application for the command line, enabling private "
@@ -45,8 +45,8 @@ setup(
     keywords="anonymous-chat cli secure-communication",
     python_requires='>=3.6',
     project_urls={
-        'Documentation': 'https://github.com/NUCCASJNR/WhisperCLI/docs',
-        'Source': 'https://github.com/NUCCASJNR/WhisperCLI',
-        'Tracker': 'https://github.com/NUCCASJNR/WhisperCLI/issues',
+        'Documentation': 'https://github.com/NUCCASJNR/Whisper/docs',
+        'Source': 'https://github.com/NUCCASJNR/Whisper',
+        'Tracker': 'https://github.com/NUCCASJNR/Whisper/issues',
     },
 )

@@ -19,7 +19,6 @@ class WhisperAPI:
             response_data = response.json()
             if response_data.get('status') == 201:
                 print("Signup successful!")
-                print(f"User ID: {response_data.get('id')}")
             else:
                 print(f"Signup failed: {response_data}")
         except requests.exceptions.JSONDecodeError:
