@@ -34,9 +34,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from rest_framework_simplejwt.tokens import AccessToken
 
-from anon.models.key import EncryptionKey, PublicKeyDirectory
-from anon.models.message import MainUser, Message, PlainTextMessage
-from anon.utils.encrypt import decrypt_message, encrypt_message
+from anon.models.key import PublicKeyDirectory
+from anon.models.message import MainUser, Message
+from anon.utils.encrypt import encrypt_message
 
 logging.basicConfig(level=logging.DEBUG, filename="app.log")
 
@@ -230,7 +230,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             ).order_by("-updated_at")
             return list(messages)
         except ValueError:
-            logging.info(f"These users don't have previous chats")
+            logging.info("These users don't have previous chats")
             return []
 
     async def process_stored_messages(self, user_id, other_user_id):
