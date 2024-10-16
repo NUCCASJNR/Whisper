@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from anon.serializers.profile import ProfileSerializer, MainUser, ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import status
-from anon.models.key import PublicKeyDirectory, MainUser
+from anon.models.key import PublicKeyDirectory
 
 
 class ProfileView(APIView):
@@ -22,7 +22,10 @@ class ProfileView(APIView):
         :return: User profile
         """
         serializer = self.serializer_class(request.user)
-        return Response(serializer.data)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'data': serializer.data
+        })
 
 
 class ReadyToChatView(APIView):

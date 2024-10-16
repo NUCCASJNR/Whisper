@@ -1,3 +1,29 @@
+Metadata-Version: 2.1
+Name: whisper-chat
+Version: 1.0.7
+Summary: Whisper is a secure, anonymous chat application for the command line, enabling private communication, user profile management, and more—all from your terminal.
+Home-page: https://github.com/NUCCASJNR/WhisperCLI
+Author: nuccasjr
+Author-email: alareefadegbite@gmail.com
+Project-URL: Documentation, https://github.com/NUCCASJNR/Whisper/docs
+Project-URL: Source, https://github.com/NUCCASJNR/Whisper
+Project-URL: Tracker, https://github.com/NUCCASJNR/Whisper/issues
+Keywords: anonymous-chat cli secure-communication
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Environment :: Console
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.25.1
+Requires-Dist: python-dotenv
+
 
 # Whisper CLI Tool
 
