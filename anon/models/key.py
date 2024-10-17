@@ -14,6 +14,7 @@ class EncryptionKey(BaseModel):
         MainUser, on_delete=models.CASCADE, related_name="private_key"
     )
     private_key = models.TextField()
+    pin = models.CharField(max_length=10)
 
     class Meta:
         db_table = "encryption_keys"
