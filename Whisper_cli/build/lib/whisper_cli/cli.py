@@ -1,8 +1,8 @@
 import argparse
-from whisper_cli.api import WhisperAPI
 import logging
 import sys
 
+from whisper_cli.api import WhisperAPI
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -39,7 +39,7 @@ def handle_profile(api, username):
     """
     if not username:
         logging.error("Username is required to fetch profile.")
-        sys.exit(1) 
+        sys.exit(1)
     try:
         api.profile(username)
     except Exception as e:
@@ -53,7 +53,7 @@ def handle_active_users(api, username):
     """
     if not username:
         logging.error("Username is required to list active users.")
-        sys.exit(1)    
+        sys.exit(1)
     try:
         api.list_online_users(username)
     except Exception as e:
@@ -81,7 +81,8 @@ def main():
     Main function to handle CLI commands.
     """
     parser = argparse.ArgumentParser(description="Whisper CLI Tool")
-    parser.add_argument('command', choices=['login', 'ready_to_chat', 'signup', 'profile', 'active_users'], help='Command to run')
+    parser.add_argument('command', choices=['login', 'ready_to_chat',
+                                            'signup', 'profile', 'active_users'], help='Command to run')
 
     parser.add_argument('--username', help='Your username', required=True)
     parser.add_argument('--password', help='Your password')

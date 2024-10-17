@@ -2,18 +2,20 @@
 
 """Base model"""
 
-from django.db import models
 from typing import Any, Dict
-from cloudinary.models import CloudinaryResource
-from django.utils import timezone
 from uuid import uuid4
+
+from cloudinary.models import CloudinaryResource
 from django.contrib.auth.hashers import make_password
+from django.db import models
+from django.utils import timezone
 
 
 class BaseModel(models.Model):
     """Base model for the anon chat app
     Every other class inherits from this class
     """
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -53,13 +55,15 @@ class BaseModel(models.Model):
         instance.delete()
 
     @classmethod
-    def custom_update(cls, filter_kwargs: Dict[str, Any], update_kwargs: Dict[str, Any]):
+    def custom_update(
+        cls, filter_kwargs: Dict[str, Any], update_kwargs: Dict[str, Any]
+    ):
         """
         Updates instances of the class based on the filter_kwargs and update_kwargs.
         """
         try:
-            if 'password' in update_kwargs and update_kwargs['password'] is not None:
-                update_kwargs['password'] = make_password(update_kwargs['password'])
+            if "password" in update_kwargs and update_kwargs["password"] is not None:
+                update_kwargs["password"] = make_password(update_kwargs["password"])
 
             cls.objects.filter(**filter_kwargs).update(**update_kwargs)
             return True
@@ -103,23 +107,23 @@ class BaseModel(models.Model):
         Counts the number of instances of the class
         """
         return cls.objects.count()
-    
+
     @classmethod
     def filter_objects(cls, **kwargs: Dict[str, Any]):
         """
         Retrieves queryset of instances of the class based on provided filter criteria
         """
         return cls.objects.filter(**kwargs)
-    
+
     @classmethod
-    def handle_cloudinary_resource(cls, cloudinary_resource: CloudinaryResource) -> Dict[str, Any]:
+    def handle_cloudinary_resource(
+        cls, cloudinary_resource: CloudinaryResource
+    ) -> Dict[str, Any]:
         """
         Converts a CloudinaryResource object to a dictionary
         """
         if isinstance(cloudinary_resource, CloudinaryResource):
-            return {
-                'url': cloudinary_resource.public_id
-            }
+            return {"url": cloudinary_resource.public_id}
         else:
             return {}
 
@@ -146,6 +150,3 @@ class BaseModel(models.Model):
             model_dict[field_name] = field_value
 
         return model_dict
-
-
-    
