@@ -12,7 +12,7 @@ MODE = getenv("MODE")
 
 class WhisperAPI:
     if MODE == "DEV":
-        BASE_URL = "http://localhost:8000"
+        BASE_URL = "http://localhost:8000/"
     else:
         BASE_URL = getenv("LIVE_URL", "https://whisper-ul4p.onrender.com/")
     if not BASE_URL:
@@ -37,7 +37,7 @@ class WhisperAPI:
         Login function
         """
         response = requests.post(
-            f"{self.BASE_URL}/auth/login/",
+            f"{self.BASE_URL}auth/login/",
             data={"username": username, "password": password},
         )
         response_data = response.json()
@@ -56,7 +56,7 @@ class WhisperAPI:
         """
         token = get_token(username)
         headers = {"Authorization": f"Bearer {token}"}
-        response = requests.get(f"{self.BASE_URL}/profile/", headers=headers)
+        response = requests.get(f"{self.BASE_URL}profile/", headers=headers)
         try:
             data = response.json()
             if data.get("status") == 200:
@@ -88,7 +88,7 @@ class WhisperAPI:
         else:
             print("Ivalid OPtion")
         response = requests.post(
-            f"{self.BASE_URL}/ready-to-chat/", headers=headers, data={"Option": option}
+            f"{self.BASE_URL}ready-to-chat/", headers=headers, data={"Option": option}
         )
         try:
             data = response.json()
@@ -111,16 +111,20 @@ class WhisperAPI:
         """
         token = get_token(username)
         headers = {"Authorization": f"Bearer {token}"}
-        response = requests.get(f"{self.BASE_URL}/online-users/", headers=headers)
+        response = requests.get(f"{self.BASE_URL}online-users/", headers=headers)
         try:
             data = response.json()
-            if data.get("status") == 200 and data.get("public_keys") != []:
+            if data.get("status") == 200:
+                print(data)
                 formatted_data = format_response(data, 5)
                 print(f"Online Users: {formatted_data}")
             else:
-                formatted_error = format_response(
-                    data.get("messages")[0].get("message"), 5
-                )
-                print(formatted_error)
+                # Safely check if messages exist and is a list
+                messages = data.get("messages", [])
+                if messages and isinstance(messages, list) and "message" in messages[0]:
+                    formatted_error = format_response(messages[0].get("message"), 5)
+                    print(formatted_error)
+                else:
+                    print(f"Unknown error occurred or no users online: {data}")
         except Exception as e:
             print(f"Error due to: {str(e)}")
