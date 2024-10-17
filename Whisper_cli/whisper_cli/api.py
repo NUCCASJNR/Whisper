@@ -122,9 +122,7 @@ class WhisperAPI:
                 # Safely check if messages exist and is a list
                 messages = data.get("messages", [])
                 if messages and isinstance(messages, list) and "message" in messages[0]:
-                    formatted_error = format_response(
-                        messages[0].get("message"), 5
-                    )
+                    formatted_error = format_response(messages[0].get("message"), 5)
                     print(formatted_error)
                 else:
                     print(f"Unknown error occurred or no users online: {data}")
