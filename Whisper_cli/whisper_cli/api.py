@@ -115,7 +115,6 @@ class WhisperAPI:
         try:
             data = response.json()
             if data.get("status") == 200:
-                print(data)
                 formatted_data = format_response(data, 5)
                 print(f"Online Users: {formatted_data}")
             else:
