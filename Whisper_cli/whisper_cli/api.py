@@ -114,13 +114,19 @@ class WhisperAPI:
         response = requests.get(f"{self.BASE_URL}online-users/", headers=headers)
         try:
             data = response.json()
-            if data.get("status") == 200 and data.get("public_keys") != []:
+            if data.get("status") == 200:
+                print(data)
                 formatted_data = format_response(data, 5)
                 print(f"Online Users: {formatted_data}")
             else:
-                formatted_error = format_response(
-                    data.get("messages")[0].get("message"), 5
-                )
-                print(formatted_error)
+                # Safely check if messages exist and is a list
+                messages = data.get("messages", [])
+                if messages and isinstance(messages, list) and "message" in messages[0]:
+                    formatted_error = format_response(
+                        messages[0].get("message"), 5
+                    )
+                    print(formatted_error)
+                else:
+                    print(f"Unknown error occurred or no users online: {data}")
         except Exception as e:
             print(f"Error due to: {str(e)}")
