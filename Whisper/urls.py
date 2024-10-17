@@ -20,7 +20,7 @@ from django.urls import include, path
 # from anon.views.message import MessageView, ReceiveMessageView
 from rest_framework import routers
 
-from anon.views.auth import LoginView, LogoutView, SignUpViewSet
+from anon.views.auth import LoginView, LogoutView, SignUpViewSet, FindUserView
 from anon.views.profile import ListUsersReadyToChat, ProfileView, ReadyToChatView
 
 router = routers.DefaultRouter()
@@ -33,6 +33,5 @@ urlpatterns = [
     path("profile/", ProfileView.as_view()),
     path("ready-to-chat/", ReadyToChatView.as_view()),
     path("online-users/", ListUsersReadyToChat.as_view()),
-    # path('send-message/<str:user_id>/', MessageView.as_view()),
-    # path('messages/<str:user_id>/', ReceiveMessageView.as_view())
+    path('find-user/', FindUserView.as_view())
 ]

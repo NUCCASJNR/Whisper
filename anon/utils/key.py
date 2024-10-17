@@ -7,6 +7,7 @@
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+import hashlib
 
 # from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
@@ -35,3 +36,16 @@ def generate_key_pair(encrypt_private_key=False, password=None):
     ).decode("utf-8")
 
     return {"public_key": public_key_pem, "private_key": private_key_pem}
+
+
+def hash_pin(pin):
+    """Hash the user's PIN using SHA-256."""
+    return hashlib.sha256(pin.encode()).hexdigest()
+
+
+def verify_pin(pin, user):
+    hashed_pin = hash_pin(pin)
+    if user.pin == hashed_pin:
+        return True
+    else:
+        return False

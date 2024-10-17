@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 
 from anon.models.key import PublicKeyDirectory
 from anon.serializers.profile import MainUser, ObjectDoesNotExist, ProfileSerializer
+from anon.utils.key import hash_pin
 
 
 class ProfileView(APIView):
@@ -84,3 +85,19 @@ class ListUsersReadyToChat(APIView):
             )
         except ObjectDoesNotExist:
             return Response({"message": "Nobody wan follow you talk"})
+
+
+class CreatePinView(APIView):
+    """
+    View for creating pin for a user
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        """
+        Creates a pin for a user
+        Args:
+            request: request object
+            return: 200 if successful else 400
+        """
+        

@@ -118,3 +118,27 @@ class LogoutView(views.APIView):
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class FindUserView(views.APIView):
+    """
+    View for finding a user
+    """
+    def post(self, request):
+        try:
+            user = MainUser.find_obj_by(**{"username": request.data.get("username")})
+            if user:
+                return Response({
+                    "message": "User Found!!",
+                    "status": 200
+                })
+            else:
+                return Response({
+                    "error": "No such user",
+                    "status": 404
+                })
+        except ValueError:
+            return Response({
+                "error": "No such user",
+                "status": 404
+            })
