@@ -1,50 +1,112 @@
-# React + TypeScript + Vite
+# Whisper Chat App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Whisper** is a secure chat application that allows users to send and receive encrypted messages using public and private key pairs. This project features a frontend built with **React**, **Vite**, **Tailwind CSS**, and **TypeScript**, with a focus on ease of use, security, and customization.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Features](#features)
+- [Technologies](#technologies)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Secure Conversations**: End-to-end encryption using public and private key pairs.
+- **User Profiles**: View and manage user profiles with public key information.
+- **Chats Management**: View, create, and manage chats in real-time.
+- **Users Ready to Chat**: Discover users ready to start a conversation and initiate chats with them.
+- **Responsive Design**: Mobile-friendly UI with responsive sidebar, header, and chat window.
+- **Customizable Theme**: Modify primary, secondary, and accent colors through Tailwind CSS.
+- **Dark Mode Support**: Built-in dark mode with customizable components.
+- **Modals for Interactions**: Modals for creating new chats, changing passwords, and more.
 
-- Configure the top-level `parserOptions` property like this:
+## Technologies
+
+- **React**: UI library for building component-based web applications.
+- **TypeScript**: Type-safe language to ensure code quality.
+- **Vite**: Next-generation frontend tool for fast builds and hot module replacement.
+- **Tailwind CSS**: Utility-first CSS framework for rapidly building custom UIs.
+- **React Router**: Declarative routing for React applications.
+- **React Icons**: Icon library with a variety of customizable icons.
+- **Context API**: For managing authentication and chat state globally.
+
+## Installation
+
+To set up and run the project locally:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/whisper-chat.git
+   cd whisper-chat
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up the environment variables in a `.env` file (if needed).
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the app in your browser at `http://localhost:5173`.
+
+## Usage
+
+### User Authentication
+
+- Users must log in using their **username** and **password**.
+- The **Profile Page** displays the user’s public key and allows toggling "Ready to Chat" status.
+- Users can log out from the profile page.
+
+### Chat Management
+
+- **Chat List**: View all existing chats.
+- **New Chat**: Start a new chat using the floating action button.
+- **Ready to Chat Page**: View other users who are ready to chat and initiate conversations with them.
+
+### Theme Customization
+
+To customize the app’s theme:
+
+1. Modify the **Tailwind CSS** configuration (`tailwind.config.js`) to adjust primary, secondary, and accent colors.
+2. Use these custom colors throughout your components to maintain consistency.
 
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#1D4ED8',
+        secondary: '#1F2937',
+        accent: '#F59E0B',
+        // Add more color schemes here...
+      },
     },
   },
-})
+};
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Contributing
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Contributions are welcome! To contribute:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request.
+
+Please ensure your code adheres to the project’s **code style** and **best practices**.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
