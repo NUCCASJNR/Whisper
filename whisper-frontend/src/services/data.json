@@ -1,0 +1,284 @@
+{
+  "chats": [
+    {
+      "id": "1",
+      "name": "General Chat",
+      "messages": [
+        {
+          "content": "Hey everyone! Welcome to the General Chat!",
+          "sender": "other"
+        },
+        { "content": "What’s everyone up to today?", "sender": "user" },
+        {
+          "content": "Just finished a project, feeling great!",
+          "sender": "other"
+        },
+        {
+          "content": "Same here! What project were you working on?",
+          "sender": "other"
+        },
+        {
+          "content": "I was working on a secret chat app. It's almost done!",
+          "sender": "user"
+        },
+        {
+          "content": "That sounds cool! Can’t wait to try it.",
+          "sender": "other"
+        },
+        { "content": "I’ll send out a demo link soon.", "sender": "user" },
+        { "content": "Count me in!", "sender": "other" },
+        {
+          "content": "How do you handle encryption in the chat?",
+          "sender": "other"
+        },
+        {
+          "content": "I’m using public/private key encryption. Super secure!",
+          "sender": "user"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Work Chat",
+      "messages": [
+        {
+          "content": "Reminder: project deadline is Friday!",
+          "sender": "other"
+        },
+        {
+          "content": "I’m almost done with my part. How’s everyone else?",
+          "sender": "user"
+        },
+        {
+          "content": "I need a bit more time. I’ll finish by tomorrow.",
+          "sender": "other"
+        },
+        {
+          "content": "That works. Let me know if you need help.",
+          "sender": "user"
+        },
+        { "content": "Can you review my code later?", "sender": "other" },
+        { "content": "Sure thing, send me the repo link.", "sender": "user" },
+        { "content": "Done! Check your inbox.", "sender": "other" },
+        { "content": "Got it. I’ll take a look tonight.", "sender": "user" },
+        { "content": "Thanks, really appreciate it!", "sender": "other" },
+        { "content": "No problem!", "sender": "user" }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Random Chat",
+      "messages": [
+        {
+          "content": "Has anyone tried the new café downtown?",
+          "sender": "other"
+        },
+        { "content": "Yeah! The coffee there is amazing.", "sender": "user" },
+        { "content": "What’s your favorite drink there?", "sender": "other" },
+        {
+          "content": "I love their cold brew. Super smooth!",
+          "sender": "user"
+        },
+        {
+          "content": "I’m more of a latte person. I’ll try the cold brew next time.",
+          "sender": "other"
+        },
+        { "content": "Let me know what you think!", "sender": "user" },
+        { "content": "Will do! Any other recommendations?", "sender": "other" },
+        { "content": "Their pastries are also really good.", "sender": "user" },
+        {
+          "content": "I love a good croissant with my coffee.",
+          "sender": "other"
+        },
+        { "content": "You’ll definitely enjoy it then!", "sender": "user" }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Tech Talk",
+      "messages": [
+        {
+          "content": "What do you think about the new React update?",
+          "sender": "user"
+        },
+        {
+          "content": "It’s a game changer! Hooks have made things so much easier.",
+          "sender": "other"
+        },
+        {
+          "content": "I agree! Especially with functional components.",
+          "sender": "user"
+        },
+        {
+          "content": "Yeah, I’ve started refactoring all my class components.",
+          "sender": "other"
+        },
+        {
+          "content": "Same here. My code feels so much cleaner now.",
+          "sender": "user"
+        },
+        {
+          "content": "What’s your favorite feature in React?",
+          "sender": "other"
+        },
+        {
+          "content": "Definitely useState and useEffect. They simplify state management.",
+          "sender": "user"
+        },
+        {
+          "content": "I love the Context API too for global state.",
+          "sender": "other"
+        },
+        {
+          "content": "Oh yeah, I use that in almost every project now.",
+          "sender": "user"
+        },
+        {
+          "content": "Me too! Makes things so much more organized.",
+          "sender": "other"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Gaming Squad",
+      "messages": [
+        { "content": "Who’s up for some gaming tonight?", "sender": "user" },
+        { "content": "I’m in! What are we playing?", "sender": "other" },
+        { "content": "Let’s do some Overwatch.", "sender": "user" },
+        { "content": "Sounds good to me. What time?", "sender": "other" },
+        { "content": "How about 8 PM?", "sender": "user" },
+        { "content": "Works for me. I’ll be there!", "sender": "other" },
+        {
+          "content": "Same here! Can’t wait to wreck some noobs.",
+          "sender": "other"
+        },
+        { "content": "Let’s do it!", "sender": "user" },
+        { "content": "Who’s playing DPS?", "sender": "other" },
+        { "content": "I’ll take it if no one else wants it.", "sender": "user" }
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Study Group",
+      "messages": [
+        {
+          "content": "Has anyone started the final project?",
+          "sender": "other"
+        },
+        { "content": "I’m working on mine right now.", "sender": "user" },
+        { "content": "What topic are you doing?", "sender": "other" },
+        { "content": "I’m focusing on machine learning.", "sender": "user" },
+        {
+          "content": "That’s awesome! I’m doing data science.",
+          "sender": "other"
+        },
+        { "content": "We should share resources.", "sender": "user" },
+        {
+          "content": "Definitely. I’ve found some great papers.",
+          "sender": "other"
+        },
+        {
+          "content": "Send them my way when you get a chance.",
+          "sender": "user"
+        },
+        {
+          "content": "Will do! I’ll drop them in the group chat.",
+          "sender": "other"
+        },
+        { "content": "Thanks! I’ll share mine too.", "sender": "user" }
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Family Chat",
+      "messages": [
+        { "content": "How’s everyone doing today?", "sender": "other" },
+        { "content": "I’m doing great! How about you?", "sender": "user" },
+        { "content": "I’m good too. Just relaxing.", "sender": "other" },
+        { "content": "What’s for dinner tonight?", "sender": "user" },
+        { "content": "I was thinking of making pasta.", "sender": "other" },
+        { "content": "Yum! I love pasta.", "sender": "user" },
+        { "content": "Do you want to come over?", "sender": "other" },
+        { "content": "Sure! I’ll bring some dessert.", "sender": "user" },
+        { "content": "Perfect! See you around 6?", "sender": "other" },
+        { "content": "Sounds good to me!", "sender": "user" }
+      ]
+    },
+    {
+      "id": "8",
+      "name": "Movie Buffs",
+      "messages": [
+        {
+          "content": "What’s the best movie you’ve seen this year?",
+          "sender": "user"
+        },
+        { "content": "I loved Oppenheimer!", "sender": "other" },
+        { "content": "Same here! Nolan always delivers.", "sender": "user" },
+        { "content": "Did you catch it in IMAX?", "sender": "other" },
+        { "content": "Yes! The visuals were amazing.", "sender": "user" },
+        {
+          "content": "Agreed! The sound design was also top-notch.",
+          "sender": "other"
+        },
+        { "content": "What’s your favorite scene?", "sender": "user" },
+        { "content": "The courtroom scene was intense!", "sender": "other" },
+        { "content": "Definitely one of the highlights.", "sender": "user" },
+        { "content": "I might watch it again this weekend.", "sender": "other" }
+      ]
+    },
+    {
+      "id": "9",
+      "name": "Book Club",
+      "messages": [
+        {
+          "content": "Has anyone finished this month’s book?",
+          "sender": "other"
+        },
+        {
+          "content": "I’m almost done. Just a few chapters left.",
+          "sender": "user"
+        },
+        { "content": "What did you think so far?", "sender": "other" },
+        {
+          "content": "It’s really gripping! The plot twists are unexpected.",
+          "sender": "user"
+        },
+        {
+          "content": "I know, right? I didn’t see them coming at all.",
+          "sender": "other"
+        },
+        { "content": "Do you have a favorite character?", "sender": "user" },
+        { "content": "I really like the detective.", "sender": "other" },
+        { "content": "Same here. He’s really well-written.", "sender": "user" },
+        { "content": "I can’t wait to see how it ends.", "sender": "other" },
+        {
+          "content": "Me too! Let’s discuss after we’re all done.",
+          "sender": "user"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "name": "Fitness Chat",
+      "messages": [
+        { "content": "Anyone hit the gym today?", "sender": "user" },
+        { "content": "I went this morning! Leg day.", "sender": "other" },
+        { "content": "Nice! I did chest and back.", "sender": "user" },
+        { "content": "What’s your favorite exercise?", "sender": "other" },
+        { "content": "Definitely deadlifts.", "sender": "user" },
+        {
+          "content": "I love squats. They’re tough but effective.",
+          "sender": "other"
+        },
+        {
+          "content": "Agreed! How much weight do you usually lift?",
+          "sender": "user"
+        },
+        { "content": "I’m at 100kg right now.", "sender": "other" },
+        { "content": "That’s impressive! Keep it up.", "sender": "user" },
+        { "content": "Thanks! You too.", "sender": "other" }
+      ]
+    }
+  ]
+}
