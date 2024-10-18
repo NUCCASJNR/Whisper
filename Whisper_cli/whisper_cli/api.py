@@ -44,7 +44,8 @@ class WhisperAPI:
         try:
             if response_data.get("status") == 200:
                 print("Login Successful")
-                save_token(username, response_data.get("access_token"))
+                a = save_token(username, response_data.get("access_token"))
+                print(a)
             else:
                 print(f"Login Failed: {response_data}")
         except Exception as e:
@@ -58,18 +59,25 @@ class WhisperAPI:
         if query.json().get("status") != 200:
             print(format_response((query.json()), 5))
         elif query.json().get("status") == 200 and get_token(username) is None:
-            error = ({
+            error = {
                 "error": f"Login as {username} to view your profile",
                 "status": 403
-            })
+            }
             form_error = format_response(error, 5)
             print(form_error)
         else:
             token = get_token(username)
+            print(f"Username: {username}")
+            print(f"Token: {token}")
+            if token is None:
+                print(f"No token found for user {username}")
+                return
             headers = {"Authorization": f"Bearer {token}"}
-            response = requests.get(f"{self.BASE_URL}profile/", headers=headers)
+            print(f"Authorization header: Bearer {token}")
+            response = requests.get(f"{self.BASE_URL}profile/", headers=headers, data={"username": username})
             try:
                 data = response.json()
+                print(f'data: {data}')
                 if data.get("status") == 200:
                     formatted_data = format_response(data.get("data"), 5)
                     print(f"Profile Details: {formatted_data}")
@@ -90,7 +98,14 @@ class WhisperAPI:
         """
         query = requests.post(f"{self.BASE_URL}find-user/", data={"username": username})
         if query.json().get("status") != 200:
-            print(query.json())
+            print(format_response((query.json()), 5))
+        elif query.json().get("status") == 200 and get_token(username) is None:
+            error = ({
+                "error": f"Login as {username} to set your status",
+                "status": 403
+            })
+            form_error = format_response(error, 5)
+            print(form_error)
         else:
             token = get_token(username)
             headers = {"Authorization": f"Bearer {token}"}
@@ -126,7 +141,14 @@ class WhisperAPI:
         """
         query = requests.post(f"{self.BASE_URL}find-user/", data={"username": username})
         if query.json().get("status") != 200:
-            print(query.json())
+            print(format_response((query.json()), 5))
+        elif query.json().get("status") == 200 and get_token(username) is None:
+            error = ({
+                "error": f"Login as {username} to see active users",
+                "status": 403
+            })
+            form_error = format_response(error, 5)
+            print(form_error)
         else:
             token = get_token(username)
             headers = {"Authorization": f"Bearer {token}"}
