@@ -104,11 +104,8 @@ def list_active_users(request):
     """
     API View for listing active users
     """
-    # Get users who are ready to chat
     users = MainUser.objects.filter(ready_to_chat=True)
     logger.info(f'Active users fetched: {users}')
-
-    # Check if there are any active users
     if users.exists():
         exclude_user_id = str(request.user.id)
         user_ids = [
@@ -116,15 +113,11 @@ def list_active_users(request):
         ]
 
         logger.info(f'User IDs: {user_ids}')
-
-        # Return the list of active user IDs
         return 200, {
             "message": "Active users successfully fetched",
             "user_ids": user_ids,
             "status": 200
         }
-
-    # If no active users are found
     return 400, {
         "error": "Oops, no active users at the moment, kindly check back later",
         "status": 400
