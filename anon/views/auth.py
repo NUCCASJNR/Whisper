@@ -12,65 +12,6 @@ from anon.serializers.auth import LoginSerializer, MainUser, SignUpSerializer
 from anon.utils.task import generate_key_async
 
 
-class SignUpView(views.APIView):
-    """
-    User Signup View
-    """
-
-    def post(self, request):
-        """
-        Handle user signup
-        """
-        serializer = SignUpSerializer(data=request.data)
-        if serializer.is_valid():
-            username = serializer.validated_data.get("username")
-            i
-            serializer.save()
-            return Response({"status": "User created successfully"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LoginView(views.APIView):
-    """
-    View for logging in a user
-    """
-
-    serializer_class = LoginSerializer
-
-    def post(self, request, *args, **kwargs):
-        """
-        Post request Handler
-        :param request: Request obj
-        :param args: Args
-        :param kwargs: Keyword Args
-        :return: 200 or 400
-        """
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            print(serializer.initial_data)
-            username = serializer.validated_data["username"]
-            password = serializer.validated_data["password"]
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                refresh = RefreshToken.for_user(user)
-                return Response(
-                    {
-                        "message": "You have successfully logged in",
-                        "access_token": str(refresh.access_token),
-                        "status": status.HTTP_200_OK,
-                    }
-                )
-            return Response(
-                {
-                    "error": "Invalid username or password",
-                    "status": status.HTTP_400_BAD_REQUEST,
-                }
-            )
-        return Response(
-            {"error": serializer.errors, "status": status.HTTP_400_BAD_REQUEST}
-        )
-
 
 class LogoutView(views.APIView):
     """

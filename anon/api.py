@@ -60,3 +60,32 @@ def signup(request, payload: UserCreateSchema):
     return 201, {"message": "Registration successful!",
                  "status": 201
                  }
+
+
+@api.post('/auth/login/',
+          response={
+              200: LoginResponseSchema,
+              400: ErrorSchema
+          })
+def user_login(request, payload: LoginSchema):
+    """
+    API view for logging in user
+    :param request: Request object
+    :param payload: LoginSchema
+    :return: 200 if successful else 400
+    """
+    username = payload.username
+    password = payload.password
+    auth_user = authenticate(request, username=username, password=password)
+    if auth_user is not None:
+        login(request, auth_user)
+        refresh = RefreshToken.for_user(auth_user)
+        return 200, {
+            "message": "Login Successful!",
+            "access_token": str(refresh.access_token),
+            "status": 200
+        }
+    return 400, {
+        "error": "Invalid username or password",
+        "status": 400
+    }

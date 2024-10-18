@@ -20,15 +20,13 @@ from django.urls import include, path
 # from anon.views.message import MessageView, ReceiveMessageView
 from rest_framework import routers
 
-from anon.views.auth import LoginView, LogoutView, SignUpView, FindUserView
+from anon.views.auth import LogoutView, FindUserView
 from anon.views.profile import ListUsersReadyToChat, ProfileView, ReadyToChatView
 from anon.api import api
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("auth/signup/", SignUpView.as_view()),
-    path("auth/login/", LoginView.as_view()),
     path("auth/logout", LogoutView.as_view()),
     path("profile/", ProfileView.as_view()),
     path("ready-to-chat/", ReadyToChatView.as_view()),
