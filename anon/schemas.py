@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Contains user related schemas definition"""
-from typing import Optional
+from typing import List
 from ninja import Schema
 from pydantic import BaseModel, EmailStr, root_validator, model_validator
 
@@ -47,3 +47,10 @@ class LoginResponseSchema(Schema):
     message: str
     status: int
     access_token: str
+
+
+class ActiveUsersSchema(Schema):
+    """Active users schema"""
+    message: str
+    status: int
+    user_ids: List
