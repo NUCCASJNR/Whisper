@@ -18,6 +18,7 @@ from .schemas import (
     LoginSchema,
     LoginResponseSchema,
     MessageSchema,
+    PermissionSchema,
     StatusSchema,
     UserCreateSchema
 )
@@ -83,9 +84,11 @@ def user_login(request, payload: LoginSchema):
     if auth_user is not None:
         login(request, auth_user)
         refresh = RefreshToken.for_user(auth_user)
+        logger.info(f'token: {refresh}')
         return 200, {
             "message": "Login Successful!",
             "access_token": str(refresh.access_token),
+            "refresh_token": str(refresh),
             "status": 200
         }
     return 400, {
@@ -160,3 +163,26 @@ def set_status(request, payload: StatusSchema):
             'error': 'An error occurred while updating the status. Please try again later.',
             'status': 400
         }
+
+
+@api.post('/auth/logout/',
+          auth=JWTAuth(),
+          response={
+              200: MessageSchema,
+              400: ErrorSchema,
+              403: PermissionSchema
+          })
+def logout_user(request):
+    if not request.user.is_authenticated:
+        return 403, {
+            'error': 'This is an authenticated route'
+        }
+    rtoken = request.headers.get("Authorization")
+    refresh_token = rtoken.split(" ")[1]
+    logger.info(f"Refresh token: {refresh_token}")
+    token = RefreshToken(refresh_token)
+    token.blacklist()
+    return 200, {
+        'message': "Logout Successful",
+        'status': 200
+    }

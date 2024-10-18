@@ -47,6 +47,7 @@ class LoginResponseSchema(Schema):
     message: str
     status: int
     access_token: str
+    refresh_token: str
 
 
 class ActiveUsersSchema(Schema):
@@ -59,3 +60,8 @@ class ActiveUsersSchema(Schema):
 class StatusSchema(Schema):
     """SChema for setting user status"""
     option: bool
+
+
+class PermissionSchema(Schema):
+    status: int
+    error: str
