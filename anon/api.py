@@ -14,11 +14,12 @@ from anon.dependencies import JWTAuth
 from .models import MainUser
 from .schemas import (
     ActiveUsersSchema,
-    MessageSchema,
-    UserCreateSchema,
     ErrorSchema,
     LoginSchema,
-    LoginResponseSchema
+    LoginResponseSchema,
+    MessageSchema,
+    StatusSchema,
+    UserCreateSchema
 )
 
 logger = logging.getLogger("apps")
@@ -103,24 +104,66 @@ def list_active_users(request):
     """
     API View for listing active users
     """
-    users = MainUser.objects.filter(**{"ready_to_chat": True})
-    logger.info(f'users: {users}')
-    if users:
+    # Get users who are ready to chat
+    users = MainUser.objects.filter(ready_to_chat=True)
+    logger.info(f'Active users fetched: {users}')
+
+    # Check if there are any active users
+    if users.exists():
         exclude_user_id = str(request.user.id)
         user_ids = [
             str(user.id) for user in users if str(user.id) != exclude_user_id
         ]
-        print(f'User Id: {user_ids}')
-        u_list = []
-        for user_id in user_ids:
-            u_list.extend(user_id)
-        print(f'User Id: {u_list}')
+
+        logger.info(f'User IDs: {user_ids}')
+
+        # Return the list of active user IDs
         return 200, {
-            "message": "Active users Successfully Fetched",
+            "message": "Active users successfully fetched",
             "user_ids": user_ids,
             "status": 200
         }
+
+    # If no active users are found
     return 400, {
-        "error": "Oops, No active users at the moment, Kindly check back later",
+        "error": "Oops, no active users at the moment, kindly check back later",
         "status": 400
     }
+
+
+@api.post('/status/',
+          auth=JWTAuth(),
+          response={
+              200: MessageSchema,
+              400: ErrorSchema
+          })
+def set_status(request, payload: StatusSchema):
+    """
+    API request for setting user ready_to_chat status
+    """
+    user = request.user
+    option = payload.option
+
+    try:
+        updated = MainUser.custom_update(
+            filter_kwargs={'username': user.username},
+            update_kwargs={'ready_to_chat': option}
+        )
+
+        if updated:
+            return 200, {
+                'message': 'Ready to Chat status successfully updated',
+                'status': 200
+            }
+        else:
+            return 400, {
+                'error': 'Failed to update Ready to Chat status. User not found.',
+                'status': 400
+            }
+
+    except Exception as e:
+        logger.error(f'Error updating Ready to Chat status for user {user.username}: {e}')
+        return 400, {
+            'error': 'An error occurred while updating the status. Please try again later.',
+            'status': 400
+        }

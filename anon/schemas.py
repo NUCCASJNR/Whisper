@@ -54,3 +54,8 @@ class ActiveUsersSchema(Schema):
     message: str
     status: int
     user_ids: List
+
+
+class StatusSchema(Schema):
+    """SChema for setting user status"""
+    option: bool
