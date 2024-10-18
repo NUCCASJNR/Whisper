@@ -12,35 +12,22 @@ from anon.serializers.auth import LoginSerializer, MainUser, SignUpSerializer
 from anon.utils.task import generate_key_async
 
 
-class SignUpViewSet(viewsets.ModelViewSet):
+class SignUpView(views.APIView):
     """
-    This view handles user signup
+    User Signup View
     """
 
-    serializer_class = SignUpSerializer
-
-    def create(self, request, *args, **kwargs):
+    def post(self, request):
         """
-        Creates a new user
-        :param request: Request arg
-        :param args: ARgs e.g serializer validated datas
-        :param kwargs: Keyword Args
-        :return: 201 or 400
+        Handle user signup
         """
-        serializer = self.serializer_class(data=request.data)
+        serializer = SignUpSerializer(data=request.data)
         if serializer.is_valid():
-            user = MainUser.custom_save(**serializer.validated_data)
-            generate_key_async(user.id)
-            return Response(
-                {
-                    "message": "Signup successful, You can now login",
-                    "id": user.id,
-                    "status": status.HTTP_201_CREATED,
-                }
-            )
-        return Response(
-            {"error": serializer.errors, "status": status.HTTP_400_BAD_REQUEST}
-        )
+            username = serializer.validated_data.get("username")
+            i
+            serializer.save()
+            return Response({"status": "User created successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(views.APIView):

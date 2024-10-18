@@ -16,6 +16,24 @@ class SignUpSerializer(serializers.ModelSerializer):
         model = MainUser
         fields = ("username", "password", "id")
 
+    def validate_username(self, value):
+        """
+        Check if the username exists
+        """
+        if MainUser.find_obj_by(**{"username": value}):
+            raise serializers.ValidationError("username Exists")
+        return value
+
+    def create(self, validated_data):
+        """
+        Create a new user with the provided validated data.
+        """
+        user = MainUser.custom_save(
+            username=validated_data["username"],
+            password=validated_data["password"]
+        )
+        return user
+
 
 class LoginSerializer(serializers.ModelSerializer):
     """Serializer for handling user login"""

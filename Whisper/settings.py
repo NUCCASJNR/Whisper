@@ -52,12 +52,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 'authtoken',
-    "corsheaders",
-    "anon",
+    # installed apps
     "rest_framework",
-    "rest_framework_simplejwt",
+    "rest_framework.authtoken",
+    "corsheaders",
     "drf_yasg",
+    "phonenumber_field",
+    # django apps
+    "anon",
+    "ninja",
+    "django_celery_beat"
 ]
 
 MIDDLEWARE = [
