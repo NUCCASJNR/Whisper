@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts';
 import { useNavigate } from 'react-router-dom';
-import SignUpForm from '../components/Auth/SignUpForm';
+import { SignUpForm } from '../components';
 
 const SignupPage: FC = () => {
   const { signup } = useAuth();

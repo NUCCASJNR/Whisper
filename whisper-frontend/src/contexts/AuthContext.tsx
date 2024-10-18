@@ -3,7 +3,7 @@ import {
   AuthContextType,
   AuthProviderProps,
   User,
-} from '../interfaces/AuthInterfaces';
+} from '../interfaces';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -48,3 +48,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+

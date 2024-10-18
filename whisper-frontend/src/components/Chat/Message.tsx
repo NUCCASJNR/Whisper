@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MessageProps } from '../../interfaces/ChatInterfaces';
+import { MessageProps } from '../../interfaces';
 
 const Message: FC<MessageProps> = ({ message }) => {
   return (

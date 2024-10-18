@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { ModalProps } from '../../interfaces/AuthInterfaces';
+import { ModalProps } from '../../interfaces';
 
 const Modal: FC<ModalProps> = ({ onClose, onSubmit }) => {
   const [newPassword, setNewPassword] = useState('');

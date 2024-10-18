@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../components/Logo';
-import { HeaderLinkPropType } from '../interfaces/LayoutInterfaces';
+import {Logo} from '../components';
+import { HeaderLinkPropType } from '../interfaces';
 
 const HeaderLink: FC<HeaderLinkPropType> = ({ to, text }) => {
   return (

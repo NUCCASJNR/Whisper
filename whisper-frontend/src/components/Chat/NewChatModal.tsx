@@ -1,7 +1,7 @@
 import { useState, FC, FormEvent } from 'react';
-import { useChat } from '../../contexts/ChatContext';
+import { useChat } from '../../contexts';
 import { useNavigate } from 'react-router-dom';
-import { NewChatModalProps } from '../../interfaces/ChatInterfaces';
+import { NewChatModalProps } from '../../interfaces';
 
 const NewChatModal: FC<NewChatModalProps> = ({ closeModal }) => {
   const [chatName, setChatName] = useState('');

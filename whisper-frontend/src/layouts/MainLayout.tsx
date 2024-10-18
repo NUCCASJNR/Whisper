@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { MainLayoutProps } from '../interfaces/LayoutInterfaces';
+import { MainLayoutProps } from '../interfaces';
 // import Footer from './Footer';
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {

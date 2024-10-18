@@ -1,5 +1,5 @@
 import { useState, FC, FormEvent } from 'react';
-import { SignupFormProps } from '../../interfaces/AuthInterfaces';
+import { SignupFormProps } from '../../interfaces';
 
 const SignUpForm: FC<SignupFormProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>('');

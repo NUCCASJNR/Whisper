@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { MdChat } from 'react-icons/md'; // Importing chat icon
 import { FaUser } from 'react-icons/fa'; // Importing user icon
 import { MdDashboard, MdClose } from 'react-icons/md';
-import Logo from '../components/Logo';
-import { SidebarLinkPropType } from '../interfaces/LayoutInterfaces';
+import { Logo } from '../components';
+import { SidebarLinkPropType } from '../interfaces';
 
 const SidebarLink: FC<SidebarLinkPropType> = ({ to, text, isActive, Icon }) => {
   return (

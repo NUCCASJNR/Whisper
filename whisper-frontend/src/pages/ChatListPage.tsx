@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useChat } from '../contexts/ChatContext';
-import NewChatModal from '../components/Chat/NewChatModal';
-import { Chat } from '../interfaces/ChatInterfaces';
+import { useChat } from '../contexts';
+import {NewChatModal} from '../components';
+import { Chat } from '../interfaces';
 
 const ChatListItem: FC<{ chat: Chat }> = ({ chat }) => {
   const navigate = useNavigate();

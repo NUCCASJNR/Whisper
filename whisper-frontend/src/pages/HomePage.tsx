@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-const Homepage: FC = () => {
+const HomePage: FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-center">
       <h1 className="text-5xl font-bold mb-6">Welcome to Whisper</h1>
@@ -28,4 +28,4 @@ const Homepage: FC = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;

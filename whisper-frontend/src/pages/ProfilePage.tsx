@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../components/Auth/ChangePasswordModal'; // We'll create this Modal component later.
+import { ChangePasswordModal } from '../components'; // We'll create this Modal component later.
 
 const ProfilePage: FC = () => {
   const { logout, user, updateUserStatus } = useAuth(); // Add updateUserStatus for "Ready to Chat"
@@ -68,7 +68,7 @@ const ProfilePage: FC = () => {
 
         {/* Modal for Password Change */}
         {isModalOpen && (
-          <Modal
+          <ChangePasswordModal
             onClose={() => setIsModalOpen(false)}
             onSubmit={handlePasswordChange}
           />

@@ -1,8 +1,7 @@
 import { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useChat } from '../contexts/ChatContext';
-import ChatBox from '../components/Chat/ChatBox';
-import Message from '../components/Chat/Message';
+import { useChat } from '../contexts/';
+import { ChatBox, Message } from '../components';
 
 const ChatPage: FC = () => {
   const { chatId } = useParams<{ chatId: string }>();

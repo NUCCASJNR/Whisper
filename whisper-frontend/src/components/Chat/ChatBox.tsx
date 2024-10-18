@@ -1,5 +1,5 @@
 import { useState, FC } from 'react';
-import { ChatBoxProps } from '../../interfaces/ChatInterfaces';
+import { ChatBoxProps } from '../../interfaces';
 
 const ChatBox: FC<ChatBoxProps> = ({ onSendMessage }) => {
   const [message, setMessage] = useState<string>('');
