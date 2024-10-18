@@ -13,5 +13,12 @@ export interface SidebarLinkPropType {
 }
 
 export interface MainLayoutProps {
+  firstChild: ReactNode;
+  secondChild: ReactNode;
+  firstChildHeader: ReactNode;
+  secondChildHeader: ReactNode;
+}
+
+export interface LayoutProps {
   children: ReactNode;
 }

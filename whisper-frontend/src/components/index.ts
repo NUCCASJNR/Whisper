@@ -7,3 +7,4 @@ export { default as Message } from './Chat/Message';
 export { default as NewChatModal } from './Chat/NewChatModal';
 
 export { default as Logo } from './Logo';
+export { default as ChatDetails } from './Chat/ChatDetails';

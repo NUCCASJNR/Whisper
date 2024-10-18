@@ -1,19 +1,24 @@
 import { FC } from 'react';
 import Header from './Header';
-import Sidebar from './Sidebar';
 import { MainLayoutProps } from '../interfaces';
-// import Footer from './Footer';
 
-const MainLayout: FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: FC<MainLayoutProps> = ({
+  firstChild,
+  firstChildHeader,
+  secondChild,
+  secondChildHeader,
+}) => {
   return (
-    <div className="flex h-fit">
-      <Sidebar />
-      <div className="flex flex-col flex-grow">
-        <Header />
-        <main className="flex-grow p-4 bg-gray-100">{children}</main>
+    <main className="h-full border-secondary border-r-2 flex overflow-hidden">
+      <div className="w-[40%] bg-background border-secondary border-r-2">
+        <div className="border-secondary border-b-2">{firstChildHeader}</div>
+        {firstChild}
       </div>
-      {/* <Footer /> */}
-    </div>
+      <div className="flex-grow  border-secondary border-r-2">
+        <div className="border-secondary border-b-2">{secondChildHeader}</div>
+        {secondChild}
+      </div>
+    </main>
   );
 };
 

@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import {Logo} from '../components';
+import { Logo } from '../components';
 import { HeaderLinkPropType } from '../interfaces';
 
 const HeaderLink: FC<HeaderLinkPropType> = ({ to, text }) => {
@@ -11,18 +11,10 @@ const HeaderLink: FC<HeaderLinkPropType> = ({ to, text }) => {
   );
 };
 
-const Header: FC = () => {
+const Header: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <header className="bg-primary text-white p-4">
-      <div className="flex justify-between items-center">
-        <div className="md:opacity-0">
-          <Logo />
-        </div>
-        <nav className="flex gap-4">
-          <HeaderLink to="/login" text="Login" />
-          <HeaderLink to="/signup" text="Signup" />
-        </nav>
-      </div>
+    <header className="bg-background m-0 text-text text-xl p-8 flex items-center">
+      {children}
     </header>
   );
 };

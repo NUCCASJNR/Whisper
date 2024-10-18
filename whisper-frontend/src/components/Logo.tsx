@@ -15,10 +15,7 @@ const Logo: FC = () => {
   };
 
   return (
-    <h1
-      className="text-xl font-bold cursor-pointer"
-      onClick={handleWhisperClick}
-    >
+    <h1 className="font-bold cursor-pointer" onClick={handleWhisperClick}>
       Whisper
     </h1>
   );

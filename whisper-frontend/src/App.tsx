@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
-  ChatPage,
   ChatListPage,
   HomePage,
   ProfilePage,
@@ -10,7 +9,7 @@ import {
   ActiveUsersPage,
   NotFoundPage,
 } from './pages';
-import { MainLayout } from './layouts';
+import { Layout } from './layouts';
 
 import { AuthProvider, ChatProvider } from './contexts';
 
@@ -19,11 +18,12 @@ const App: FC = () => {
     <AuthProvider>
       <ChatProvider>
         <Router>
-          <MainLayout>
+          <Layout>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              {/* <Route path="/chats" element={<ChatListPage />} /> */}
+              <Route path="/chats/:chatId" element={<ChatListPage />} />
               <Route path="/chats" element={<ChatListPage />} />
-              <Route path="/chats/:chatId" element={<ChatPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/profile" element={<ProfilePage />} />
@@ -31,7 +31,7 @@ const App: FC = () => {
 
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
-          </MainLayout>
+          </Layout>
         </Router>
       </ChatProvider>
     </AuthProvider>
