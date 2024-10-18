@@ -103,7 +103,8 @@ def list_active_users(request):
     """
     API View for listing active users
     """
-    users = MainUser.find_objs_by(**{"ready_to_chat": True})
+    users = MainUser.objects.filter(**{"ready_to_chat": True})
+    logger.info(f'users: {users}')
     if users:
         exclude_user_id = str(request.user.id)
         user_ids = [
@@ -120,7 +121,6 @@ def list_active_users(request):
             "status": 200
         }
     return 400, {
-        "error": "Oops, No active users at the moment,\
-            Kindly check back later",
+        "error": "Oops, No active users at the moment, Kindly check back later",
         "status": 400
     }
