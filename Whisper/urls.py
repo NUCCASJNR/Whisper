@@ -27,7 +27,7 @@ from anon.api import api
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("auth/signup/", SignUpView.as_view()),
+    # path("auth/signup/", SignUpView.as_view()),
     path("auth/login/", LoginView.as_view()),
     path("auth/logout", LogoutView.as_view()),
     path("profile/", ProfileView.as_view()),

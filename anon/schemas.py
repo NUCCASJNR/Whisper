@@ -16,11 +16,10 @@ class UserCreateSchema(Schema):
 
     username: str
     password: str
-    email: str
 
 
 class LoginSchema(BaseModel):
-    email: str
+    username: str
     password: str
 
     @model_validator(mode='before')

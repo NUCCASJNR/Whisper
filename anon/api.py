@@ -33,3 +33,30 @@ def home(request):
         'message': 'Welcome here, doc here: https://documenter.getpostman.com/view/28289943/2sA3rzLYfH',
         'status': 200
     }
+
+
+@api.post("/auth/signup/",
+          response={
+              201: MessageSchema,
+              400: ErrorSchema
+          })
+def signup(request, payload: UserCreateSchema):
+    """View for registering a new user
+
+    :param request: Request object
+    :param payload: User payload
+    :param payload: UserCreateSchema:
+    :returns: 201 or 400
+
+    """
+    username: str = payload.username
+    if MainUser.custom_get(username=username):
+        return 400, {
+            "error": "Username already exists",
+            "status": 400
+        }
+    payload_data = payload.dict()
+    MainUser.custom_save(**payload_data)
+    return 201, {"message": "Registration successful!",
+                 "status": 201
+                 }
