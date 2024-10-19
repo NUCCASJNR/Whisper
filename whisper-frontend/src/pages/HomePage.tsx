@@ -23,12 +23,16 @@ const HomePage: FC = () => {
             From strangers to freinds. Made for meeting new people.
           </p>
           <div className="space-x-4">
-            <button className="bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-50 transition duration-300">
-              Sign up
-            </button>
-            <button className="bg-transparent border border-primary text-white py-2 px-6 rounded-md hover:bg-primary transition duration-300">
-              Login
-            </button>
+            <Link to="/signup">
+              <button className="bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-50 transition duration-300">
+                Sign up
+              </button>
+            </Link>
+            <Link to="/login">
+              <button className="bg-transparent border border-primary text-gray-400 py-2 px-6 rounded-md hover:bg-primary transition duration-300">
+                Login
+              </button>
+            </Link>
           </div>
         </div>
 

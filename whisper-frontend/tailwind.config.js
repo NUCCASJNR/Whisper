@@ -4,11 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#e22661', // Dark Blue
-        secondary: '#5732f3', // Purple
-        accent: '#6e2246', // Yellow
-        background: '#1f0437', // Light Gray
-        text: '#d9d0c7', // Dark Gray
+        primary: '#0147FF', // Dark Blue
+        secondary: '#F8F8F8', // Purple
+        accent: '#25CB6B', // Yellow
+        background: '#F6F8FC', // Light Gray
+        text: '#181616', // Dark Gray
       },
     },
   },

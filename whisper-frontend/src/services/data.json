@@ -280,5 +280,57 @@
         { "content": "Thanks! You too.", "sender": "other" }
       ]
     }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "AliceWonder",
+      "avatar": "https://randomuser.me/api/portraits/women/1.jpg"
+    },
+    {
+      "id": "2",
+      "username": "BobBuilder",
+      "avatar": "https://randomuser.me/api/portraits/men/2.jpg"
+    },
+    {
+      "id": "3",
+      "username": "CharlieAlpha",
+      "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
+    },
+    {
+      "id": "4",
+      "username": "DianaQueen",
+      "avatar": "https://randomuser.me/api/portraits/women/4.jpg"
+    },
+    {
+      "id": "5",
+      "username": "EdwardKing",
+      "avatar": "https://randomuser.me/api/portraits/men/5.jpg"
+    },
+    {
+      "id": "6",
+      "username": "FionaPrincess",
+      "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
+    },
+    {
+      "id": "7",
+      "username": "GeorgeExplorer",
+      "avatar": "https://randomuser.me/api/portraits/men/7.jpg"
+    },
+    {
+      "id": "8",
+      "username": "HannahScribe",
+      "avatar": "https://randomuser.me/api/portraits/women/8.jpg"
+    },
+    {
+      "id": "9",
+      "username": "IvanTheBrave",
+      "avatar": "https://randomuser.me/api/portraits/men/9.jpg"
+    },
+    {
+      "id": "10",
+      "username": "JessicaStorm",
+      "avatar": "https://randomuser.me/api/portraits/women/10.jpg"
+    }
   ]
 }

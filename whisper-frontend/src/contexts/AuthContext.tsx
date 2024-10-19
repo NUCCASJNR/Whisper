@@ -1,9 +1,5 @@
 import { createContext, useState, useContext, FC } from 'react';
-import {
-  AuthContextType,
-  AuthProviderProps,
-  User,
-} from '../interfaces';
+import { AuthContextType, AuthProviderProps, User } from '../interfaces';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -12,6 +8,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const login = (username: string, password: string) => {
     // setUserKeys({ publicKey, privateKey });
+    console.log(username, password);
     setUser({
       username,
       publicKey: 'e9hoin2o308hfo3209hndo9e',
@@ -23,6 +20,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const signup = (username: string, password: string) => {
     //make call to api
+    console.log(username, password);
   };
 
   const logout = () => {
@@ -48,5 +46,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
-
