@@ -6,16 +6,19 @@ from typing import Optional
 from django.contrib.auth import authenticate, login, logout
 from django.core.cache import cache
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from anon.models.token import BlacklistedToken
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
 from anon.dependencies import JWTAuth
+from anon.auth import CustomJWTAuth
+
 
 from .models import MainUser
 from .schemas import (
     ActiveUsersSchema,
     ErrorSchema,
     LoginSchema,
+    LogoutSchema,
     LoginResponseSchema,
     MessageSchema,
     PermissionSchema,
@@ -98,7 +101,7 @@ def user_login(request, payload: LoginSchema):
 
 
 @api.get('/active-users/',
-         auth=JWTAuth(),
+         auth=CustomJWTAuth(),
          response={
              200: ActiveUsersSchema,
              400: ErrorSchema
@@ -128,7 +131,7 @@ def list_active_users(request):
 
 
 @api.post('/status/',
-          auth=JWTAuth(),
+          auth=CustomJWTAuth(),
           response={
               200: MessageSchema,
               400: ErrorSchema
@@ -166,23 +169,36 @@ def set_status(request, payload: StatusSchema):
 
 
 @api.post('/auth/logout/',
-          auth=JWTAuth(),
+          auth=CustomJWTAuth(),
           response={
               200: MessageSchema,
               400: ErrorSchema,
-              403: PermissionSchema
+              403: PermissionSchema,
+              500: ErrorSchema
           })
-def logout_user(request):
-    if not request.user.is_authenticated:
-        return 403, {
-            'error': 'This is an authenticated route'
+def logout_user(request, payload: LogoutSchema):
+    refresh_token = payload.refresh_token
+    access_token = request.headers.get("Authorization")
+    if access_token and access_token.startswith("Bearer "):
+        access_token = access_token.split("Bearer ")[1]
+    else:
+        access_token = None
+
+    if not refresh_token:
+        return 400, {
+            "error": "Refresh token is required.",
+            "status": 400
         }
-    rtoken = request.headers.get("Authorization")
-    refresh_token = rtoken.split(" ")[1]
-    logger.info(f"Refresh token: {refresh_token}")
-    token = RefreshToken(refresh_token)
-    token.blacklist()
-    return 200, {
-        'message': "Logout Successful",
-        'status': 200
-    }
+    try:
+        token = RefreshToken(refresh_token)
+        BlacklistedToken.objects.create(refresh_token=str(token), access_token=str(access_token))
+        return 200, {
+            "message": "Logged out successfully.",
+            "status": 200
+        }
+
+    except Exception as e:
+        return 500, {
+            "error": str(e),
+            "status": 500
+        }

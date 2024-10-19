@@ -65,3 +65,7 @@ class StatusSchema(Schema):
 class PermissionSchema(Schema):
     status: int
     error: str
+
+
+class LogoutSchema(Schema):
+    refresh_token: str

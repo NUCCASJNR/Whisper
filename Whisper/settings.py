@@ -119,7 +119,10 @@ db_dict: Dict = {
         "PORT": os.getenv("PR_PORT"),
     },
 }
-AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'anon.backends.CustomJWTAuthentication'
+]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
