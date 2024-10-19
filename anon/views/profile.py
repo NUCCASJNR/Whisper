@@ -3,6 +3,7 @@
 """Contains view for displaying users profile"""
 
 from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,7 +11,6 @@ from rest_framework.views import APIView
 from anon.models.key import PublicKeyDirectory
 from anon.serializers.profile import MainUser, ObjectDoesNotExist, ProfileSerializer
 from anon.utils.key import hash_pin
-from rest_framework.exceptions import PermissionDenied
 
 
 class ProfileView(APIView):
@@ -30,9 +30,7 @@ class ProfileView(APIView):
             raise PermissionDenied("You are only allowed to view your own profile.")
         serializer = self.serializer_class(request.user)
         print(serializer)
-        return Response({
-            'data': serializer.data,
-            "status": status.HTTP_200_OK})
+        return Response({"data": serializer.data, "status": status.HTTP_200_OK})
 
 
 class ReadyToChatView(APIView):
@@ -65,6 +63,7 @@ class CreatePinView(APIView):
     """
     View for creating pin for a user
     """
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):

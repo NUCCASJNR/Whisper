@@ -14,8 +14,7 @@ import logging.config
 import os
 from datetime import timedelta
 from pathlib import Path
-from typing import Dict
-from typing import Union
+from typing import Dict, Union
 
 from django.utils.log import DEFAULT_LOGGING
 from dotenv import load_dotenv
@@ -61,7 +60,7 @@ INSTALLED_APPS = [
     # django apps
     "anon",
     "ninja",
-    "django_celery_beat"
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -120,8 +119,8 @@ db_dict: Dict = {
     },
 }
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'anon.backends.CustomJWTAuthentication'
+    "django.contrib.auth.backends.ModelBackend",
+    "anon.backends.CustomJWTAuthentication",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [

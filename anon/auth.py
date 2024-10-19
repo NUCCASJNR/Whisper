@@ -1,8 +1,10 @@
-from ninja.security import HttpBearer
-from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from anon.models.token import BlacklistedToken
 import json
+
+from ninja.security import HttpBearer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.exceptions import InvalidToken
+
+from anon.models.token import BlacklistedToken
 
 
 class CustomJWTAuth(HttpBearer):
@@ -13,11 +15,11 @@ class CustomJWTAuth(HttpBearer):
                 access_token = access_token.split("Bearer ")[1]
             else:
                 access_token = None
-            print(f'Request: {request.method}')
-            if request.method == 'POST':
+            print(f"Request: {request.method}")
+            if request.method == "POST":
                 try:
                     body = json.loads(request.body)
-                    refresh_token = body.get('refresh_token')
+                    refresh_token = body.get("refresh_token")
                 except (json.JSONDecodeError, TypeError):
                     refresh_token = None
             else:
@@ -26,8 +28,12 @@ class CustomJWTAuth(HttpBearer):
                     refresh_token = refresh_token.split("Bearer ")[1]
                 else:
                     refresh_token = None
-            access_found = BlacklistedToken.objects.filter(access_token=access_token).exists()
-            refresh_found = BlacklistedToken.objects.filter(refresh_token=refresh_token).exists()
+            access_found = BlacklistedToken.objects.filter(
+                access_token=access_token
+            ).exists()
+            refresh_found = BlacklistedToken.objects.filter(
+                refresh_token=refresh_token
+            ).exists()
 
             if access_found or refresh_found:
                 return None

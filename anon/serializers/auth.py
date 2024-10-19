@@ -29,8 +29,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         Create a new user with the provided validated data.
         """
         user = MainUser.custom_save(
-            username=validated_data["username"],
-            password=validated_data["password"]
+            username=validated_data["username"], password=validated_data["password"]
         )
         return user
 

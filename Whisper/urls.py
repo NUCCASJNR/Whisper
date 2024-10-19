@@ -17,16 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from anon.views.auth import LogoutView, FindUserView
-from anon.views.profile import ProfileView, ReadyToChatView
 from anon.api import api
-
+from anon.views.auth import FindUserView, LogoutView
+from anon.views.profile import ProfileView, ReadyToChatView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/logout", LogoutView.as_view()),
     path("profile/", ProfileView.as_view()),
     path("ready-to-chat/", ReadyToChatView.as_view()),
-    path('find-user/', FindUserView.as_view()),
+    path("find-user/", FindUserView.as_view()),
     path("", include("anon.urls")),
 ]

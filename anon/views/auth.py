@@ -12,7 +12,6 @@ from anon.serializers.auth import LoginSerializer, MainUser, SignUpSerializer
 from anon.utils.task import generate_key_async
 
 
-
 class LogoutView(views.APIView):
     """
     View to lougout a user
@@ -52,21 +51,13 @@ class FindUserView(views.APIView):
     """
     View for finding a user
     """
+
     def post(self, request):
         try:
             user = MainUser.find_obj_by(**{"username": request.data.get("username")})
             if user:
-                return Response({
-                    "message": "User Found!!",
-                    "status": 200
-                })
+                return Response({"message": "User Found!!", "status": 200})
             else:
-                return Response({
-                    "error": "No such user",
-                    "status": 404
-                })
+                return Response({"error": "No such user", "status": 404})
         except ValueError:
-            return Response({
-                "error": "No such user",
-                "status": 404
-            })
+            return Response({"error": "No such user", "status": 404})
