@@ -17,7 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from anon.api import api
 from anon.views.auth import FindUserView, LogoutView
 from anon.views.profile import ProfileView, ReadyToChatView
 

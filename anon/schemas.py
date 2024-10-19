@@ -3,7 +3,7 @@
 from typing import List
 
 from ninja import Schema
-from pydantic import BaseModel, EmailStr, model_validator, root_validator
+from pydantic import BaseModel, model_validator
 
 
 class UserSchema(Schema):
