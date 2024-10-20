@@ -37,7 +37,7 @@ const ChatBox: FC<ChatBoxProps> = ({ onSendMessage }) => {
           <button
             key={index}
             onClick={action}
-            className="p-2 text-gray-400 hover:text-gray-600"
+            className="hidden md:block p-2 text-gray-400 hover:text-gray-600"
           >
             <Icon size={20} />
           </button>

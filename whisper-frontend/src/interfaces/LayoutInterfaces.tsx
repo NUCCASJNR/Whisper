@@ -17,6 +17,8 @@ export interface DoubleLayoutProps {
   secondChild: ReactNode;
   firstChildHeader: ReactNode;
   secondChildHeader: ReactNode;
+  showSecondChild: boolean;
+  // onBackToList: () => void;
 }
 
 export interface LayoutProps {

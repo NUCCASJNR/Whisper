@@ -1,45 +1,50 @@
 import { FC, useState } from 'react';
-// import { useNavigate, useParams } from 'react-router-dom';
-import { useUsers, useChat, /*useAuth*/ } from '../contexts';
+import { useUsers, useChat } from '../contexts';
 import { ActiveUser, Chat } from '../interfaces';
 import { ChatDetails, ScrollBar } from '../components';
 import { Header, DoubleLayout, MainLayout } from '../layouts';
+import { FiMessageCircle, FiArrowLeft } from 'react-icons/fi';
 
+// ActiveUserCard Component
 const ActiveUserCard: FC<{
   user: ActiveUser;
   onChat: (userId: string) => void;
 }> = ({ user, onChat }) => {
   return (
-    <div className="p-4 w-full bg-gray-200 rounded-lg shadow-md flex flex-col items-center">
-      <img
-        src={user.avatar}
-        alt={`${user.username}'s profile`}
-        className="w-16 h-16 rounded-full mb-2"
+    <div className="w-[11rem] bg-white rounded-lg border-secondary border-2 flex flex-col items-center transition">
+      {/* User Avatar */}
+      <div
+        className="w-full h-48 rounded-t-lg bg-cover bg-center"
+        style={{ backgroundImage: `url(${user.avatar})` }}
       />
-      <p className="text-base mb-2">{user.username}</p>
-      <button
-        className="bg-primary text-accent px-4 py-2 rounded"
-        onClick={() => onChat(user.id)}
-      >
-        Whisper
-      </button>
+      {/* Name and Bio */}
+      <div className="w-full px-2 mt-2">
+        <p className="text-base font-semibold text-text mb-1">
+          {user.username}
+        </p>
+        <button
+          className="w-full border-2 mb-2 border-secondary font-semibold text-primary text-base px-4 py-2 rounded flex items-center justify-center hover:bg-secondary  transition"
+          onClick={() => onChat(user.id)}
+        >
+          <FiMessageCircle className="mr-2" /> Whisper
+        </button>
+      </div>
     </div>
   );
 };
 
+// ActiveUsersList Component
 const ActiveUsersList: FC<{ onChat: (userId: string) => void }> = ({
   onChat,
 }) => {
-  const { users: activeUsers } = useUsers(); // Assuming useUsers provides a list of active users
+  const { users: activeUsers } = useUsers(); // useUsers provides a list of active users
 
   return (
     <div className="flex flex-col h-full">
       <ScrollBar>
-        <div className="flex flex-wrap justify-around gap-4">
+        <div className="flex flex-wrap gap-4">
           {activeUsers.map((user) => (
-            <div className="w-32">
-              <ActiveUserCard key={user.id} user={user} onChat={onChat} />
-            </div>
+            <ActiveUserCard key={user.id} user={user} onChat={onChat} />
           ))}
         </div>
       </ScrollBar>
@@ -47,26 +52,36 @@ const ActiveUsersList: FC<{ onChat: (userId: string) => void }> = ({
   );
 };
 
+// ActiveUsersPage Component
 const ActiveUsersPage: FC = () => {
-  // const { chatId } = useParams<{ chatId: string }>();
-  const { addChat /*getChatById*/ } = useChat();
-  // const { user } = useAuth();
+  const { addChat } = useChat();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [showSecondChild, setShowSecondChild] = useState(false); // track which child to show on mobile
 
-  const handleStartChat = () => {
-    const chat = addChat('new chat', []); // Create a new chat with the selected user
+  // Handle starting a new chat
+  const handleStartChat = (userId: string) => {
+    console.log(userId);
+    const chat = addChat('New Chat', []); // Add new chat
     setSelectedChat(chat);
+    setShowSecondChild(true); // Switch to second child on mobile
+  };
+
+  // Back to first child (list view) on mobile
+  const handleBackToList = () => {
+    setShowSecondChild(false);
   };
 
   return (
     <MainLayout>
       <DoubleLayout
+        // First Child (User List)
         firstChild={<ActiveUsersList onChat={handleStartChat} />}
         firstChildHeader={
           <Header>
-            <h2 className="text-lg font-bold">Active Users</h2>
+            <h2 className="text-xl text-primary font-bold">Active Users</h2>
           </Header>
         }
+        // Second Child (Chat Details)
         secondChild={
           selectedChat ? (
             <ChatDetails chat={selectedChat} />
@@ -78,11 +93,20 @@ const ActiveUsersPage: FC = () => {
         }
         secondChildHeader={
           <Header>
+            <button
+              onClick={handleBackToList}
+              className="sm:hidden text-gray-500 hover:text-gray-700"
+            >
+              <FiArrowLeft size={20} />
+            </button>
             <h2 className="text-lg font-bold">
               {selectedChat ? 'Chat' : 'No Active Chat'}
             </h2>
           </Header>
         }
+        // Mobile Responsiveness Logic
+        showSecondChild={showSecondChild}
+        onBackToList={handleBackToList}
       />
     </MainLayout>
   );

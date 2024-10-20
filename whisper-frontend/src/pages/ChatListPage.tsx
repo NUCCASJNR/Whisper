@@ -1,7 +1,6 @@
-import { FC /*useState*/ } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useChat } from '../contexts';
-import { Chat } from '../interfaces';
 import { ChatDetails, ScrollBar } from '../components';
 import { Header, DoubleLayout, MainLayout } from '../layouts';
 import avatarImg from '../assets/images/logo192.png';
@@ -11,20 +10,27 @@ import {
   FiCamera,
   FiPhone,
   FiMoreHorizontal,
+  FiArrowLeft,
 } from 'react-icons/fi';
+import { Chat } from '../interfaces';
 
-const ChatListItem: FC<{ chat: Chat }> = ({ chat }) => {
+// ChatListItem Component
+const ChatListItem: FC<{ chat: Chat; onChatClick: () => void }> = ({
+  chat,
+  onChatClick,
+}) => {
   const navigate = useNavigate();
   const handleChatClick = (chatId: string) => {
-    navigate(`/chats/${chatId}`); // Navigate to individual chat
+    navigate(`/chats/${chatId}`);
+    onChatClick(); // Trigger mobile view change
   };
+
   return (
     <div
       key={chat.id}
       className="p-4 w-full mb-2 rounded hover:bg-gray-300 cursor-pointer flex items-center"
       onClick={() => handleChatClick(chat.id)}
     >
-      {/* Avatar and online status */}
       <div className="relative">
         <img
           src={avatarImg}
@@ -35,8 +41,6 @@ const ChatListItem: FC<{ chat: Chat }> = ({ chat }) => {
           <span className="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"></span>
         )}
       </div>
-
-      {/* Chat details */}
       <div className="flex justify-between ml-4 flex-1">
         <div className="flex flex-col justify-center items-start">
           <span className="font-bold">{chat.name}</span>
@@ -55,7 +59,8 @@ const ChatListItem: FC<{ chat: Chat }> = ({ chat }) => {
   );
 };
 
-const ChatList: FC = () => {
+// ChatList Component
+const ChatList: FC<{ onChatClick: () => void }> = ({ onChatClick }) => {
   const { chats } = useChat(); // Assuming useChat provides a list of chats
 
   return (
@@ -63,7 +68,7 @@ const ChatList: FC = () => {
       <ScrollBar>
         <div className="flex flex-wrap gap-1 w-full">
           {chats.map((chat) => (
-            <ChatListItem key={chat.id} chat={chat} />
+            <ChatListItem key={chat.id} chat={chat} onChatClick={onChatClick} />
           ))}
         </div>
       </ScrollBar>
@@ -71,6 +76,7 @@ const ChatList: FC = () => {
   );
 };
 
+// ChatHeader Component
 const ChatHeader: FC = () => {
   return (
     <Header>
@@ -79,12 +85,9 @@ const ChatHeader: FC = () => {
           <h2 className="text-xl text-primary font-bold">Chats</h2>
         </div>
         <div className="text-md flex gap-2">
-          {/* Edit Icon */}
           <span className="rounded-full bg-background h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
             <FiEdit size={16} />
           </span>
-
-          {/* Search Icon */}
           <span className="rounded-full bg-background h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
             <FiSearch size={16} />
           </span>
@@ -94,26 +97,31 @@ const ChatHeader: FC = () => {
   );
 };
 
-const SecondChatHeader: FC = () => {
+// SecondChatHeader Component with Back button for mobile
+const SecondChatHeader: FC<{ onBackToList: () => void }> = ({
+  onBackToList,
+}) => {
   return (
     <Header>
-      <div className="flex justify-between w-full p-4">
-        {/* Left Section: Avatar, Name, and Text */}
+      <div className="flex justify-between w-full">
         <div className="flex items-center space-x-4">
-          {/* Avatar */}
+          {/* Back button for mobile */}
+          <button
+            onClick={onBackToList}
+            className="sm:hidden text-gray-500 hover:text-gray-700"
+          >
+            <FiArrowLeft size={20} />
+          </button>
           <img
-            src={avatarImg} // Replace with actual avatar source
+            src={avatarImg}
             alt="Avatar"
             className="rounded-full h-10 w-10"
           />
-          {/* Name and Text */}
           <div className="flex flex-col">
             <span className="font-bold text-lg">John Doe</span>
             <span className="text-sm text-accent">Last message</span>
           </div>
         </div>
-
-        {/* Right Section: Icons */}
         <div className="flex items-center space-x-4">
           <button className="text-gray-500 hover:text-gray-700">
             <FiCamera size={20} />
@@ -130,9 +138,19 @@ const SecondChatHeader: FC = () => {
   );
 };
 
+// ChatListPage Component with mobile responsiveness
 const ChatListPage: FC = () => {
   const { chatId } = useParams<{ chatId: string }>();
   const { getChatById } = useChat();
+  const [showSecondChild, setShowSecondChild] = useState(!!chatId);
+
+  const handleBackToList = () => {
+    setShowSecondChild(false); // Show chat list on mobile
+  };
+
+  const handleChatClick = () => {
+    setShowSecondChild(true); // Show chat details on mobile
+  };
 
   if (chatId) {
     const chat = getChatById(chatId);
@@ -140,25 +158,52 @@ const ChatListPage: FC = () => {
     return (
       <MainLayout>
         <DoubleLayout
-          firstChild={<ChatList />}
-          firstChildHeader={<ChatHeader />}
-          secondChild={chat ? <ChatDetails chat={chat} /> : null} // Conditional rendering to handle undefined chat
-          secondChildHeader={<SecondChatHeader />}
+          firstChild={
+            <div
+              className={`${
+                showSecondChild ? 'hidden sm:flex' : 'flex'
+              } h-full`}
+            >
+              <ChatList onChatClick={handleChatClick} />
+            </div>
+          }
+          firstChildHeader={
+            <div className={`${showSecondChild ? 'hidden sm:block' : 'block'}`}>
+              <ChatHeader />
+            </div>
+          }
+          secondChild={chat ? <ChatDetails chat={chat} /> : null}
+          secondChildHeader={
+            <SecondChatHeader onBackToList={handleBackToList} />
+          }
+          showSecondChild={showSecondChild}
         />
       </MainLayout>
     );
   }
+
   return (
     <MainLayout>
       <DoubleLayout
-        firstChild={<ChatList />}
-        firstChildHeader={<ChatHeader />}
-        secondChild={<div>No chat</div>} // This component should handle chat details
+        firstChild={
+          <div
+            className={`${showSecondChild ? 'hidden sm:flex' : 'flex'} h-full`}
+          >
+            <ChatList onChatClick={handleChatClick} />
+          </div>
+        }
+        firstChildHeader={
+          <div className={`${showSecondChild ? 'hidden sm:block' : 'block'}`}>
+            <ChatHeader />
+          </div>
+        }
+        secondChild={<div>No chat</div>}
         secondChildHeader={
           <Header>
             <h2 className="text-lg font-bold">No Chat</h2>
           </Header>
         }
+        showSecondChild={showSecondChild}
       />
     </MainLayout>
   );

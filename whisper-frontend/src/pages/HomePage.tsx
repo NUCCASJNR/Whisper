@@ -8,7 +8,7 @@ const HomePage: FC = () => {
   return (
     <div className="min-h-screen bg-background text-text flex flex-col justify-between">
       {/* Logo */}
-      <div className="p-6">
+      <div className="p-6 text-3xl">
         <Logo />
       </div>
 
@@ -29,7 +29,7 @@ const HomePage: FC = () => {
               </button>
             </Link>
             <Link to="/login">
-              <button className="bg-transparent border border-primary text-gray-400 py-2 px-6 rounded-md hover:bg-primary transition duration-300">
+              <button className="bg-transparent border border-primary text-text py-2 px-6 rounded-md hover:bg-primary transition duration-300">
                 Login
               </button>
             </Link>

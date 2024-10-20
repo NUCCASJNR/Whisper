@@ -7,3 +7,5 @@
 logs/
 anon/migrations
 djnago.log
+# Local Netlify folder
+.netlify

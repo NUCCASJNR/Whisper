@@ -1,33 +1,58 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Sidebar from './Sidebar';
 import { LayoutProps } from '../interfaces';
 import { useAuth } from '../contexts';
+import { FaBars } from 'react-icons/fa'; // icon for mobile sidebar toggle
+import { Logo } from '../components';
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const { user } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // manage sidebar open state
 
   return (
     <>
       {user ? (
-        <div className="flex h-screen overflow-y-visible bg-background">
-          <div className="w-64">
+        <div className="flex h-screen overflow-y-clip bg-background relative">
+          {/* Mobile Sidebar Toggle */}
+
+          {/* Overlay */}
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+              onClick={() => setIsSidebarOpen(false)} // Collapse sidebar when overlay is clicked
+            ></div>
+          )}
+
+          {/* Sidebar */}
+          <div
+            className={`fixed inset-0 z-20 w-64 transition-transform transform md:relative md:translate-x-0 ${
+              isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+          >
             <Sidebar />
           </div>
-          <div className="flex flex-col flex-grow">{children}</div>
+
+          {/* Main content */}
+          <div className="flex flex-col flex-grow z-0">
+            <div className="flex justify-between p-2 md:hidden">
+              <button
+                className=""
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              >
+                <FaBars />
+              </button>
+              <div className="text-xl">
+                <Logo />
+              </div>
+            </div>
+            {children}
+          </div>
         </div>
       ) : (
         <>{children}</>
       )}
     </>
   );
-  // return (
-  //   <div className="flex h-screen">
-  //     <div className="w-1/4">
-  //       <Sidebar />
-  //     </div>
-  //     <div className="flex flex-col ">{children}</div>
-  //   </div>
-  // );
 };
 
 export default Layout;

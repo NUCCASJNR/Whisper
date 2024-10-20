@@ -30,7 +30,7 @@ const ChatDetails: FC<{ chat: Chat }> = ({ chat }) => {
 
   return (
     <div className="h-full">
-      <div className="flex flex-col h-[450px]">
+      <div className="flex flex-col h-[450px] p-2">
         {/* Message container with scroll */}
         <ScrollBar>
           <div className="flex flex-col gap-2">
