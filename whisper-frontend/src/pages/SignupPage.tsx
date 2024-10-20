@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useAuth } from '../contexts';
 import { useNavigate } from 'react-router-dom';
-import { SignUpForm } from '../components';
+import { AppHeader, SignUpForm } from '../components';
 
 const SignupPage: FC = () => {
   const { signup } = useAuth();
@@ -13,7 +13,12 @@ const SignupPage: FC = () => {
     navigate('/login');
   };
 
-  return <SignUpForm onSubmit={handleSubmit} />;
+  return (
+    <div>
+      <AppHeader />
+      <SignUpForm onSubmit={handleSubmit} />;
+    </div>
+  );
 };
 
 export default SignupPage;

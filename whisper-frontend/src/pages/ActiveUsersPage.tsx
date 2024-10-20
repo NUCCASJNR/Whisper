@@ -106,7 +106,6 @@ const ActiveUsersPage: FC = () => {
         }
         // Mobile Responsiveness Logic
         showSecondChild={showSecondChild}
-        onBackToList={handleBackToList}
       />
     </MainLayout>
   );

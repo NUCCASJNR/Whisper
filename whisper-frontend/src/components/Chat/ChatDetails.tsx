@@ -29,8 +29,8 @@ const ChatDetails: FC<{ chat: Chat }> = ({ chat }) => {
   };
 
   return (
-    <div className="h-full">
-      <div className="flex flex-col h-[450px] p-2">
+    <div className="flex flex-col h-full">
+      <div className="flex flex-col p-4 h-[calc(100%-4rem)]">
         {/* Message container with scroll */}
         <ScrollBar>
           <div className="flex flex-col gap-2">
@@ -40,10 +40,9 @@ const ChatDetails: FC<{ chat: Chat }> = ({ chat }) => {
             <div ref={messagesEndRef} />
           </div>
         </ScrollBar>
-
-        {/* ChatBox always at the bottom */}
       </div>
-      <div className="flex items-center p-4 bg-white w-full">
+      {/* ChatBox always at the bottom */}
+      <div className="flex items-center p-4 bg-white h-16 w-full">
         <ChatBox onSendMessage={handleSendMessage} />
       </div>
     </div>

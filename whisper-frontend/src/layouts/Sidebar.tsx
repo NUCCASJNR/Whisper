@@ -56,9 +56,10 @@ const Sidebar: FC = () => {
           <SidebarLink
             to="/chats"
             text="Chats"
-            isActive={location.pathname === '/chats'}
+            isActive={location.pathname.startsWith('/chats')}
             Icon={MdChat}
           />
+
           <SidebarLink
             to="/active_users"
             text="Active Users"

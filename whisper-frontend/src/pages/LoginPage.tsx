@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import {LoginForm} from '../components';
+import { AppHeader, LoginForm } from '../components';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts';
 
@@ -11,7 +11,12 @@ const LoginPage: FC = () => {
     login(username, password);
     navigate('/chats');
   };
-  return <LoginForm onSubmit={handleSubmit} />;
+  return (
+    <div>
+      <AppHeader />
+      <LoginForm onSubmit={handleSubmit} />;
+    </div>
+  );
 };
 
 export default LoginPage;

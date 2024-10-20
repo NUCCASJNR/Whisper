@@ -34,7 +34,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
           {/* Main content */}
           <div className="flex flex-col flex-grow z-0">
-            <div className="flex justify-between p-2 md:hidden">
+            <div className="flex justify-between p-4 h-12 md:hidden">
               <button
                 className=""
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}

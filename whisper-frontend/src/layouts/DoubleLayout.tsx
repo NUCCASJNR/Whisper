@@ -10,7 +10,6 @@ const DoubleLayout: FC<DoubleLayoutProps> = ({
 }) => {
   return (
     <div className="flex max-h-screen">
-      {' '}
       {/* Use h-screen for full height */}
       <div
         className={`flex flex-col h-full md:w-[40%] border-transparent border-r-2 ${
@@ -18,13 +17,11 @@ const DoubleLayout: FC<DoubleLayoutProps> = ({
         } md:block`}
       >
         {/* Header for first child */}
-        <div className="h-16">
-          {' '}
+        <div className="">
           {/* Set a specific height for the header */}
           {firstChildHeader}
         </div>
-        <div className="flex-grow p-4 bg-white">
-          {' '}
+        <div className="flex-grow p-4 bg-white h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)]">
           {/* Use flex-grow to fill remaining space */}
           {firstChild}
         </div>
@@ -35,23 +32,15 @@ const DoubleLayout: FC<DoubleLayoutProps> = ({
         } md:block`}
       >
         {/* Header for second child */}
-        <div className="h-16">
-          {' '}
+        <div className="">
           {/* Set a specific height for the header */}
           {secondChildHeader}
         </div>
-        <div className="flex-grow p-4">{secondChild}</div>{' '}
+        <div className="flex-grow h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)]">
+          {secondChild}
+        </div>
         {/* Use flex-grow to fill remaining space */}
       </div>
-      {/* Back button for mobile */}
-      {/* {showSecondChild && (
-        <button
-          className="fixed top-0 right-0 md:hidden p-2 mt-2 bg-blue-500 text-white"
-          onClick={onBackToList}
-        >
-          Back
-        </button>
-      )} */}
     </div>
   );
 };

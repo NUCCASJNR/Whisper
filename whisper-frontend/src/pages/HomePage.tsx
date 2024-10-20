@@ -1,26 +1,23 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Logo } from '../components';
+import { AppHeader } from '../components';
 import whisperImg from '../assets/images/whisperers.png';
 import { Footer } from '../layouts';
 
 const HomePage: FC = () => {
   return (
-    <div className="min-h-screen bg-background text-text flex flex-col justify-between">
-      {/* Logo */}
-      <div className="p-6 text-3xl">
-        <Logo />
-      </div>
+    <div className="min-h-screen bg-background text-text">
+      <AppHeader />
 
       {/* Content */}
-      <div className="flex flex-col md:flex-row items-center justify-between mx-auto p-8 md:p-16 max-w-6xl">
+      <div className="flex flex-col md:flex-row items-center p-4 justify-center max-w-6xl">
         {/* Text Section */}
         <div className="md:w-1/2 space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold">
             The Ultimate Anonymous Platform
           </h1>
           <p className="text-lg md:text-xl leading-relaxed">
-            From strangers to freinds. Made for meeting new people.
+            From strangers to friends. Made for meeting new people.
           </p>
           <div className="space-x-4">
             <Link to="/signup">

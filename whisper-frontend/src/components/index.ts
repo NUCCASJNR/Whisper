@@ -8,3 +8,5 @@ export { default as Message } from './Chat/Message';
 export { default as Logo } from './Logo';
 export { default as ScrollBar } from './ScrollBar';
 export { default as ChatDetails } from './Chat/ChatDetails';
+
+export { default as AppHeader } from './AppHeader';
