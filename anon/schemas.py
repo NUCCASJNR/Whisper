@@ -75,3 +75,14 @@ class PermissionSchema(Schema):
 
 class LogoutSchema(Schema):
     refresh_token: str
+
+
+class ProfileSchema(Schema):
+    refresh_token: str
+
+
+class ProfileResponseSchema(Schema):
+    message: str
+    bio: str
+    username: str
+    ready_to_chat: bool

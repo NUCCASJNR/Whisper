@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from anon.auth import CustomJWTAuth
+from anon.auth import CustomJWTAuth, AccessTokenAuth
 from anon.models.token import BlacklistedToken
 
 from .models import MainUser
@@ -18,6 +18,8 @@ from .schemas import (
     LogoutSchema,
     MessageSchema,
     PermissionSchema,
+    ProfileResponseSchema,
+    ProfileSchema,
     StatusSchema,
     UserCreateSchema,
 )
@@ -170,3 +172,40 @@ def logout_user(request, payload: LogoutSchema):
 
     except Exception as e:
         return 500, {"error": str(e), "status": 500}
+
+
+@api.get(
+    "/profile/",
+    auth=AccessTokenAuth(),
+    response={
+        200: ProfileResponseSchema,
+        400: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema
+    }
+)
+def profile(request):
+    """API view for displaying a user profile"""
+    current_user = request.auth
+    logger.info(f'Current User: {current_user}')
+    print((f'Current User: {current_user}'))
+
+    if not current_user:
+        return 400, {'error': 'Invalid or expired token', 'status': 400}
+
+    try:
+        user = MainUser.custom_get(username=current_user.username)
+        if user:
+            return 200, {
+                'message': 'User profile successfully fetched',
+                'bio': user.bio,
+                'username': user.username,
+                "ready_to_chat": user.ready_to_chat
+            }
+        else:
+            return 404, {
+                'error': 'No such user found',
+                'status': 404
+            }
+    except Exception as e:
+        return 500, {'error': str(e), 'status': 500}

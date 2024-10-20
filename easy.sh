@@ -11,6 +11,8 @@ function display_menu {
     echo "rs  - Run Server               (Starts the Django development server)"
     echo "s   - Open Django Shell        (Opens the Django interactive shell)"
     echo "db  - Open Database Shell      (Opens the database shell)"
+    echo "v   - Activate Virtual environment  (Activates the Virtual environment)"
+    echo "e   - Reload .env              (Reloads .env file changes)"
     echo "q   - Quit                     (Exits the script)"
     echo "============================"
 }
@@ -38,6 +40,14 @@ function handle_option {
             echo "Opening database shell... (Opens the database shell)"
             python3 manage.py dbshell
             ;;
+        v) 
+            echo "Activating... (Activating virtual environment)"
+            source .linux-venv/bin/activate
+            ;;
+        e)
+            echo "Reloading... (Reloading environment variables)"
+            source .env
+            ;;
         q)
             echo "Exiting..."
             exit 0
@@ -51,7 +61,7 @@ function handle_option {
 # Main script loop
 while true; do
     display_menu
-    echo -n "Enter a command (mg/m/rs/s/db/q): "
+    echo -n "Enter a command (mg/m/rs/s/db/v/e/q): "
     read choice
     handle_option $choice
     echo "============================"

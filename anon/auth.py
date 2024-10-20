@@ -2,7 +2,8 @@ import json
 
 from ninja.security import HttpBearer
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from datetime import datetime
 
 from anon.models.token import BlacklistedToken
 
@@ -43,4 +44,34 @@ class CustomJWTAuth(HttpBearer):
             return user
 
         except InvalidToken:
+            return None
+
+
+class AccessTokenAuth(HttpBearer):
+    def authenticate(self, request, token):
+        try:
+            access_token = request.headers.get("Authorization")
+            if access_token and access_token.startswith("Bearer "):
+                access_token = access_token.split("Bearer ")[1]
+            else:
+                return None
+
+            # Check if the token is blacklisted
+            access_found = BlacklistedToken.objects.filter(access_token=access_token).exists()
+            if access_found:
+                return None
+
+            jwt_auth = JWTAuthentication()
+            try:
+                validated_token = jwt_auth.get_validated_token(token)
+            except (InvalidToken, TokenError):
+                return None
+
+            if validated_token['exp'] < datetime.utcnow().timestamp():
+                return None
+
+            user = jwt_auth.get_user(validated_token)
+            return user
+
+        except (InvalidToken, TokenError):
             return None
