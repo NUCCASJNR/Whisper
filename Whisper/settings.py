@@ -120,7 +120,6 @@ db_dict: Dict = {
 }
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "anon.backends.CustomJWTAuthentication",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -270,35 +269,6 @@ else:
     REDIS_URL = os.getenv("REDIS_URL")
     CELERY_BROKER_URL = REDIS_URL
     CELERY_RESULT_BACKEND = REDIS_URL
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "KEY_PREFIX": "default_",  # Default cache
-            "SSL": True,
-        },
-    },
-    "user_cache": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "KEY_PREFIX": "user_",  # User-related data
-            "SSL": True,
-        },
-    },
-    "session_cache": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "KEY_PREFIX": "session_",  # Session data
-            "SSL": True,
-        },
-    },
-}
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'

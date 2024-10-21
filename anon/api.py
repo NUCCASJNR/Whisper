@@ -6,8 +6,9 @@ from django.contrib.auth import authenticate, login
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from anon.auth import CustomJWTAuth, AccessTokenAuth
+from anon.auth import CustomJWTAuth, AccessTokenAuth, JWTAuthentication
 from anon.models.token import BlacklistedToken
+from .dependencies import JWTAuth
 
 from .models import MainUser
 from .schemas import (
@@ -19,7 +20,6 @@ from .schemas import (
     MessageSchema,
     PermissionSchema,
     ProfileResponseSchema,
-    ProfileSchema,
     StatusSchema,
     UserCreateSchema,
 )
@@ -81,29 +81,41 @@ def user_login(request, payload: LoginSchema):
 
 @api.get(
     "/active-users/",
-    auth=CustomJWTAuth(),
-    response={200: ActiveUsersSchema, 400: ErrorSchema},
+    auth=AccessTokenAuth(),
+    response={200: ActiveUsersSchema, 400: ErrorSchema, 500: ErrorSchema},
 )
 def list_active_users(request):
-    """
-    API View for listing active users
-    """
-    users = MainUser.objects.filter(ready_to_chat=True)
-    logger.info(f"Active users fetched: {users}")
-    if users.exists():
-        exclude_user_id = str(request.user.id)
-        user_ids = [str(user.id) for user in users if str(user.id) != exclude_user_id]
+    current_user = request.user
+    logger.info(f"Current User: {current_user}")
 
-        logger.info(f"User IDs: {user_ids}")
-        return 200, {
-            "message": "Active users successfully fetched",
-            "user_ids": user_ids,
-            "status": 200,
+    if current_user is None:
+        logger.error("Invalid or expired token, no current user.")
+        return 400, {'error': 'Invalid or expired token', 'status': 400}
+
+    try:
+        users = MainUser.objects.filter(ready_to_chat=True)
+        logger.info(f"Active users fetched: {users}")
+
+        if users.exists():
+            exclude_user_id = str(current_user.id)
+            user_ids = [str(user.id) for user in users if str(user.id) != exclude_user_id]
+
+            logger.info(f"User IDs: {user_ids}")
+            return 200, {
+                "message": "Active users successfully fetched",
+                "user_ids": user_ids,
+                "status": 200,
+            }
+
+        return 400, {
+            "error": "Oops, no active users at the moment, kindly check back later",
+            "status": 400,
         }
-    return 400, {
-        "error": "Oops, no active users at the moment, kindly check back later",
-        "status": 400,
-    }
+
+    except Exception as e:
+        logger.error(f"Error fetching active users: {str(e)}")
+        return 500, {'error': 'Server error', 'status': 500}
+
 
 
 @api.post(
