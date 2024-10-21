@@ -9,12 +9,12 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
 import logging.config
 import os
 from datetime import timedelta
 from pathlib import Path
-from typing import Dict
-from typing import Union
+from typing import Dict, Union
 
 from django.utils.log import DEFAULT_LOGGING
 from dotenv import load_dotenv
@@ -51,12 +51,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 'authtoken',
-    "corsheaders",
-    "anon",
+    # installed apps
     "rest_framework",
-    "rest_framework_simplejwt",
-    "drf_yasg"
+    "rest_framework.authtoken",
+    "corsheaders",
+    "drf_yasg",
+    "phonenumber_field",
+    # django apps
+    "anon",
+    "ninja",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -70,7 +74,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    'honeybadger.contrib.DjangoHoneybadgerMiddleware'
+    "honeybadger.contrib.DjangoHoneybadgerMiddleware",
 ]
 
 ROOT_URLCONF = "Whisper.urls"
@@ -115,7 +119,7 @@ db_dict: Dict = {
     },
 }
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend'
+    "django.contrib.auth.backends.ModelBackend",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -128,10 +132,8 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ],
-    "DEFAULT_PAGINATION_CLASS":
-    "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE":
-    15,
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 15,
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -164,24 +166,17 @@ EMAIL_USE_SSL = True
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME":
-        "django.contrib.auth.password_validation."
+        "NAME": "django.contrib.auth.password_validation."
         "UserAttributeSimilarityValidator",
     },
     {
-        "NAME":
-        "django.contrib.auth.password_validation."
-        "MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation." "MinimumLengthValidator",
     },
     {
-        "NAME":
-        "django.contrib.auth.password_validation."
-        "CommonPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation." "CommonPasswordValidator",
     },
     {
-        "NAME":
-        "django.contrib.auth.password_validation."
-        "NumericPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation." "NumericPasswordValidator",
     },
 ]
 
@@ -220,50 +215,50 @@ if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
 
 try:
-    logging.config.dictConfig({
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "console": {
-                "format":
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    logging.config.dictConfig(
+        {
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "console": {
+                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                },
+                "file": {
+                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                },
+                "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
             },
-            "file": {
-                "format":
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            "handlers": {
+                "console": {
+                    "level": LOG_LEVEL,
+                    "class": "logging.StreamHandler",
+                    "formatter": "console",
+                },
+                "file": {
+                    "level": LOG_LEVEL,
+                    "class": "logging.handlers.RotatingFileHandler",
+                    "formatter": "file",
+                    "filename": os.path.join(LOGGING_DIR, "django.log"),
+                    "maxBytes": 1024 * 1024 * 10,  # 10 MB
+                    "backupCount": 5,
+                },
+                "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
             },
-            "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
-        },
-        "handlers": {
-            "console": {
-                "level": LOG_LEVEL,
-                "class": "logging.StreamHandler",
-                "formatter": "console",
+            "loggers": {
+                "": {
+                    "level": LOG_LEVEL,
+                    "handlers": ["console", "file"],
+                    "propagate": True,
+                },
+                "apps": {
+                    "level": LOG_LEVEL,
+                    "handlers": ["console", "file"],
+                    "propagate": False,
+                },
+                "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
             },
-            "file": {
-                "level": LOG_LEVEL,
-                "class": "logging.handlers.RotatingFileHandler",
-                "formatter": "file",
-                "filename": os.path.join(LOGGING_DIR, "django.log"),
-                "maxBytes": 1024 * 1024 * 10,  # 10 MB
-                "backupCount": 5,
-            },
-            "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
-        },
-        "loggers": {
-            "": {
-                "level": LOG_LEVEL,
-                "handlers": ["console", "file"],
-                "propagate": True,
-            },
-            "apps": {
-                "level": LOG_LEVEL,
-                "handlers": ["console", "file"],
-                "propagate": False,
-            },
-            "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
-        },
-    })
+        }
+    )
 except Exception as e:
     logging.exception("Failed to configure logging: %s", e)
 if MODE == "DEV":
@@ -274,41 +269,12 @@ else:
     REDIS_URL = os.getenv("REDIS_URL")
     CELERY_BROKER_URL = REDIS_URL
     CELERY_RESULT_BACKEND = REDIS_URL
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "KEY_PREFIX": "default_",  # Default cache
-            'SSL': True
-        },
-    },
-    "user_cache": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "KEY_PREFIX": "user_",  # User-related data
-            'SSL': True
-        },
-    },
-    "session_cache": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "KEY_PREFIX": "session_",  # Session data
-            'SSL': True
-        },
-    },
-}
 
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 HONEYBADGER = {
-    'API_KEY': os.getenv("HONEY_KEY"),
+    "API_KEY": os.getenv("HONEY_KEY"),
 }
 CHANNEL_LAYERS = {
     "default": {
