@@ -8,7 +8,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from anon.auth import CustomJWTAuth, AccessTokenAuth, JWTAuthentication
 from anon.models.token import BlacklistedToken
-from .dependencies import JWTAuth
+from .dependencies import JWTAuth, get_user_from_token
+from django.core.cache import cache
 
 from .models import MainUser
 from .schemas import (
@@ -117,7 +118,6 @@ def list_active_users(request):
         return 500, {'error': 'Server error', 'status': 500}
 
 
-
 @api.post(
     "/status/", auth=CustomJWTAuth(), response={200: MessageSchema, 400: ErrorSchema}
 )
@@ -199,15 +199,18 @@ def logout_user(request, payload: LogoutSchema):
 def profile(request):
     """API view for displaying a user profile"""
     current_user = request.auth
-    logger.info(f'Current User: {current_user}')
-    print((f'Current User: {current_user}'))
+    logger.info(f'{request.auth} | {request.user}')
+    if current_user is None:
+        return 400, {'error': 'Invalid or expired token', 'status': 400}
+    logger.info(f"Request user: {current_user.id if current_user else 'No user authenticated'}")
 
     if not current_user:
         return 400, {'error': 'Invalid or expired token', 'status': 400}
 
     try:
-        user = MainUser.custom_get(username=current_user.username)
+        user = MainUser.objects.get(id=current_user.id)
         if user:
+            logger.info(f"User profile fetched successfully for user ID {user.id}")
             return 200, {
                 'message': 'User profile successfully fetched',
                 'bio': user.bio,
@@ -215,9 +218,11 @@ def profile(request):
                 "ready_to_chat": user.ready_to_chat
             }
         else:
+            logger.warning(f"No user found with ID {current_user.id}")
             return 404, {
                 'error': 'No such user found',
                 'status': 404
             }
     except Exception as e:
+        logger.error(f"Error fetching profile for user {current_user.id}: {str(e)}")
         return 500, {'error': str(e), 'status': 500}

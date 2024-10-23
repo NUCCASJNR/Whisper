@@ -64,18 +64,19 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.cache.UpdateCacheMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "honeybadger.contrib.DjangoHoneybadgerMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # Handles CORS, should be at the top
+    "django.middleware.security.SecurityMiddleware",  # Security-related middleware
+    "django.contrib.sessions.middleware.SessionMiddleware",  # Handles session management
+    "django.middleware.common.CommonMiddleware",  # Common middlewares (e.g., URL normalization)
+    "django.middleware.csrf.CsrfViewMiddleware",  # CSRF protection
+    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Authentication handler
+    "django.contrib.messages.middleware.MessageMiddleware",  # Message framework
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Clickjacking prevention
+    "honeybadger.contrib.DjangoHoneybadgerMiddleware"
 ]
+
+# Optional: Honeybadger middleware, if you're using it for error tracking
+
 
 ROOT_URLCONF = "Whisper.urls"
 
@@ -108,6 +109,7 @@ db_dict: Dict = {
         "PASSWORD": os.getenv("DEV_PASSWORD"),
         "HOST": os.getenv("DEV_HOST"),
         "PORT": os.getenv("DEV_PORT"),
+        "CONN_MAX_AGE": 60
     },
     "PRODUCTION": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -120,12 +122,14 @@ db_dict: Dict = {
 }
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
+    "anon.auth.AccessTokenAuth"
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        "anon.auth.AccessTokenAuth"
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
@@ -152,7 +156,6 @@ SIMPLE_JWT = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {"default": (db_dict.get(MODE))}
-print(DATABASES)
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
@@ -210,6 +213,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_LEVEL = "DEBUG"  # Set to DEBUG for more detailed logging
 
 LOGGING_DIR = os.path.join(BASE_DIR, "logs")
+if not os.path.exists(LOGGING_DIR):
+    os.makedirs(LOGGING_DIR)
 
 if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
@@ -256,11 +261,17 @@ try:
                     "propagate": False,
                 },
                 "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
+                "daphne.http_protocol": {
+                    "level": "DEBUG",
+                    "handlers": ["console", "file"],
+                    "propagate": False,  # Avoid propagating to root logger
+                },
             },
         }
     )
 except Exception as e:
     logging.exception("Failed to configure logging: %s", e)
+
 if MODE == "DEV":
     REDIS_URL = os.getenv("REDIS_UR")
     CELERY_BROKER_URL = REDIS_URL
@@ -276,11 +287,11 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 HONEYBADGER = {
     "API_KEY": os.getenv("HONEY_KEY"),
 }
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#         },
+#     },
+# }
