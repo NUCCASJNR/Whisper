@@ -59,7 +59,8 @@ class ActiveUsersSchema(Schema):
 
     message: str
     status: int
-    user_ids: List
+    ids: List
+    bios: List
 
 
 class StatusSchema(Schema):

@@ -84,7 +84,7 @@ def user_login(request, payload: LoginSchema):
     response={200: ActiveUsersSchema, 400: ErrorSchema, 500: ErrorSchema},
 )
 def list_active_users(request):
-    current_user = request.user
+    current_user = request.auth
     logger.info(f"Current User: {current_user}")
 
     if current_user is None:
@@ -97,14 +97,19 @@ def list_active_users(request):
 
         if users.exists():
             exclude_user_id = str(current_user.id)
-            user_ids = [
-                str(user.id) for user in users if str(user.id) != exclude_user_id
-            ]
+            users_info = {
+                str(user.id): {
+                    'user_id': str(user.id),
+                    'user_bio': user.bio
+                }
+                for user in users if str(user.id) != exclude_user_id
+            }
+            logger.info(f'User infos: {users_info}')
 
-            logger.info(f"User IDs: {user_ids}")
             return 200, {
                 "message": "Active users successfully fetched",
-                "user_ids": user_ids,
+                "bios": [info['user_bio'] for info in users_info.values()],
+                "ids": [info['user_id'] for info in users_info.values()],
                 "status": 200,
             }
 
@@ -115,7 +120,7 @@ def list_active_users(request):
 
     except Exception as e:
         logger.error(f"Error fetching active users: {str(e)}")
-        return 500, {"error": "Server error", "status": 500}
+        return 500, {"error": str(e), "status": 500}
 
 
 @api.post(
@@ -125,7 +130,7 @@ def set_status(request, payload: StatusSchema):
     """
     API request for setting user ready_to_chat status
     """
-    user = request.user
+    user = request.auth
     option = payload.option
 
     try:
