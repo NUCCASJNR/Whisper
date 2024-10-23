@@ -18,7 +18,37 @@ from django.core.cache import cache
 logger = logging.getLogger("apps")
 
 
-class CustomJWTAuth(HttpBearer):
+class BaseTokenAuth:
+    def get_user_from_token(self, token):
+        try:
+            # Decode the token using the secret key
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            logger.debug(f"Payload: {payload}")
+            user_id = payload.get("user_id")
+            if not user_id:
+                logger.error(f"Token {token} is missing user_id.")
+                return None
+            # Retrieve the user from the database using the user ID
+            try:
+                user = MainUser.objects.get(id=user_id)
+                logger.info(f"User {user.id} retrieved successfully from token.")
+                return user
+            except ObjectDoesNotExist:
+                logger.error(f"No user found with ID {user_id}.")
+                return None
+
+        except jwt.ExpiredSignatureError:
+            logger.warning(f"Token {token} has expired.")
+            return None
+
+        except jwt.InvalidTokenError as e:
+            logger.error(f"Invalid token: {e}")
+            return None
+
+        return None
+
+
+class CustomJWTAuth(HttpBearer, BaseTokenAuth):
     def authenticate(self, request, token):
         if not token:
             raise AuthenticationFailed(
@@ -114,31 +144,3 @@ class AccessTokenAuth(HttpBearer):
 
         logger.info(f"User {user.id} authenticated successfully with token {token}")
         return user
-
-    def get_user_from_token(self, token):
-        try:
-            # Decode the token using the secret key
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-            logger.debug(f"Payload: {payload}")
-            user_id = payload.get("user_id")
-            if not user_id:
-                logger.error(f"Token {token} is missing user_id.")
-                return None
-            # Retrieve the user from the database using the user ID
-            try:
-                user = MainUser.objects.get(id=user_id)
-                logger.info(f"User {user.id} retrieved successfully from token.")
-                return user
-            except ObjectDoesNotExist:
-                logger.error(f"No user found with ID {user_id}.")
-                return None
-
-        except jwt.ExpiredSignatureError:
-            logger.warning(f"Token {token} has expired.")
-            return None
-
-        except jwt.InvalidTokenError as e:
-            logger.error(f"Invalid token: {e}")
-            return None
-
-        return None
