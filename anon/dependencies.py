@@ -20,8 +20,8 @@ class JWTAuth(HttpBearer):
 
 def get_user_from_token(auth_header):
     try:
-        token = auth_header.split(' ')[1]
+        token = auth_header.split(" ")[1]
         decoded_data = decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-        return decoded_data['user_id']
+        return decoded_data["user_id"]
     except (InvalidTokenError, IndexError, KeyError):
         return None

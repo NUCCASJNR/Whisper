@@ -72,7 +72,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",  # Authentication handler
     "django.contrib.messages.middleware.MessageMiddleware",  # Message framework
     "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Clickjacking prevention
-    "honeybadger.contrib.DjangoHoneybadgerMiddleware"
+    "honeybadger.contrib.DjangoHoneybadgerMiddleware",
 ]
 
 # Optional: Honeybadger middleware, if you're using it for error tracking
@@ -109,7 +109,7 @@ db_dict: Dict = {
         "PASSWORD": os.getenv("DEV_PASSWORD"),
         "HOST": os.getenv("DEV_HOST"),
         "PORT": os.getenv("DEV_PORT"),
-        "CONN_MAX_AGE": 60
+        "CONN_MAX_AGE": 60,
     },
     "PRODUCTION": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -122,7 +122,7 @@ db_dict: Dict = {
 }
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "anon.auth.AccessTokenAuth"
+    "anon.auth.AccessTokenAuth",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [

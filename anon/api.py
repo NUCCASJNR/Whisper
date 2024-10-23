@@ -89,7 +89,7 @@ def list_active_users(request):
 
     if current_user is None:
         logger.error("Invalid or expired token, no current user.")
-        return 400, {'error': 'Invalid or expired token', 'status': 400}
+        return 400, {"error": "Invalid or expired token", "status": 400}
 
     try:
         users = MainUser.objects.filter(ready_to_chat=True)
@@ -97,7 +97,9 @@ def list_active_users(request):
 
         if users.exists():
             exclude_user_id = str(current_user.id)
-            user_ids = [str(user.id) for user in users if str(user.id) != exclude_user_id]
+            user_ids = [
+                str(user.id) for user in users if str(user.id) != exclude_user_id
+            ]
 
             logger.info(f"User IDs: {user_ids}")
             return 200, {
@@ -113,7 +115,7 @@ def list_active_users(request):
 
     except Exception as e:
         logger.error(f"Error fetching active users: {str(e)}")
-        return 500, {'error': 'Server error', 'status': 500}
+        return 500, {"error": "Server error", "status": 500}
 
 
 @api.post(
@@ -191,36 +193,35 @@ def logout_user(request, payload: LogoutSchema):
         200: ProfileResponseSchema,
         400: ErrorSchema,
         404: ErrorSchema,
-        500: ErrorSchema
-    }
+        500: ErrorSchema,
+    },
 )
 def profile(request):
     """API view for displaying a user profile"""
     current_user = request.auth
-    logger.info(f'{request.auth} | {request.user}')
+    logger.info(f"{request.auth} | {request.user}")
     if current_user is None:
-        return 400, {'error': 'Invalid or expired token', 'status': 400}
-    logger.info(f"Request user: {current_user.id if current_user else 'No user authenticated'}")
+        return 400, {"error": "Invalid or expired token", "status": 400}
+    logger.info(
+        f"Request user: {current_user.id if current_user else 'No user authenticated'}"
+    )
 
     if not current_user:
-        return 400, {'error': 'Invalid or expired token', 'status': 400}
+        return 400, {"error": "Invalid or expired token", "status": 400}
 
     try:
         user = MainUser.objects.get(id=current_user.id)
         if user:
             logger.info(f"User profile fetched successfully for user ID {user.id}")
             return 200, {
-                'message': 'User profile successfully fetched',
-                'bio': user.bio,
-                'username': user.username,
-                "ready_to_chat": user.ready_to_chat
+                "message": "User profile successfully fetched",
+                "bio": user.bio,
+                "username": user.username,
+                "ready_to_chat": user.ready_to_chat,
             }
         else:
             logger.warning(f"No user found with ID {current_user.id}")
-            return 404, {
-                'error': 'No such user found',
-                'status': 404
-            }
+            return 404, {"error": "No such user found", "status": 404}
     except Exception as e:
         logger.error(f"Error fetching profile for user {current_user.id}: {str(e)}")
-        return 500, {'error': str(e), 'status': 500}
+        return 500, {"error": str(e), "status": 500}
