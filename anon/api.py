@@ -124,7 +124,7 @@ def list_active_users(request):
 
 
 @api.post(
-    "/status/", auth=CustomJWTAuth(), response={200: MessageSchema, 400: ErrorSchema}
+    "/status/", auth=AccessTokenAuth(), response={200: MessageSchema, 400: ErrorSchema}
 )
 def set_status(request, payload: StatusSchema):
     """
