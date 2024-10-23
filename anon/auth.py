@@ -78,11 +78,15 @@ class CustomJWTAuth(HttpBearer, BaseTokenAuth):
         except (json.JSONDecodeError, TypeError):
             refresh_token = None
         try:
-            BlacklistedToken.objects.get(access_token=token, refresh_token=refresh_token)
+            BlacklistedToken.objects.get(
+                access_token=token, refresh_token=refresh_token
+            )
             logger.debug(f"Token {token} is blacklisted.")
             return None
         except BlacklistedToken.DoesNotExist:
-            logger.debug(f"Token {token} is not blacklisted. Proceeding with authentication.")
+            logger.debug(
+                f"Token {token} is not blacklisted. Proceeding with authentication."
+            )
 
         # Authenticate user based on token
         user = self.get_user_from_token(token)
@@ -95,7 +99,7 @@ class CustomJWTAuth(HttpBearer, BaseTokenAuth):
         return user
 
 
-class AccessTokenAuth(HttpBearer):
+class AccessTokenAuth(HttpBearer, BaseTokenAuth):
     def authenticate(self, request, token):
         # Extract the token from the Authorization header
         if not token:
@@ -129,7 +133,9 @@ class AccessTokenAuth(HttpBearer):
             logger.debug(f"Token {token} is blacklisted.")
             return None
         except BlacklistedToken.DoesNotExist:
-            logger.debug(f"Token {token} is not blacklisted. Proceeding with authentication.")
+            logger.debug(
+                f"Token {token} is not blacklisted. Proceeding with authentication."
+            )
 
         # Authenticate user based on token
         user = self.get_user_from_token(token)
