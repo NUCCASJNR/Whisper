@@ -6,10 +6,8 @@ from django.contrib.auth import authenticate, login
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from anon.auth import CustomJWTAuth, AccessTokenAuth, JWTAuthentication
+from anon.auth import CustomJWTAuth, AccessTokenAuth
 from anon.models.token import BlacklistedToken
-from .dependencies import JWTAuth, get_user_from_token
-from django.core.cache import cache
 
 from .models import MainUser
 from .schemas import (
