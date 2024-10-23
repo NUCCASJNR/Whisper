@@ -98,18 +98,16 @@ def list_active_users(request):
         if users.exists():
             exclude_user_id = str(current_user.id)
             users_info = {
-                str(user.id): {
-                    'user_id': str(user.id),
-                    'user_bio': user.bio
-                }
-                for user in users if str(user.id) != exclude_user_id
+                str(user.id): {"user_id": str(user.id), "user_bio": user.bio}
+                for user in users
+                if str(user.id) != exclude_user_id
             }
-            logger.info(f'User infos: {users_info}')
+            logger.info(f"User infos: {users_info}")
 
             return 200, {
                 "message": "Active users successfully fetched",
-                "bios": [info['user_bio'] for info in users_info.values()],
-                "ids": [info['user_id'] for info in users_info.values()],
+                "bios": [info["user_bio"] for info in users_info.values()],
+                "ids": [info["user_id"] for info in users_info.values()],
                 "status": 200,
             }
 
