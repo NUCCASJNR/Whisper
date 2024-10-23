@@ -95,13 +95,19 @@ class AccessTokenAuth(HttpBearer):
 
         token = auth[1].decode()
         logger.debug(f"Token received: {token}")
+        try:
+            BlacklistedToken.objects.get(access_token=token)
+            logger.debug(f"Token {token} is blacklisted.")
+            return None
+        except BlacklistedToken.DoesNotExist:
+            logger.debug(f"Token {token} is not blacklisted. Proceeding with authentication.")
 
         # Authenticate user based on token
         user = self.get_user_from_token(token)
         logger.info(f"LOgged User: {user}")
         if not user:
             logger.warning(f"Failed authentication: No user found for token {token}")
-            raise AuthenticationFailed(_("Invalid token. User not found."))
+            return None
 
         logger.info(f"User {user.id} authenticated successfully with token {token}")
         return user
@@ -111,14 +117,10 @@ class AccessTokenAuth(HttpBearer):
             # Decode the token using the secret key
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             logger.debug(f"Payload: {payload}")
-
-            # Extract user ID (or email) from the token payload
             user_id = payload.get("user_id")
             if not user_id:
                 logger.error(f"Token {token} is missing user_id.")
-                raise AuthenticationFailed(
-                    _("Token is invalid or missing user information.")
-                )
+                return None
             # Retrieve the user from the database using the user ID
             try:
                 user = MainUser.objects.get(id=user_id)
@@ -126,14 +128,14 @@ class AccessTokenAuth(HttpBearer):
                 return user
             except ObjectDoesNotExist:
                 logger.error(f"No user found with ID {user_id}.")
-                raise AuthenticationFailed(_("User not found."))
+                return None
 
         except jwt.ExpiredSignatureError:
             logger.warning(f"Token {token} has expired.")
-            raise AuthenticationFailed(_("Token has expired."))
+            return None
 
         except jwt.InvalidTokenError as e:
             logger.error(f"Invalid token: {e}")
-            return f"Error: {str(e)}"
+            return None
 
         return None
