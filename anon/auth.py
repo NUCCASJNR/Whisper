@@ -20,50 +20,53 @@ logger = logging.getLogger("apps")
 
 class CustomJWTAuth(HttpBearer):
     def authenticate(self, request, token):
-        try:
-            mmm = cache.clear
-            logger.info(f"Cache Result: {mmm}")
-            access_token = request.headers.get("Authorization")
-            if access_token and access_token.startswith("Bearer "):
-                access_token = access_token.split("Bearer ")[1]
-            else:
-                access_token = None
-            print(f"Request: {request.method}")
-            if request.method == "POST":
-                try:
-                    body = json.loads(request.body)
-                    refresh_token = body.get("refresh_token")
-                except (json.JSONDecodeError, TypeError):
-                    refresh_token = None
-            else:
-                refresh_token = request.headers.get("Authorization")
-                if refresh_token and refresh_token.startswith("Bearer "):
-                    refresh_token = refresh_token.split("Bearer ")[1]
-                else:
-                    refresh_token = None
-            access_found = BlacklistedToken.objects.filter(
-                access_token=access_token
-            ).exists()
-            refresh_found = BlacklistedToken.objects.filter(
-                refresh_token=refresh_token
-            ).exists()
+        if not token:
+            raise AuthenticationFailed(
+                _("Invalid token header. No credentials provided.")
+            )
+        auth = get_authorization_header(request).split()
+        logger.debug(f"Auth: {auth}")
 
-            if access_found or refresh_found:
-                return None
-            jwt_auth = JWTAuthentication()
-            try:
-                validated_token = jwt_auth.get_validated_token(token)
-            except (InvalidToken, TokenError):
-                return None
-
-            if validated_token["exp"] < datetime.utcnow().timestamp():
-                return None
-
-            user = jwt_auth.get_user(validated_token)
-            return user
-
-        except InvalidToken:
+        if not auth or auth[0].lower() != b"bearer":
             return None
+
+        if len(auth) == 1:
+            logger.debug("Invalid token header. No credentials provided.")
+            raise AuthenticationFailed(
+                _("Invalid token header. No credentials provided.")
+            )
+
+        if len(auth) > 2:
+            logger.debug(
+                "Invalid token header. Token string should not contain spaces."
+            )
+            raise AuthenticationFailed(
+                _("Invalid token header. Token string should not contain spaces.")
+            )
+
+        token = auth[1].decode()
+        logger.debug(f"Token received: {token}")
+        try:
+            body = json.loads(request.body)
+            refresh_token = body.get("refresh_token")
+        except (json.JSONDecodeError, TypeError):
+            refresh_token = None
+        try:
+            BlacklistedToken.objects.get(access_token=token, refresh_token=refresh_token)
+            logger.debug(f"Token {token} is blacklisted.")
+            return None
+        except BlacklistedToken.DoesNotExist:
+            logger.debug(f"Token {token} is not blacklisted. Proceeding with authentication.")
+
+        # Authenticate user based on token
+        user = self.get_user_from_token(token)
+        logger.info(f"LOgged User: {user}")
+        if not user:
+            logger.warning(f"Failed authentication: No user found for token {token}")
+            return None
+
+        logger.info(f"User {user.id} authenticated successfully with token {token}")
+        return user
 
 
 class AccessTokenAuth(HttpBearer):
