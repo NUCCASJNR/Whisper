@@ -6,6 +6,9 @@ export interface AuthContextType {
   signup: (username: string, password: string) => void;
   logout: () => void;
   updateUserStatus: (updatedUser: User) => void;
+  profile: () => void;
+  error: string | null;
+  loading: boolean;
 }
 
 export interface AuthProviderProps {
@@ -21,10 +24,11 @@ export interface SignupFormProps {
 
 export interface User {
   username: string;
-  publicKey: string;
+  // publicKey: string;
 
   readyToChat: boolean;
   isLoggedIn: boolean;
+  bio: string;
 
   id: string;
 }
