@@ -232,7 +232,7 @@ def profile(request):
 
 
 @api.put(
-    '/update-profile/',
+    "/update-profile/",
     auth=AccessTokenAuth(),
     response={
         200: MessageSchema,
@@ -254,17 +254,25 @@ def update_profile(request, payload: UpdateProfileSchema):
     try:
         user = MainUser.objects.get(id=current_user.id)
         if user:
-            logger.info(f'Payload Keys: {payload_data}')
-            update_kwargs = {key: value for key, value in payload_data.items() if value is not None}
-            if 'username' in update_kwargs.keys():
-                existing_user = MainUser.objects.filter(username=update_kwargs.get('username'))
+            logger.info(f"Payload Keys: {payload_data}")
+            update_kwargs = {
+                key: value for key, value in payload_data.items() if value is not None
+            }
+            if "username" in update_kwargs.keys():
+                existing_user = MainUser.objects.filter(
+                    username=update_kwargs.get("username")
+                )
                 if existing_user:
                     return 400, {"error": "User with username Exists", "status": 400}
-            # Update the user with the filtered data
-                MainUser.custom_update(filter_kwargs={'id': current_user.id}, update_kwargs=update_kwargs)
+                # Update the user with the filtered data
+                MainUser.custom_update(
+                    filter_kwargs={"id": current_user.id}, update_kwargs=update_kwargs
+                )
                 return 200, {"message": "Profile successfully updated.", "status": 200}
             else:
-                MainUser.custom_update(filter_kwargs={'id': current_user.id}, update_kwargs=update_kwargs)
+                MainUser.custom_update(
+                    filter_kwargs={"id": current_user.id}, update_kwargs=update_kwargs
+                )
                 return 200, {"message": "Profile successfully updated.", "status": 200}
         else:
             return 404, {"error": "No such user found", "status": 404}
