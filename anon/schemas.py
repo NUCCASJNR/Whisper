@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Contains user related schemas definition"""
-from typing import List
+from typing import List, Any, Optional
 
 from ninja import Schema
 from pydantic import BaseModel, model_validator
@@ -16,7 +16,7 @@ class UserCreateSchema(Schema):
     """ """
 
     username: str
-    password: str
+    password: Any
 
 
 class LoginSchema(BaseModel):
@@ -87,3 +87,9 @@ class ProfileResponseSchema(Schema):
     bio: str
     username: str
     ready_to_chat: bool
+
+
+class UpdateProfileSchema(Schema):
+    password: Optional[Any] = None
+    username: Optional[str] = None
+    bio: Optional[str] = None
