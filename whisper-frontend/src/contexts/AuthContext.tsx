@@ -4,7 +4,9 @@ import { AuthContextType, AuthProviderProps, User } from '../interfaces';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-const BaseURL = 'http://127.0.0.1:8000';
+
+const BaseURL = import.meta.env.VITE_API_URL;
+
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);

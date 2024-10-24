@@ -15,10 +15,10 @@ import { AuthProvider, ChatProvider, UsersProvider } from './contexts';
 
 const App: FC = () => {
   return (
-    <AuthProvider>
-      <ChatProvider>
-        <UsersProvider>
-          <Router>
+    <Router>
+      <AuthProvider>
+        <ChatProvider>
+          <UsersProvider>
             <Layout>
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -33,10 +33,10 @@ const App: FC = () => {
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Layout>
-          </Router>
-        </UsersProvider>
-      </ChatProvider>
-    </AuthProvider>
+          </UsersProvider>
+        </ChatProvider>
+      </AuthProvider>
+    </Router>
   );
 };
 
