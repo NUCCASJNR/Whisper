@@ -20,6 +20,7 @@ from .schemas import (
     PermissionSchema,
     ProfileResponseSchema,
     StatusSchema,
+    UpdateProfileSchema,
     UserCreateSchema,
 )
 
@@ -227,4 +228,46 @@ def profile(request):
             return 404, {"error": "No such user found", "status": 404}
     except Exception as e:
         logger.error(f"Error fetching profile for user {current_user.id}: {str(e)}")
+        return 500, {"error": str(e), "status": 500}
+
+
+@api.put(
+    '/update-profile/',
+    auth=AccessTokenAuth(),
+    response={
+        200: MessageSchema,
+        400: ErrorSchema,
+        403: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
+    },
+)
+def update_profile(request, payload: UpdateProfileSchema):
+    """
+    API view for updating user profile
+    """
+    current_user = request.auth
+    payload_data = payload.dict()
+    if current_user is None:
+        return 400, {"error": "Invalid or expired token", "status": 400}
+
+    try:
+        user = MainUser.objects.get(id=current_user.id)
+        if user:
+            logger.info(f'Payload Keys: {payload_data}')
+            update_kwargs = {key: value for key, value in payload_data.items() if value is not None}
+            if 'username' in update_kwargs.keys():
+                existing_user = MainUser.objects.filter(username=update_kwargs.get('username'))
+                if existing_user:
+                    return 400, {"error": "User with username Exists", "status": 400}
+            # Update the user with the filtered data
+                MainUser.custom_update(filter_kwargs={'id': current_user.id}, update_kwargs=update_kwargs)
+                return 200, {"message": "Profile successfully updated.", "status": 200}
+            else:
+                MainUser.custom_update(filter_kwargs={'id': current_user.id}, update_kwargs=update_kwargs)
+                return 200, {"message": "Profile successfully updated.", "status": 200}
+        else:
+            return 404, {"error": "No such user found", "status": 404}
+    except Exception as e:
+        logger.error(f"Error updating user {current_user.id} Profile: {str(e)}")
         return 500, {"error": str(e), "status": 500}
