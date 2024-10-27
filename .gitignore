@@ -8,3 +8,4 @@ logs/
 anon/migrations
 djnago.log
 dump.rdb
+anon/migrations/

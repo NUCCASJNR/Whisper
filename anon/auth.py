@@ -22,7 +22,7 @@ class BaseTokenAuth:
             logger.debug(f"Payload: {payload}")
             user_id = payload.get("user_id")
             if not user_id:
-                logger.error(f"Token {token} is missing user_id.")
+                logger.error(f"T oken {token} is missing user_id.")
                 return None
             # Retrieve the user from the database using the user ID
             try:
