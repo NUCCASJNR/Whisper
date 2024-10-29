@@ -70,7 +70,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
                     logger.error("Malformed Authorization header.")
                     await self.close(code=4001)
                     return
-        
+
         # If no token is found, close connection
         if not token:
             logger.error("Authorization header not found.")

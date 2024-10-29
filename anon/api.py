@@ -24,7 +24,7 @@ from .schemas import (
     UpdateProfileSchema,
     UserCreateSchema,
     WhisperSchema,
-    WhisperResponseSchema
+    WhisperResponseSchema,
 )
 
 logger = logging.getLogger("apps")
@@ -286,14 +286,14 @@ def update_profile(request, payload: UpdateProfileSchema):
 
 
 @api.post(
-    '/whisper/',
+    "/whisper/",
     auth=AccessTokenAuth(),
     response={
         200: WhisperResponseSchema,
         400: ErrorSchema,
         500: ErrorSchema,
-        403: ErrorSchema
-    }
+        403: ErrorSchema,
+    },
 )
 def whisper(request, payload: WhisperSchema):
     """
@@ -303,15 +303,15 @@ def whisper(request, payload: WhisperSchema):
     if current_user is None:
         return 400, {"error": "Invalid or expired token", "status": 403}
     try:
-        receiever = MainUser.custom_get(**{'id': payload.id})
+        receiever = MainUser.custom_get(**{"id": payload.id})
         if receiever:
             url = generate_websocket_url(current_user.id, payload.id)
             return 200, {
-                'message': 'Convo successfully initialized',
-                'url': url,
-                'status': 200
+                "message": "Convo successfully initialized",
+                "url": url,
+                "status": 200,
             }
         else:
-            return 400, {'error': 'User not found'}
+            return 400, {"error": "User not found"}
     except Exception as e:
         return 500, {"error": str(e), "status": 500}
