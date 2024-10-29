@@ -1,10 +1,10 @@
 from typing import Optional
 
+from django.conf import settings
+from jwt import InvalidTokenError, decode
 from ninja.security import HttpBearer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from jwt import decode, InvalidTokenError
-from django.conf import settings
 
 
 class JWTAuth(HttpBearer):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Contains user related schemas definition"""
-from typing import List, Any, Optional
+from typing import Any, List, Optional
 
 from ninja import Schema
 from pydantic import BaseModel, model_validator
@@ -87,9 +87,20 @@ class ProfileResponseSchema(Schema):
     bio: str
     username: str
     ready_to_chat: bool
+    id: str
 
 
 class UpdateProfileSchema(Schema):
     password: Optional[Any] = None
     username: Optional[str] = None
     bio: Optional[str] = None
+
+
+class WhisperSchema(Schema):
+    id: str
+
+
+class WhisperResponseSchema(Schema):
+    message: str
+    url: str
+    status: int

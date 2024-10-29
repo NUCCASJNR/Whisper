@@ -6,8 +6,9 @@ from django.contrib.auth import authenticate, login
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from anon.auth import CustomJWTAuth, AccessTokenAuth
+from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
+from anon.utils.generator import generate_websocket_url
 
 from .models import MainUser
 from .schemas import (
@@ -22,6 +23,8 @@ from .schemas import (
     StatusSchema,
     UpdateProfileSchema,
     UserCreateSchema,
+    WhisperResponseSchema,
+    WhisperSchema,
 )
 
 logger = logging.getLogger("apps")
@@ -221,6 +224,7 @@ def profile(request):
                 "message": "User profile successfully fetched",
                 "bio": user.bio,
                 "username": user.username,
+                "id": str(user.id),
                 "ready_to_chat": user.ready_to_chat,
             }
         else:
@@ -278,4 +282,36 @@ def update_profile(request, payload: UpdateProfileSchema):
             return 404, {"error": "No such user found", "status": 404}
     except Exception as e:
         logger.error(f"Error updating user {current_user.id} Profile: {str(e)}")
+        return 500, {"error": str(e), "status": 500}
+
+
+@api.post(
+    "/whisper/",
+    auth=AccessTokenAuth(),
+    response={
+        200: WhisperResponseSchema,
+        400: ErrorSchema,
+        500: ErrorSchema,
+        403: ErrorSchema,
+    },
+)
+def whisper(request, payload: WhisperSchema):
+    """
+    API View for initiating convo
+    """
+    current_user = request.auth
+    if current_user is None:
+        return 400, {"error": "Invalid or expired token", "status": 403}
+    try:
+        receiever = MainUser.custom_get(**{"id": payload.id})
+        if receiever:
+            url = generate_websocket_url(current_user.id, payload.id)
+            return 200, {
+                "message": "Convo successfully initialized",
+                "url": url,
+                "status": 200,
+            }
+        else:
+            return 400, {"error": "User not found"}
+    except Exception as e:
         return 500, {"error": str(e), "status": 500}

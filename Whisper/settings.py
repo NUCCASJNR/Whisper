@@ -75,8 +75,41 @@ MIDDLEWARE = [
     "honeybadger.contrib.DjangoHoneybadgerMiddleware",
 ]
 
-# Optional: Honeybadger middleware, if you're using it for error tracking
+if MODE == "PRODUCTION":
+    CORS_ALLOW_ALL_ORIGINS = True
 
+    CSRF_TRUSTED_ORIGINS = [
+        "https://whisper-ul4p.onrender.com/",
+        "https://whisperfrontend.netlify.app",
+        "http://localhost:5174",
+        "http://localhost:5173",
+    ]
+
+    CORS_ALLOW_CREDENTIALS = True
+
+    CORS_ALLOW_METHODS = [
+        "DELETE",
+        "GET",
+        "OPTIONS",
+        "PATCH",
+        "POST",
+        "PUT",
+    ]
+
+    CORS_ALLOW_HEADERS = [
+        "accept",
+        "accept-encoding",
+        "authorization",
+        "content-type",
+        "dnt",
+        "origin",
+        "user-agent",
+        "x-csrftoken",
+        "x-requested-with",
+    ]
+
+else:
+    None
 
 ROOT_URLCONF = "Whisper.urls"
 
@@ -287,11 +320,11 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 HONEYBADGER = {
     "API_KEY": os.getenv("HONEY_KEY"),
 }
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [("127.0.0.1", 6379)],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
