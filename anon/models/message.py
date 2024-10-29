@@ -15,7 +15,7 @@ class Message(BaseModel):
     recipient = models.ForeignKey(
         MainUser, on_delete=models.CASCADE, related_name="received_messages"
     )
-    encrypted_content = models.BinaryField()
+    content = models.TextField()
     is_read = models.BooleanField(default=True)
 
     class Meta:
@@ -28,14 +28,11 @@ class Message(BaseModel):
         return f"From: {self.sender.username} | To: {self.recipient.username} | Content: {self.content}"
 
 
-class PlainTextMessage(BaseModel):
-    sender = models.ForeignKey(
-        MainUser, on_delete=models.CASCADE, related_name="sent_plain_messages"
+class Conversation(BaseModel):
+    """
+    Conversation Model
+    """
+    name = models.CharField(max_length=150, unique=True)
+    message = models.ForeignKey(
+        Message, on_delete=models.CASCADE, related_name="messages"
     )
-    recipient = models.ForeignKey(
-        MainUser, on_delete=models.CASCADE, related_name="received_plain_messages"
-    )
-    content = models.TextField()
-
-    class Meta:
-        db_table = "plain_text_messages"
