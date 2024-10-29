@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from anon.auth import CustomJWTAuth, AccessTokenAuth
+from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
 from anon.utils.generator import generate_websocket_url
 
@@ -23,8 +23,8 @@ from .schemas import (
     StatusSchema,
     UpdateProfileSchema,
     UserCreateSchema,
-    WhisperSchema,
     WhisperResponseSchema,
+    WhisperSchema,
 )
 
 logger = logging.getLogger("apps")

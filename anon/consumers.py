@@ -246,7 +246,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         try:
             messages = Message.objects.filter(
-                (Q(recipient=recipient_id) & Q(sender=sender_id)) | (Q(recipient=sender_id) & Q(sender=recipient_id))
+                (Q(recipient=recipient_id) & Q(sender=sender_id))
+                | (Q(recipient=sender_id) & Q(sender=recipient_id))
             ).order_by("-updated_at")
             return list(messages)
         except ValueError:

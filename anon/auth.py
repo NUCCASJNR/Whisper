@@ -1,14 +1,15 @@
 import json
+import logging
 
-from ninja.security import HttpBearer
 import jwt
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-import logging
-from anon.models.token import BlacklistedToken
+from django.utils.translation import gettext_lazy as _
+from ninja.security import HttpBearer
 from rest_framework.authentication import get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
-from django.utils.translation import gettext_lazy as _
+
+from anon.models.token import BlacklistedToken
 from anon.models.user import MainUser
 
 logger = logging.getLogger("apps")
