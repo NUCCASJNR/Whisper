@@ -4,7 +4,6 @@ from typing import List, Any, Optional
 
 from ninja import Schema
 from pydantic import BaseModel, model_validator
-from uuid import uuid4
 
 
 class UserSchema(Schema):
