@@ -23,7 +23,6 @@ Methods:
     process_stored_messages: Sends previously stored messages to the client upon connection.
 """
 
-import base64
 import json
 import logging
 from datetime import datetime
@@ -31,7 +30,6 @@ from datetime import datetime
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
 from rest_framework_simplejwt.tokens import AccessToken
 
 from anon.models.key import PublicKeyDirectory
