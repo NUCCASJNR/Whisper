@@ -53,7 +53,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         self.sender_id = self.scope["url_route"]["kwargs"]["sender_id"]
         headers = self.scope.get("headers")
         token = await self.extract_auth_token(headers)
-        logger.info(f'Type of Headers: {type(headers)}')
+        logger.info(f"Type of Headers: {type(headers)}")
         logger.info(f"Extraction Result: {token}")
         logger.info(f"B: {b'authorization' in dict(headers)}")
 
@@ -107,25 +107,26 @@ class MessageConsumer(AsyncWebsocketConsumer):
         :return: Processed messages
         """
         try:
-            print(f'Json: {text_data}')
+            print(f"Json: {text_data}")
             text_data_json = json.loads(text_data)
-            logger.info(f'Json data: {text_data_json}')
+            logger.info(f"Json data: {text_data_json}")
             message = text_data_json["message"]
             sender = text_data_json.get("sender", self.user.username)
 
             # Save the message
             response = await self.save_message_async(message)
-            logger.info(f'response: {response}')
+            logger.info(f"response: {response}")
             if response is not None:
                 obj = datetime.fromisoformat(str(response.updated_at))
                 time = obj.strftime("%A, %d %B %Y, %I:%M %p")
                 await self.channel_layer.group_send(
-                    self.room_group_name, {
+                    self.room_group_name,
+                    {
                         "type": "chat.message",
                         "message": message,
                         "sender": sender,
-                        "time": time
-                    }
+                        "time": time,
+                    },
                 )
             else:
                 logger.error("Failed to save message")
@@ -142,13 +143,18 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         message = event["message"]
         sender = event["sender"]
-        logger.info(f'sender: {sender} message{message}')
-        logger .info("Sending message '%s' from sender '%s' to room '%s'", message, sender, self.room_group_name)
-        await self.send(text_data=json.dumps({
-            "message": message,
-            "sender": sender,
-            "time": event["time"]
-        }))
+        logger.info(f"sender: {sender} message{message}")
+        logger.info(
+            "Sending message '%s' from sender '%s' to room '%s'",
+            message,
+            sender,
+            self.room_group_name,
+        )
+        await self.send(
+            text_data=json.dumps(
+                {"message": message, "sender": sender, "time": event["time"]}
+            )
+        )
 
     @database_sync_to_async
     def get_stored_messages_sync(self, user_1, user_2):
@@ -156,8 +162,12 @@ class MessageConsumer(AsyncWebsocketConsumer):
         Synchronously get all the stored previous messages in a conversation
         """
         try:
-            conversation = Conversation.objects.filter(participants=user_1
-                                                       ).filter(participants=user_2).distinct().first()
+            conversation = (
+                Conversation.objects.filter(participants=user_1)
+                .filter(participants=user_2)
+                .distinct()
+                .first()
+            )
             if conversation:
                 messages = Message.objects.filter(conversation_id=conversation.id)
                 print(messages)
@@ -183,11 +193,15 @@ class MessageConsumer(AsyncWebsocketConsumer):
         for message in messages:
             obj = datetime.fromisoformat(str(message.updated_at))
             time = obj.strftime("%A, %d %B %Y, %I:%M %p")
-            await self.send(text_data=json.dumps({
-                "message": message.content,
-                "response": message.response,
-                "time": time
-            }))
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "message": message.content,
+                        "response": message.response,
+                        "time": time,
+                    }
+                )
+            )
 
     @database_sync_to_async
     def confirm_convo_participant(self, user_id, convo_id):
@@ -213,8 +227,12 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         try:
             # Get an existing conversation where both users are participants
-            conversation = Conversation.objects.filter(participants=user_1
-                                                       ).filter(participants=user_2).distinct().first()
+            conversation = (
+                Conversation.objects.filter(participants=user_1)
+                .filter(participants=user_2)
+                .distinct()
+                .first()
+            )
 
             if conversation:
                 return conversation
@@ -232,7 +250,9 @@ class MessageConsumer(AsyncWebsocketConsumer):
     def save_message_async(self, content):
         try:
             # Fetch the conversation asynchronously
-            conversation = self.get_or_create_conversation(self.message_sender, self.message_receiver)
+            conversation = self.get_or_create_conversation(
+                self.message_sender, self.message_receiver
+            )
             logger.info(f"Fetched Comvo: {conversation}")
 
             # Save the message using sync_to_async
@@ -240,9 +260,9 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 conversation_id=conversation.id,
                 sender=self.message_sender,
                 receiver=self.message_receiver,
-                content=content
+                content=content,
             )
-            logger.info(f'Saved: {message}')
+            logger.info(f"Saved: {message}")
             return message
         except Exception as e:
             logging.error(f"Error saving message: {e}")
@@ -250,10 +270,10 @@ class MessageConsumer(AsyncWebsocketConsumer):
 
     async def extract_auth_token(self, headers):
         for header in headers:
-            if header[0] == b'authorization':
-                auth_header = header[1].decode('utf-8')
-                if auth_header.startswith('Bearer '):
-                    return auth_header[len('Bearer '):]
+            if header[0] == b"authorization":
+                auth_header = header[1].decode("utf-8")
+                if auth_header.startswith("Bearer "):
+                    return auth_header[len("Bearer ") :]
         return None
 
     async def get_auth_info(self, token):
