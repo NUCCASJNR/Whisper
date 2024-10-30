@@ -40,7 +40,7 @@ def home(request):
     }
 
 
-@api.post("/auth/signup/", response={201: MessageSchema, 400: ErrorSchema})
+@api.post("/auth/signup", response={201: MessageSchema, 400: ErrorSchema})
 def signup(request, payload: UserCreateSchema):
     """View for registering a new user
 
@@ -58,7 +58,7 @@ def signup(request, payload: UserCreateSchema):
     return 201, {"message": "Registration successful!", "status": 201}
 
 
-@api.post("/auth/login/", response={200: LoginResponseSchema, 400: ErrorSchema})
+@api.post("/auth/login", response={200: LoginResponseSchema, 400: ErrorSchema})
 def user_login(request, payload: LoginSchema):
     """
     API view for logging in user
@@ -83,7 +83,7 @@ def user_login(request, payload: LoginSchema):
 
 
 @api.get(
-    "/active-users/",
+    "/active-users",
     auth=AccessTokenAuth(),
     response={200: ActiveUsersSchema, 400: ErrorSchema, 500: ErrorSchema},
 )
@@ -126,7 +126,7 @@ def list_active_users(request):
 
 
 @api.post(
-    "/status/", auth=AccessTokenAuth(), response={200: MessageSchema, 400: ErrorSchema}
+    "/status", auth=AccessTokenAuth(), response={200: MessageSchema, 400: ErrorSchema}
 )
 def set_status(request, payload: StatusSchema):
     """
@@ -163,7 +163,7 @@ def set_status(request, payload: StatusSchema):
 
 
 @api.post(
-    "/auth/logout/",
+    "/auth/logout",
     auth=CustomJWTAuth(),
     response={
         200: MessageSchema,
@@ -194,7 +194,7 @@ def logout_user(request, payload: LogoutSchema):
 
 
 @api.get(
-    "/profile/",
+    "/profile",
     auth=AccessTokenAuth(),
     response={
         200: ProfileResponseSchema,
@@ -236,7 +236,7 @@ def profile(request):
 
 
 @api.put(
-    "/update-profile/",
+    "/update-profile",
     auth=AccessTokenAuth(),
     response={
         200: MessageSchema,
@@ -286,7 +286,7 @@ def update_profile(request, payload: UpdateProfileSchema):
 
 
 @api.post(
-    "/whisper/",
+    "/whisper",
     auth=AccessTokenAuth(),
     response={
         200: WhisperResponseSchema,

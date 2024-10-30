@@ -13,7 +13,7 @@ class Conversation(BaseModel):
     participants = models.ManyToManyField(MainUser, related_name="conversations")
 
     class Meta:
-        db_table = "conversatiions"
+        db_table = "conversations"
 
 
 class Message(BaseModel):
