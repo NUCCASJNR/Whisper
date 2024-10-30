@@ -5,7 +5,7 @@ import {
   Chat,
   ChatContextType,
   ChatProviderProps,
-} from '../interfaces/ChatInterfaces';
+} from '../interfaces';
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 

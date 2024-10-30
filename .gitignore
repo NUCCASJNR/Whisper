@@ -5,5 +5,10 @@
 **/__pycache__/
 /.app.log
 logs/
-djnago.log
+
+anon/migrations
+django.log
+.netlify
+/venv/
+
 dump.rdb

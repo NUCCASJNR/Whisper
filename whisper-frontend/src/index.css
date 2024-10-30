@@ -1,3 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* For WebKit browsers */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+}

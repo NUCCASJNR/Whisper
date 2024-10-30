@@ -1,9 +1,11 @@
 import { useState, FC, FormEvent } from 'react';
-import { LoginFormProps } from '../../interfaces/AuthInterfaces';
+import { LoginFormProps } from '../../interfaces';
+import { useAuth } from '../../contexts';
 
 const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPrivateKey] = useState<string>('');
+  const { loading } = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -11,12 +13,12 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 bg-white p-8 shadow-lg rounded-md"
       >
-        <h1 className="text-xl font-bold">Login</h1>
+        <h1 className="text-xl font-bold text-primary">Login</h1>
         <input
           type="text"
           placeholder="username"
@@ -33,9 +35,9 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
         />
         <button
           type="submit"
-          className="bg-primary text-white p-2 rounded hover:bg-accent"
+          className="bg-primary text-white p-2 rounded hover:bg-opacity-80"
         >
-          Login
+          {loading ? 'Logging In' : 'Login'}
         </button>
       </form>
     </div>

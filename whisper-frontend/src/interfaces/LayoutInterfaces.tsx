@@ -12,6 +12,23 @@ export interface SidebarLinkPropType {
   Icon: ElementType;
 }
 
+export interface DoubleLayoutProps {
+  firstChild: ReactNode;
+  secondChild: ReactNode;
+  firstChildHeader: ReactNode;
+  secondChildHeader: ReactNode;
+  showSecondChild: boolean;
+  // onBackToList: () => void;
+}
+
+export interface LayoutProps {
+  children: ReactNode;
+}
+
 export interface MainLayoutProps {
+  children: ReactNode;
+}
+
+export interface SingleLayoutProps {
   children: ReactNode;
 }

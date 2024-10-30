@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts';
 
 const Logo: FC = () => {
-  const { userKeys } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleWhisperClick = () => {
-    if (userKeys) {
+    if (user) {
       navigate('/chats'); // If logged in, go to chat page
     } else {
       navigate('/'); // If not logged in, go to homepage
@@ -16,7 +16,7 @@ const Logo: FC = () => {
 
   return (
     <h1
-      className="text-xl font-bold cursor-pointer"
+      className="font-bold cursor-pointer text-primary"
       onClick={handleWhisperClick}
     >
       Whisper

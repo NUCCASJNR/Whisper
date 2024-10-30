@@ -3,8 +3,8 @@ import { ReactNode } from 'react';
 export interface Message {
   content: string;
   sender: string;
-  recipient: string;
-  is_read: boolean;
+  // recipient: string;
+  // is_read: boolean;
 }
 
 export interface Chat {

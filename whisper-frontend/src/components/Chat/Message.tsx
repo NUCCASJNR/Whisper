@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { MessageProps } from '../../interfaces/ChatInterfaces';
+import { MessageProps } from '../../interfaces';
 
 const Message: FC<MessageProps> = ({ message }) => {
   return (
@@ -7,7 +7,7 @@ const Message: FC<MessageProps> = ({ message }) => {
       className={`w-fit my-2 p-4 rounded-lg ${
         message.sender === 'user'
           ? 'bg-primary text-white self-end'
-          : 'bg-secondary text-white self-start'
+          : 'bg-white text-text self-start'
       }`}
     >
       {message.content}

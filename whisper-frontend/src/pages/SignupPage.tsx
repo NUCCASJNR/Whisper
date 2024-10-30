@@ -1,19 +1,26 @@
 import { FC } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import SignUpForm from '../components/Auth/SignUpForm';
+import { useAuth } from '../contexts';
+// import { useNavigate } from 'react-router-dom';
+import { AppHeader, SignUpForm } from '../components';
 
 const SignupPage: FC = () => {
   const { signup } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleSubmit = (username: string, password: string) => {
-    signup(username, password);
+  const handleSubmit = async (username: string, password: string) => {
+    await signup(username, password);
 
-    navigate('/login');
+    // navigate('/login');
   };
 
-  return <SignUpForm onSubmit={handleSubmit} />;
+  return (
+    <div className="h-screen bg-background">
+      <AppHeader />
+      <div className="mt-12 md:mt-24 flex items-center justify-center">
+        <SignUpForm onSubmit={handleSubmit} />
+      </div>
+    </div>
+  );
 };
 
 export default SignupPage;
