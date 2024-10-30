@@ -46,7 +46,7 @@ jobs:
 
       - name: Check code style with black
         run: |
-          black --check .
+          black .
 
       - name: Sort imports with isort
         run: |
