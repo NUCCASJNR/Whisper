@@ -273,7 +273,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             if header[0] == b"authorization":
                 auth_header = header[1].decode("utf-8")
                 if auth_header.startswith("Bearer "):
-                    return auth_header[len("Bearer "):]
+                    return auth_header[len("Bearer ") :]
         return None
 
     async def get_auth_info(self, token):
