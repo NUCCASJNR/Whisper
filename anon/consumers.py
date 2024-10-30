@@ -28,14 +28,13 @@ import logging
 from datetime import datetime
 
 from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_simplejwt.tokens import AccessToken
 
 from anon.models.key import PublicKeyDirectory
-from anon.models.message import MainUser, Message, Conversation
-from channels.db import database_sync_to_async
-
+from anon.models.message import Conversation, MainUser, Message
 
 logger = logging.getLogger("apps")
 
@@ -166,7 +165,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             else:
                 return []
         except ValueError:
-            logging.info(f"These users don't have previous chats")
+            logging.info("These users don't have previous chats")
             return []
 
     async def get_stored_messages(self, user1, user_2):
