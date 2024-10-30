@@ -159,7 +159,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
         Synchronously get all the stored previous messages in a conversation
         """
         try:
-            conversation = Conversation.objects.filter(participants=user_1).filter(participants=user_2).distinct().first()
+            conversation = Conversation.objects.filter(participants=user_1
+                                                       ).filter(participants=user_2).distinct().first()
             if conversation:
                 messages = Message.objects.filter(conversation_id=conversation.id)
                 print(messages)
@@ -215,7 +216,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         try:
             # Get an existing conversation where both users are participants
-            conversation = Conversation.objects.filter(participants=user_1).filter(participants=user_2).distinct().first()
+            conversation = Conversation.objects.filter(participants=user_1
+                                                       ).filter(participants=user_2).distinct().first()
 
             if conversation:
                 return conversation
