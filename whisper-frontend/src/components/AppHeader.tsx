@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const AppHeader: FC = () => {
   return (
-    <div className="flex justify-between h-16 p-4 bg-white">
-      <div>
+    <div className="flex justify-between h-16 p-6 bg-white shadow-lg">
+      <div className="text-2xl">
         <Logo />
       </div>
       <div className="flex justify-between gap-4 text-primary">
