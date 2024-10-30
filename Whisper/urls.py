@@ -17,22 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-# from anon.views.message import MessageView, ReceiveMessageView
-from rest_framework import routers
-
-from anon.views.auth import LoginView, LogoutView, SignUpViewSet
-from anon.views.profile import ListUsersReadyToChat, ProfileView, ReadyToChatView
-
-router = routers.DefaultRouter()
-router.register("auth/signup", SignUpViewSet, basename="signup")
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include(router.urls)),
-    path("auth/login/", LoginView.as_view()),
-    path("auth/logout", LogoutView.as_view()),
-    path("profile/", ProfileView.as_view()),
-    path("ready-to-chat/", ReadyToChatView.as_view()),
-    path("online-users/", ListUsersReadyToChat.as_view()),
-    # path('send-message/<str:user_id>/', MessageView.as_view()),
-    # path('messages/<str:user_id>/', ReceiveMessageView.as_view())
+    path("", include("anon.urls")),
 ]

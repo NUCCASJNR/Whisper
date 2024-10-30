@@ -38,7 +38,7 @@ from anon.models.key import PublicKeyDirectory
 from anon.models.message import MainUser, Message
 from anon.utils.encrypt import encrypt_message
 
-logging.basicConfig(level=logging.DEBUG, filename="app.log")
+logger = logging.getLogger("apps")
 
 
 class MessageConsumer(AsyncWebsocketConsumer):
@@ -53,8 +53,29 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         self.receiver_id = self.scope["url_route"]["kwargs"]["receiver_id"]
         self.sender_id = self.scope["url_route"]["kwargs"]["sender_id"]
-        token = self.scope.get("query_string").decode().split("Bearer%20")[1]
+        logger.info(f'Request: {dict(self.scope).get("headers")}')
+        headers = dict(self.scope).get("headers", [])
+        token = None
+
+        # Log whether 'authorization' exists in headers
+        logger.info(f"B: {b'authorization' in dict(headers)}")
+
+        # Extract the token from the headers
+        for key, value in headers:
+            if key.decode() == "authorization":
+                try:
+                    # Assuming Bearer is included, extract the token
+                    token = value.decode().split("Bearer ")[1]
+                except IndexError:
+                    logger.error("Malformed Authorization header.")
+                    await self.close(code=4001)
+                    return
+        if not token:
+            logger.error("Authorization header not found.")
+            await self.close(code=4002)
+            return
         auth_info = await self.get_auth_info(token)
+        logger.debug(f"Auth Info: {auth_info}")
 
         if not auth_info["status"]:
             await self.close()

@@ -1,4 +1,5 @@
 amqp==5.2.0
+annotated-types==0.7.0
 asgiref==3.8.1
 async-timeout==4.0.3
 attrs==23.2.0
@@ -18,14 +19,19 @@ click-plugins==1.1.1
 click-repl==0.3.0
 cloudinary==1.39.0
 constantly==23.10.4
+cron-descriptor==1.4.5
 cryptography==42.0.3
 daphne==4.1.2
 Django==5.0.8
+django-celery-beat==2.6.0
 django-channels==0.7.0
 django-cors-headers==4.3.1
+django-ninja==1.2.2
+django-phonenumber-field==8.0.0
 django-redis==5.4.0
 django-rest-framework==0.1.0
 django-restframework==0.0.1
+django-timezone-field==7.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 docutils==0.21.2
@@ -58,6 +64,7 @@ nh3==0.2.18
 oauthlib==3.2.2
 packaging==23.2
 pathspec==0.12.1
+phonenumbers==8.13.43
 pillow==10.2.0
 pkginfo==1.10.0
 platformdirs==4.3.6
@@ -69,6 +76,8 @@ pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pycodestyle==2.12.1
 pycparser==2.21
+pydantic==2.8.2
+pydantic_core==2.20.1
 pyflakes==3.2.0
 Pygments==2.18.0
 PyJWT==2.8.0
@@ -76,6 +85,7 @@ pyOpenSSL==24.0.0
 pytest==8.2.1
 pytest-django==4.8.0
 pytest-mock==3.14.0
+python-crontab==3.2.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0
 pytz==2023.3.post1
