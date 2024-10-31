@@ -10,9 +10,11 @@ from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
 from anon.utils.generator import generate_websocket_url
 
-from .models import MainUser
-from .schemas import (
+from anon.models.user import MainUser
+from anon.models.message import Conversation
+from anon.schemas import (
     ActiveUsersSchema,
+    ConversationSchema,
     ErrorSchema,
     LoginResponseSchema,
     LoginSchema,
@@ -313,5 +315,52 @@ def whisper(request, payload: WhisperSchema):
             }
         else:
             return 400, {"error": "User not found"}
+    except Exception as e:
+        return 500, {"error": str(e), "status": 500}
+
+
+@api.get(
+    "/conversations",
+    auth=AccessTokenAuth(),
+    response={
+        200: ConversationSchema,
+        400: ErrorSchema,
+        500: ErrorSchema,
+        403: ErrorSchema,
+    },
+)
+def get_conversations(request):
+    """
+    API View for getting all conversations
+    """
+    current_user = request.auth
+    if current_user is None:
+        return 400, {"error": "Invalid or expired token", "status": 403}
+    try:
+        conversations = Conversation.objects.filter(participants=current_user)
+        if conversations.exists():
+            return 200, {
+                "message": "Conversations successfully fetched",
+                "conversations": [
+                    {
+                        "id": conversation.id,
+                        "name": conversation.name,
+                        "participants": [participant.username for participant in conversation.participants.all()],
+                        "messages": [
+                            {
+                                "id": message.id,
+                                "sender": message.sender.username,
+                                "receiver": message.receiver.username,
+                                "content": message.content,
+                            }
+                            for message in conversation.messages.all()
+                        ],
+                    }
+                    for conversation in conversations
+                ],
+                "status": 200,
+            }
+        else:
+            return 400, {"error": "No conversations found", "status": 400}
     except Exception as e:
         return 500, {"error": str(e), "status": 500}

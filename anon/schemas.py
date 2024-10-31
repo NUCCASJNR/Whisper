@@ -79,10 +79,23 @@ class LogoutSchema(Schema):
 
 
 class ProfileSchema(Schema):
+    """Schema for user profile
+    Args:
+        refresh_token ([type]): [description]
+    """
     refresh_token: str
 
 
 class ProfileResponseSchema(Schema):
+    """Schema for user profile
+    Args:
+        Schema ([type]): [description]
+        message ([type]): [description]
+        bio ([type]): [description]
+        username ([type]): [description]
+        ready_to_chat ([type]): [description]
+        id ([type]): [description
+    """
     message: str
     bio: str
     username: str
@@ -91,16 +104,49 @@ class ProfileResponseSchema(Schema):
 
 
 class UpdateProfileSchema(Schema):
+    """Schema for updating user profile
+    Args:
+        Schema ([type]): [description]
+        password ([type]): [description]
+        username ([type]): [description]
+        bio ([type]): [description]
+    """
     password: Optional[Any] = None
     username: Optional[str] = None
     bio: Optional[str] = None
 
 
 class WhisperSchema(Schema):
+    """
+    Schema for whisper
+    Args:
+        Schema ([type]): [description]
+        id ([type]): [description]
+    """
     id: str
 
 
 class WhisperResponseSchema(Schema):
+    """
+    Schema for whisper response
+    Args:
+        Schema ([type]): [description]
+        message ([type]): [description]
+        url ([type]): [description]
+        status ([type]): [description]
+    """
     message: str
     url: str
+    status: int
+
+
+class ConversationSchema(Schema):
+    """
+    Schema for conversation
+    Args:
+        Schema ([type]): [description]
+        message ([type]): [description]
+        status ([type]): [description]
+    """
+    conversations: List
     status: int
