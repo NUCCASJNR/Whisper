@@ -5,8 +5,10 @@
 **/__pycache__/
 /.app.log
 logs/
+
 anon/migrations
-djnago.log
-# Local Netlify folder
+django.log
 .netlify
 /venv/
+
+dump.rdb
