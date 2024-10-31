@@ -76,7 +76,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
             await self.close()
             return "Error: User not found"
 
-        self.room_group_name = f"chat_{self.sender_id}_{self.receiver_id}"
+        self.room_group_name = f"chat_{'_'.join(sorted([self.sender_id, self.receiver_id]))}"
+        logger.info(f"Room Group Name: {self.room_group_name}")
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
@@ -197,7 +198,6 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 text_data=json.dumps(
                     {
                         "message": message.content,
-                        "response": message.response,
                         "time": time,
                     }
                 )
@@ -246,17 +246,17 @@ class MessageConsumer(AsyncWebsocketConsumer):
             logging.error(f"Error creating or retrieving conversation: {e}")
             return None
 
-    @database_sync_to_async
-    def save_message_async(self, content):
+    # @database_sync_to_async
+    async def save_message_async(self, content):
         try:
             # Fetch the conversation asynchronously
-            conversation = self.get_or_create_conversation(
+            conversation = await self.get_or_create_conversation(
                 self.message_sender, self.message_receiver
             )
             logger.info(f"Fetched Comvo: {conversation}")
 
-            # Save the message using sync_to_async
-            message = Message.objects.create(
+            # Save the message asynchronously
+            message = await sync_to_async(Message.objects.create)(
                 conversation_id=conversation.id,
                 sender=self.message_sender,
                 receiver=self.message_receiver,
@@ -265,7 +265,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             logger.info(f"Saved: {message}")
             return message
         except Exception as e:
-            logging.error(f"Error saving message: {e}")
+            logger.error(f"Error saving message: {e}")
             return None
 
     async def extract_auth_token(self, headers):
