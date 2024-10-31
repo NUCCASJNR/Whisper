@@ -22,11 +22,11 @@ const App: FC = () => {
             <Layout>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                {/* <Route path="/chats" element={<ChatListPage />} /> */}
-                <Route path="/chats/:chatId" element={<ChatListPage />} />
-                <Route path="/chats" element={<ChatListPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
+                {/* <Route path="/chats" element={<ChatListPage />} /> */}
+                <Route path="/chats" element={<ChatListPage />} />
+                <Route path="/chats/:chatId" element={<ChatListPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/active_users" element={<ActiveUsersPage />} />
 

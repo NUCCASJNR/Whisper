@@ -15,18 +15,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   // Effect to load user session from localStorage on app start
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      // Decode token to get user info (if needed)
-      const userData = JSON.parse(atob(token.split('.')[1])); // Extract user data from token
-      setUser({
-        username: userData.username,
-        readyToChat: true,
-        isLoggedIn: true,
-        bio: userData.bio,
-        id: userData.user_id,
-      });
-    }
+    (async () => {
+      await profile();
+    })();
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -45,16 +36,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
 
-        // Optionally decode the token to get user info
-        const userData = JSON.parse(atob(access_token.split('.')[1]));
-
-        setUser({
-          username: userData.username, // Adjust according to your token structure
-          bio: userData.bio, // Adjust according to your token structure
-          id: userData.user_id, // Adjust according to your token structure
-          readyToChat: true,
-          isLoggedIn: true,
-        });
+        await profile();
         navigate('/chats');
       }
     } catch (err: any) {
@@ -85,11 +67,36 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     // Clear user data and tokens
-    setUser(null);
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem('access_token');
+      const refresh_token = localStorage.getItem('refresh_token');
+      if (!token) throw new Error('No access token found.');
+
+      const response = await axios.post(
+        `${BaseURL}/auth/logout`,
+        { refresh_token },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        setUser(null);
+        navigate('/login');
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Logout failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const profile = async () => {
@@ -97,21 +104,23 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       const token = localStorage.getItem('access_token');
       if (!token) throw new Error('No access token found.');
 
-      const response = await axios.get(`${BaseURL}/auth/profile`, {
+      const response = await axios.get(`${BaseURL}/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      const userId = JSON.parse(atob(token.split('.')[1])).user_id;
 
       if (response.status === 200) {
-        const userData = response.data; // Assuming the response contains user data
+        const userData = response.data;
         setUser({
           username: userData.username,
-          readyToChat: true,
-          isLoggedIn: true,
-          id: userData.user_id,
           bio: userData.bio,
+          readyToChat: userData.ready_to_chat,
+          isLoggedIn: true,
+          id: userId,
         });
+        console.log(user);
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to fetch profile.');

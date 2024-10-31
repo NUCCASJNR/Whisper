@@ -11,7 +11,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      {user ? (
+      {user && user.isLoggedIn ? (
         <div className="flex h-screen overflow-y-clip bg-background relative">
           {/* Mobile Sidebar Toggle */}
 
