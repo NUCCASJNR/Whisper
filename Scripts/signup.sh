@@ -8,7 +8,7 @@ read -sp "Enter your password: " password
 echo
 
 # Make the POST request using curl
-response=$(curl -s -X POST http://127.0.0.1:8000/auth/signup/ \
+response=$(curl -s -X POST https://whisper-ul4p.onrender.com/auth/signup \
 -H "Content-Type: application/json" \
 -d '{"username": "'"$username"'", "password": "'"$password"'"}')
 
