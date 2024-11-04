@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
-from anon.utils.generator import generate_websocket_url
+from anon.utils.generator import generate_websocket_url, set_user_pin
 
 from anon.models.user import MainUser
 from anon.models.message import Conversation
@@ -338,6 +338,7 @@ def get_conversations(request):
         return 400, {"error": "Invalid or expired token", "status": 403}
     try:
         conversations = Conversation.objects.filter(participants=current_user)
+        logger.info(f"Conversations: {conversations}")
         if conversations.exists():
             return 200, {
                 "message": "Conversations successfully fetched",
@@ -360,7 +361,10 @@ def get_conversations(request):
                 ],
                 "status": 200,
             }
-        else:
-            return 400, {"error": "No conversations found", "status": 400}
+        return 200, {
+            "message": "No conversations found",
+            "conversations": [],
+            "status": 200,
+        }
     except Exception as e:
         return 500, {"error": str(e), "status": 500}
