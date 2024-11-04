@@ -116,6 +116,7 @@ class UpdateProfileSchema(Schema):
     password: Optional[Any] = None
     username: Optional[str] = None
     bio: Optional[str] = None
+    ready_to_chat: Optional[bool] = None
 
 
 class WhisperSchema(Schema):

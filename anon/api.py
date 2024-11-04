@@ -116,9 +116,10 @@ def list_active_users(request):
                 "status": 200,
             }
 
-        return 400, {
-            "error": "Oops, no active users at the moment, kindly check back later",
-            "status": 400,
+        return 200, {
+            "message": "No active users at the moment",
+            "users": [],
+            "status": 200
         }
 
     except Exception as e:
