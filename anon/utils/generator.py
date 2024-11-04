@@ -20,7 +20,7 @@ def generate_websocket_url(semder_id, receiver_id):
         domain = "ws://127.0.0.1:8000/"
     else:
         domain = getenv("LIVE_URL")
-    websocket_url = f"{domain}ws/chat/{semder_id}/{receiver_id}"
+    websocket_url = f"wss://{domain}ws/chat/{semder_id}/{receiver_id}"
     return websocket_url
 
 
