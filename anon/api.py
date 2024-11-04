@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
-from anon.utils.generator import generate_websocket_url, set_user_pin
+from anon.utils.generator import generate_websocket_url
 
 from anon.models.user import MainUser
 from anon.models.message import Conversation
@@ -345,7 +345,10 @@ def get_conversations(request):
                     {
                         "id": conversation.id,
                         "name": conversation.name,
-                        "participants": [participant.username for participant in conversation.participants.all()],
+                        "participants": [
+                            participant.username
+                            for participant in conversation.participants.all()
+                        ],
                         "messages": [
                             {
                                 "id": message.id,

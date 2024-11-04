@@ -82,6 +82,7 @@ class ProfileSchema(Schema):
     Args:
         refresh_token ([type]): [description]
     """
+
     refresh_token: str
 
 
@@ -95,6 +96,7 @@ class ProfileResponseSchema(Schema):
         ready_to_chat ([type]): [description]
         id ([type]): [description
     """
+
     message: str
     bio: str
     username: str
@@ -110,6 +112,7 @@ class UpdateProfileSchema(Schema):
         username ([type]): [description]
         bio ([type]): [description]
     """
+
     password: Optional[Any] = None
     username: Optional[str] = None
     bio: Optional[str] = None
@@ -122,6 +125,7 @@ class WhisperSchema(Schema):
         Schema ([type]): [description]
         id ([type]): [description]
     """
+
     id: str
 
 
@@ -134,6 +138,7 @@ class WhisperResponseSchema(Schema):
         url ([type]): [description]
         status ([type]): [description]
     """
+
     message: str
     url: str
     status: int
@@ -147,5 +152,6 @@ class ConversationSchema(Schema):
         message ([type]): [description]
         status ([type]): [description]
     """
+
     conversations: List
     status: int
