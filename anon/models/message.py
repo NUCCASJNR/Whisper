@@ -11,6 +11,7 @@ class Conversation(BaseModel):
 
     name = models.CharField(max_length=150, unique=True)
     participants = models.ManyToManyField(MainUser, related_name="conversations")
+    user_pins = models.JSONField(default=dict)
 
     class Meta:
         db_table = "conversations"
