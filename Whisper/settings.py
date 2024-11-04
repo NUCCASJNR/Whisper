@@ -106,7 +106,7 @@ if MODE == "PRODUCTION":
         "user-agent",
         "x-csrftoken",
         "x-requested-with",
-        "Authorization"
+        "Authorization",
     ]
 
 else:

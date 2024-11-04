@@ -8,7 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
-from anon.utils.generator import generate_websocket_url, set_user_pin
+from anon.utils.generator import generate_websocket_url
 
 from anon.models.user import MainUser
 from anon.models.message import Conversation
@@ -104,16 +104,15 @@ def list_active_users(request):
         if users.exists():
             exclude_user_id = str(current_user.id)
             users_info = {
-                str(user.id): {"user_id": str(user.id), "user_bio": user.bio}
+                str(user.id): {"id": str(user.id), "bio": user.bio}
                 for user in users
                 if str(user.id) != exclude_user_id
             }
             logger.info(f"User infos: {users_info}")
-
+            # return in format of users: [{user_id: user_bio}, ...]
             return 200, {
                 "message": "Active users successfully fetched",
-                "bios": [info["user_bio"] for info in users_info.values()],
-                "ids": [info["user_id"] for info in users_info.values()],
+                "users": list(users_info.values()),
                 "status": 200,
             }
 
@@ -346,7 +345,10 @@ def get_conversations(request):
                     {
                         "id": conversation.id,
                         "name": conversation.name,
-                        "participants": [participant.username for participant in conversation.participants.all()],
+                        "participants": [
+                            participant.username
+                            for participant in conversation.participants.all()
+                        ],
                         "messages": [
                             {
                                 "id": message.id,
