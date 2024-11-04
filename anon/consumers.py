@@ -76,10 +76,14 @@ class MessageConsumer(AsyncWebsocketConsumer):
             await self.close()
             return "Error: User not found"
 
-        self.room_group_name = f"chat_{'_'.join(sorted([self.sender_id, self.receiver_id]))}"
-        logger.info(f"Room Group Name: {self.room_group_name}")
+        self.group_names = [
+            f"chat_{self.sender_id}_{self.receiver_id}",
+            f"chat_{self.receiver_id}_{self.sender_id}",
+        ]
 
-        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        for group_name in self.group_names:
+            await self.channel_layer.group_add(group_name, self.channel_name)
+            logger.info(f"Room Group Name: {group_name}")
         await self.accept()
 
         # Determine sender and receiver roles
@@ -99,7 +103,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
         :param close_code: Close code
         :return:
         """
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        for group_name in self.group_names:
+            await self.channel_layer.group_discard(group_name, self.channel_name)
 
     async def receive(self, text_data):
         """
@@ -120,15 +125,16 @@ class MessageConsumer(AsyncWebsocketConsumer):
             if response is not None:
                 obj = datetime.fromisoformat(str(response.updated_at))
                 time = obj.strftime("%A, %d %B %Y, %I:%M %p")
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "chat.message",
-                        "message": message,
-                        "sender": sender,
-                        "time": time,
-                    },
-                )
+                for group_name in self.group_names:
+                    await self.channel_layer.group_send(
+                        group_name,
+                        {
+                            "type": "chat_message",
+                            "message": message,
+                            "sender": sender,
+                            "time": time,
+                        },
+                    )
             else:
                 logger.error("Failed to save message")
         except json.decoder.JSONDecodeError as text_data:
@@ -145,12 +151,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         sender = event["sender"]
         logger.info(f"sender: {sender} message{message}")
-        logger.info(
-            "Sending message '%s' from sender '%s' to room '%s'",
-            message,
-            sender,
-            self.room_group_name,
-        )
+        # for group_name in self.group_names:
         await self.send(
             text_data=json.dumps(
                 {"message": message, "sender": sender, "time": event["time"]}
