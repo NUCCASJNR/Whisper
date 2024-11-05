@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { AppHeader, LoginForm } from '../components';
 // import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts';
+import { useApi } from '../contexts';
 
 const LoginPage: FC = () => {
-  const { login } = useAuth();
+  const { login } = useApi();
   // const navigate = useNavigate();
 
   const handleSubmit = async (username: string, password: string) => {

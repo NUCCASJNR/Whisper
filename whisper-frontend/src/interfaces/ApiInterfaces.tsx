@@ -1,17 +1,20 @@
 import { ReactNode } from 'react';
 
-export interface AuthContextType {
+export interface ApiContextType {
   user: User | null;
   login: (username: string, password: string) => void;
   signup: (username: string, password: string) => void;
   logout: () => void;
-  updateUserStatus: (updatedUser: User) => void;
   profile: () => void;
   error: string | null;
   loading: boolean;
+  fetchActiveUsers: () => Promise<any>;
+  fetchConversations: () => Promise<any>;
+  initiateConversation: (id: string) => Promise<any>;
+  updateProfile: (data: any) => void;
 }
 
-export interface AuthProviderProps {
+export interface ApiProviderProps {
   children: ReactNode;
 }
 
@@ -24,10 +27,8 @@ export interface SignupFormProps {
 
 export interface User {
   username: string;
-  // publicKey: string;
 
   readyToChat: boolean;
-  isLoggedIn: boolean;
   bio: string;
 
   id: string;

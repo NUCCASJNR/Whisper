@@ -25,7 +25,7 @@ const ChatBox: FC<ChatBoxProps> = ({ onSendMessage }) => {
         <input
           type="text"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value.trim())}
           className="w-full flex-grow p-2 bg-transparent text-text border-transparent focus:outline-none"
           placeholder="Type your message..."
         />

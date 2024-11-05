@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts';
+import { useApi } from '../contexts';
 
 const Logo: FC = () => {
-  const { user } = useAuth();
+  const { user } = useApi();
   const navigate = useNavigate();
 
   const handleWhisperClick = () => {

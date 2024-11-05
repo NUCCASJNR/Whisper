@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import Sidebar from './Sidebar';
 import { LayoutProps } from '../interfaces';
-import { useAuth } from '../contexts';
+import { useApi } from '../contexts';
 import { FaBars } from 'react-icons/fa'; // icon for mobile sidebar toggle
 import { Logo } from '../components';
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const { user } = useAuth();
+  const { user } = useApi();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // manage sidebar open state
 
   return (

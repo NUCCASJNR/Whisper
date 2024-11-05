@@ -1,8 +1,8 @@
 // interfaces.ts
 export interface ActiveUser {
   id: string;
-  username: string;
-  avatar: string; // URL or path to the user's avatar image
+  bio: string;
+  // avatar: string; // URL or path to the user's avatar image
 }
 
 export interface UsersContextType {

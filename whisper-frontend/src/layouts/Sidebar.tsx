@@ -8,7 +8,7 @@ import { Logo } from '../components';
 import { SidebarLinkPropType } from '../interfaces';
 import Header from './Header';
 
-import { useAuth } from '../contexts';
+import { useApi } from '../contexts';
 import avatarImg from '../assets/images/logo192.png';
 
 const SidebarLink: FC<SidebarLinkPropType> = ({ to, text, isActive, Icon }) => {
@@ -31,7 +31,7 @@ const SidebarLink: FC<SidebarLinkPropType> = ({ to, text, isActive, Icon }) => {
 const Sidebar: FC = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { logout, user } = useAuth();
+  const { logout, user } = useApi();
   const navigate = useNavigate();
 
   const handleLogout = () => {

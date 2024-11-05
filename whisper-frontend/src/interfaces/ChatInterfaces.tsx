@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 
 export interface Message {
+  id: string;
   content: string;
   sender: string;
-  // recipient: string;
+  recipient: string;
   // is_read: boolean;
 }
 
@@ -11,6 +12,7 @@ export interface Chat {
   id: string;
   name: string;
   messages: Message[];
+  participants: string[];
 }
 
 export interface ChatContextType {

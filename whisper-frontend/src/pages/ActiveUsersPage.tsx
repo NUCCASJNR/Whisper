@@ -1,9 +1,10 @@
-import { FC, useState } from 'react';
-import { useUsers, useChat } from '../contexts';
-import { ActiveUser, Chat } from '../interfaces';
+import { FC, useEffect, useState } from 'react';
+import { useApi } from '../contexts';
+import { ActiveUser, Chat, User } from '../interfaces';
 import { ChatDetails, ScrollBar } from '../components';
 import { Header, DoubleLayout, MainLayout } from '../layouts';
 import { FiMessageCircle, FiArrowLeft } from 'react-icons/fi';
+import avatarImg from '../assets/avatar.png';
 
 // ActiveUserCard Component
 const ActiveUserCard: FC<{
@@ -13,15 +14,14 @@ const ActiveUserCard: FC<{
   return (
     <div className="w-[11rem] bg-white rounded-lg border-secondary border-2 flex flex-col items-center transition">
       {/* User Avatar */}
-      <div
+      <img
         className="w-full h-48 rounded-t-lg bg-cover bg-center"
-        style={{ backgroundImage: `url(${user.avatar})` }}
+        src={avatarImg}
+        alt="User Avatar"
       />
       {/* Name and Bio */}
       <div className="w-full px-2 mt-2">
-        <p className="text-base font-semibold text-text mb-1">
-          {user.username}
-        </p>
+        <p className="text-base font-semibold text-text mb-1">{user.bio}</p>
         <button
           className="w-full border-2 mb-2 border-secondary font-semibold text-primary text-base px-4 py-2 rounded flex items-center justify-center hover:bg-secondary  transition"
           onClick={() => onChat(user.id)}
@@ -37,16 +37,35 @@ const ActiveUserCard: FC<{
 const ActiveUsersList: FC<{ onChat: (userId: string) => void }> = ({
   onChat,
 }) => {
-  const { users: activeUsers } = useUsers(); // useUsers provides a list of active users
+  const { fetchActiveUsers, user: currentUser } = useApi();
+  const [activeUsers, setActiveUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await fetchActiveUsers();
+      setActiveUsers(data.users);
+    })();
+  }, []);
 
   return (
     <div className="flex flex-col h-full">
       <ScrollBar>
-        <div className="flex flex-wrap gap-4">
-          {activeUsers.map((user) => (
-            <ActiveUserCard key={user.id} user={user} onChat={onChat} />
-          ))}
-        </div>
+        {activeUsers.length > 0 ? (
+          <div className="flex flex-wrap gap-4 w-full">
+            {activeUsers.map((user) => {
+              return user.id !== currentUser?.id ? (
+                <ActiveUserCard key={user.id} user={user} onChat={onChat} />
+              ) : (
+                <></>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-gray-500">
+            <p>No active users at the moment.</p>
+            <p>Check back later!</p>
+          </div>
+        )}
       </ScrollBar>
     </div>
   );
@@ -54,14 +73,22 @@ const ActiveUsersList: FC<{ onChat: (userId: string) => void }> = ({
 
 // ActiveUsersPage Component
 const ActiveUsersPage: FC = () => {
-  const { addChat } = useChat();
+  // const { addChat } = useChat();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
-  const [showSecondChild, setShowSecondChild] = useState(false); // track which child to show on mobile
+  const [showSecondChild, setShowSecondChild] = useState(false);
+  const { initiateConversation } = useApi();
 
   // Handle starting a new chat
-  const handleStartChat = (userId: string) => {
+  const handleStartChat = async (userId: string) => {
     console.log(userId);
-    const chat = addChat('New Chat', []); // Add new chat
+    const responseData = await initiateConversation(userId);
+    console.log(responseData);
+    const chat = {
+      id: '',
+      name: 'New Chat Item',
+      messages: [],
+      participants: [],
+    }; // Add new chat
     setSelectedChat(chat);
     setShowSecondChild(true); // Switch to second child on mobile
   };
@@ -75,7 +102,13 @@ const ActiveUsersPage: FC = () => {
     <MainLayout>
       <DoubleLayout
         // First Child (User List)
-        firstChild={<ActiveUsersList onChat={handleStartChat} />}
+        firstChild={
+          // <div
+          //   className={`${showSecondChild ? 'hidden sm:flex' : 'flex'} h-full`}
+          // >
+          <ActiveUsersList onChat={handleStartChat} />
+          // </div>
+        }
         firstChildHeader={
           <Header>
             <h2 className="text-xl text-primary font-bold">Active Users</h2>
@@ -87,7 +120,7 @@ const ActiveUsersPage: FC = () => {
             <ChatDetails chat={selectedChat} />
           ) : (
             <div className="p-4">
-              <h2 className="text-lg">Select a user to start chatting</h2>
+              <h2 className="text-lg">Select a user to start whispering</h2>
             </div>
           )
         }
@@ -99,7 +132,7 @@ const ActiveUsersPage: FC = () => {
             >
               <FiArrowLeft size={20} />
             </button>
-            <h2 className="text-lg font-bold">
+            <h2 className="text-lg font-bold text-primary">
               {selectedChat ? 'Chat' : 'No Active Chat'}
             </h2>
           </Header>

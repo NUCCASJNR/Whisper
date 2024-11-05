@@ -1,6 +1,6 @@
-export { default as ChangePasswordModal } from './Auth/ChangePasswordModal';
-export { default as LoginForm } from './Auth/LoginForm';
-export { default as SignUpForm } from './Auth/SignUpForm';
+export { default as ChangePasswordModal } from './Api/ChangePasswordModal';
+export { default as LoginForm } from './Api/LoginForm';
+export { default as SignUpForm } from './Api/SignUpForm';
 
 export { default as ChatBox } from './Chat/ChatBox';
 export { default as Message } from './Chat/Message';

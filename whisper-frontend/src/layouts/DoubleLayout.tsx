@@ -9,10 +9,10 @@ const DoubleLayout: FC<DoubleLayoutProps> = ({
   showSecondChild,
 }) => {
   return (
-    <div className="flex max-h-screen">
+    <div className="flex max-h-screen w-full">
       {/* Use h-screen for full height */}
       <div
-        className={`flex flex-col h-full md:w-[40%] border-transparent border-r-2 ${
+        className={`flex w-full flex-col h-full md:w-[40%] border-transparent md:border-r-2 ${
           showSecondChild ? 'hidden' : ''
         } md:block`}
       >
