@@ -3,29 +3,42 @@ import { FC, useEffect, useRef, useState } from 'react';
 // import { useChat } from '../../contexts';
 import { ChatBox, Message, ScrollBar } from '../../components';
 import { Chat, Message as MessageType } from '../../interfaces';
+import { useApi } from '../../contexts';
 
-const ChatDetails: FC<{ chat: Chat }> = ({ chat }) => {
+const ChatDetails: FC<{ chat: Chat | undefined }> = ({ chat }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
-
+  const [sender, setSender] = useState<string>('');
+  const [recipient, setRecipient] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const { user } = useApi();
 
   // Scroll to bottom whenever a new message is added
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (chat && user) {
+      const [first, second] = chat.participants;
+      setSender(user.username);
+      setRecipient(user.username === first ? second : first);
+
+      setMessages(chat.messages);
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chat]);
 
   if (!chat) {
     return <p>Chat not found.</p>;
   }
 
   const handleSendMessage = (msgText: string) => {
-    const message = {
+    const message: MessageType = {
       content: msgText,
-      sender: 'me',
-      recipient: chat.name,
-      is_read: false,
+      sender,
+      recipient,
+      id: 'someIdFromEndpoint', // Replace with actual ID logic
+      // is_read: false,
     };
     setMessages([...messages, message]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -34,8 +47,8 @@ const ChatDetails: FC<{ chat: Chat }> = ({ chat }) => {
         {/* Message container with scroll */}
         <ScrollBar>
           <div className="flex flex-col gap-2">
-            {chat.messages.map((msg, index) => (
-              <Message key={index} message={msg} />
+            {messages.map((msg) => (
+              <Message key={msg.id} message={msg} />
             ))}
             <div ref={messagesEndRef} />
           </div>

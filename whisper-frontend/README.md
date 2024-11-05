@@ -30,7 +30,7 @@
 - **Tailwind CSS**: Utility-first CSS framework for rapidly building custom UIs.
 - **React Router**: Declarative routing for React applications.
 - **React Icons**: Icon library with a variety of customizable icons.
-- **Context API**: For managing authentication and chat state globally.
+- **Context API**: For managing Apientication and chat state globally.
 
 ## Installation
 
@@ -61,7 +61,7 @@ To set up and run the project locally:
 
 ## Usage
 
-### User Authentication
+### User Apientication
 
 - Users must log in using their **username** and **password**.
 - The **Profile Page** displays the user’s public key and allows toggling "Ready to Chat" status.

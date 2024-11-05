@@ -1,11 +1,11 @@
 import { useState, FC, FormEvent } from 'react';
 import { SignupFormProps } from '../../interfaces';
-import { useAuth } from '../../contexts';
+import { useApi } from '../../contexts';
 
 const SignUpForm: FC<SignupFormProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPrivateKey] = useState<string>('');
-  const { loading } = useAuth();
+  const { loading } = useApi();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const SignUpForm: FC<SignupFormProps> = ({ onSubmit }) => {
           type="text"
           placeholder="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value.trim())}
           className="p-2 border rounded"
         />
         <input

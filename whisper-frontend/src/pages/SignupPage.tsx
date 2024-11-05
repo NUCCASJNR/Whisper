@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { useAuth } from '../contexts';
+import { useApi } from '../contexts';
 // import { useNavigate } from 'react-router-dom';
 import { AppHeader, SignUpForm } from '../components';
 
 const SignupPage: FC = () => {
-  const { signup } = useAuth();
+  const { signup } = useApi();
   // const navigate = useNavigate();
 
   const handleSubmit = async (username: string, password: string) => {
