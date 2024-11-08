@@ -93,6 +93,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             self.actual_receiver_id = self.receiver_id
         self.message_sender = await self.get_user_by_id(self.sender_id)
         self.message_receiver = await self.get_user_by_id(self.actual_receiver_id)
+        await self.send(text_data=json.dumps({"prompt": "Enter PIN for secure connection"}))
 
         re = await self.process_stored_messages(self.sender_id, self.actual_receiver_id)
         print("messages:", re)
