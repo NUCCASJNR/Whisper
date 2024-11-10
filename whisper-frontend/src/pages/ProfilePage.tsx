@@ -2,7 +2,16 @@ import { FC, useState } from 'react';
 import { useApi } from '../contexts';
 import { useNavigate } from 'react-router-dom';
 import { Header, SingleLayout } from '../layouts';
-import { FaUserCircle, FaEye, FaEyeSlash, FaEdit } from 'react-icons/fa';
+import {
+  FaUserCircle,
+  FaEye,
+  FaEyeSlash,
+  FaEdit,
+  FaSun,
+  FaMoon,
+} from 'react-icons/fa';
+import useDarkMode from '../contexts/DarkMode';
+import DarkModeToggle from '../components/DarkModeToggle';
 
 const ProfilePage: FC = () => {
   const { logout, user, updateProfile } = useApi();
@@ -15,6 +24,7 @@ const ProfilePage: FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const [isDarkMode, toggleDarkMode] = useDarkMode();
   // Store original values when editing starts
   const [initialUsername, setInitialUsername] = useState(username);
   const [initialBio, setInitialBio] = useState(userBio);
@@ -71,7 +81,7 @@ const ProfilePage: FC = () => {
       </Header>
       <div className="h-full px-4 sm:px-0">
         <div className="flex justify-center items-center h-full">
-          <div className="bg-white text-text p-6 sm:p-8 shadow-lg rounded-md w-full max-w-xs sm:max-w-md">
+          <div className="bg-white dark:bg-gray-100 text-text p-6 sm:p-8 shadow-lg rounded-md w-full max-w-xs sm:max-w-md">
             <div className="flex flex-col items-center mb-6">
               <div className="relative w-24 h-24 rounded-full overflow-hidden">
                 <FaUserCircle className="w-full h-full text-gray-300" />
@@ -160,7 +170,7 @@ const ProfilePage: FC = () => {
                 <>
                   <button
                     onClick={handleProfileUpdate}
-                    className="bg-primary text-white text-sm sm:text-base p-2 sm:p-3 rounded hover:bg-opacity-80 transition"
+                    className="bg-primary dark:bg-primary-dark text-white text-sm sm:text-base p-2 sm:p-3 rounded hover:bg-opacity-80 transition"
                   >
                     Save Changes
                   </button>

@@ -6,7 +6,7 @@ import { Footer } from '../layouts';
 
 const HomePage: FC = () => {
   return (
-    <div className="min-h-screen bg-background text-text">
+    <div className="min-h-screen bg-background text-text dark:bg-background-dark dark:text-text-dark">
       <AppHeader />
 
       {/* Content */}
@@ -14,21 +14,21 @@ const HomePage: FC = () => {
         {/* Text Section */}
         <div className="md:w-1/2 space-y-6 flex flex-col items-center md:items-start">
           <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 dark:text-white">
               The Ultimate Anonymous Platform
             </h1>
-            <p className="text-lg md:text-xl leading-relaxed">
+            <p className="text-lg md:text-xl leading-relaxed dark:text-secondary-dark">
               From strangers to friends. Made for meeting new people.
             </p>
           </div>
           <div className="space-x-4">
             <Link to="/signup">
-              <button className="bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-80 transition duration-300">
+              <button className="bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-80 transition duration-300 dark:bg-primary-dark dark:hover:bg-opacity-80">
                 Sign up
               </button>
             </Link>
             <Link to="/login">
-              <button className="bg-transparent border border-primary text-text py-2 px-6 rounded-md hover:bg-primary hover:text-white hover:bg-opacity-80 transition duration-300">
+              <button className="bg-transparent border border-primary text-text py-2 px-6 rounded-md hover:bg-primary hover:text-white hover:bg-opacity-80 transition duration-300 dark:border-primary-dark dark:text-white dark:hover:bg-primary-dark dark:hover:text-black">
                 Login
               </button>
             </Link>
@@ -40,7 +40,7 @@ const HomePage: FC = () => {
           <img
             src={whisperImg}
             alt="Whisperers"
-            className="w-full h-auto rounded-lg "
+            className="w-full h-auto rounded-lg"
           />
         </div>
       </div>

@@ -12,7 +12,7 @@ const LoginPage: FC = () => {
     // navigate('/chats');
   };
   return (
-    <div className="h-screen bg-background">
+    <div className="h-screen bg-background dark:bg-background-dark">
       <AppHeader />
       <div className="mt-12 md:mt-24 flex items-center justify-center">
         <LoginForm onSubmit={handleSubmit} />

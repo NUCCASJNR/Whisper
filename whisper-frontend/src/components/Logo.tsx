@@ -16,7 +16,7 @@ const Logo: FC = () => {
 
   return (
     <h1
-      className="font-bold cursor-pointer text-primary"
+      className="font-bold cursor-pointer text-primary dark:text-white"
       onClick={handleWhisperClick}
     >
       Whisper

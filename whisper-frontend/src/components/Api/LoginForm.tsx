@@ -16,9 +16,11 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
     <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 bg-white p-8 shadow-lg rounded-md"
+        className="flex flex-col gap-4 bg-white dark:bg-gray-100 p-8 shadow-lg rounded-md"
       >
-        <h1 className="text-xl font-bold text-primary">Login</h1>
+        <h1 className="text-xl font-bold text-primary dark:text-primary-dark">
+          Login
+        </h1>
         <input
           type="text"
           placeholder="username"
@@ -35,7 +37,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
         />
         <button
           type="submit"
-          className="bg-primary text-white p-2 rounded hover:bg-opacity-80"
+          className="bg-primary dark:bg-primary-dark text-white p-2 rounded hover:bg-opacity-80"
         >
           {loading ? 'Logging In' : 'Login'}
         </button>

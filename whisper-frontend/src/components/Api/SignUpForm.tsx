@@ -16,9 +16,11 @@ const SignUpForm: FC<SignupFormProps> = ({ onSubmit }) => {
     <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 bg-white p-8 shadow-lg rounded-md"
+        className="flex flex-col gap-4 bg-white dark:bg-gray-100 p-8 shadow-lg rounded-md"
       >
-        <h1 className="text-xl font-bold text-primary">Signup</h1>
+        <h1 className="text-xl font-bold text-primary dark:text-primary-dark">
+          Signup
+        </h1>
         <input
           type="text"
           placeholder="username"
@@ -35,7 +37,7 @@ const SignUpForm: FC<SignupFormProps> = ({ onSubmit }) => {
         />
         <button
           type="submit"
-          className="bg-primary text-white p-2 rounded hover:bg-opacity-80"
+          className="bg-primary dark:bg-primary-dark text-white p-2 rounded hover:bg-opacity-80"
         >
           {loading ? 'Signing up' : 'Signup'}
         </button>

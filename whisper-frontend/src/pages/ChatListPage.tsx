@@ -83,7 +83,7 @@ const ChatList: FC<{ chats: Chat[]; onChatClick: () => void }> = ({
           <div className="flex flex-col items-center justify-center h-full ">
             <p className="text-gray-500 mb-4">No chats found.</p>
             <Link
-              className="bg-primary text-white text-sm sm:text-base p-2 sm:p-3 rounded hover:bg-opacity-80 transition"
+              className="bg-primary dark:bg-primary-dark text-white text-sm sm:text-base p-2 sm:p-3 rounded hover:bg-opacity-80 transition"
               to="/active_users"
             >
               Start Whispering
@@ -101,7 +101,9 @@ const ChatHeader: FC = () => {
     <Header>
       <div className="flex justify-between w-full">
         <div>
-          <h2 className="text-xl text-primary font-bold">Chats</h2>
+          <h2 className="text-xl text-primary dark:text-primary-dark font-bold">
+            Chats
+          </h2>
         </div>
         <div className="text-md flex gap-2">
           <span className="rounded-full bg-background h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
@@ -232,7 +234,9 @@ const ChatListPage: FC = () => {
         }
         secondChildHeader={
           <Header>
-            <h2 className="text-lg font-bold text-primary">No Chat</h2>
+            <h2 className="text-lg font-bold text-primary dark:text-primary-dark">
+              No Chat
+            </h2>
           </Header>
         }
         showSecondChild={showSecondChild}

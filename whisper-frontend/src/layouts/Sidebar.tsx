@@ -11,12 +11,16 @@ import Header from './Header';
 import { useApi } from '../contexts';
 import avatarImg from '../assets/images/logo192.png';
 
+import DarkModeToggle from '../components/DarkModeToggle';
+
 const SidebarLink: FC<SidebarLinkPropType> = ({ to, text, isActive, Icon }) => {
   return (
     <Link
       to={to}
       className={`p-2 rounded-xl transition-colors text-text duration-200 ${
-        isActive ? 'bg-primary text-white' : 'hover:bg-secondary'
+        isActive
+          ? 'bg-primary dark:bg-primary-dark dark:text-gray-100 text-white'
+          : 'hover:bg-secondary'
       }`}
       onClick={(e) => isActive && e.preventDefault()} // Prevent navigation if it's active
     >
@@ -51,7 +55,7 @@ const Sidebar: FC = () => {
       </Header>
 
       {/* Sidebar Links Section (This will take the remaining height) */}
-      <nav className="flex-grow flex flex-col justify-between bg-white border-transparent">
+      <nav className="flex-grow flex flex-col justify-between bg-white dark:bg-gray-100 border-transparent">
         <div className="flex flex-col gap-4 px-5 py-8">
           <SidebarLink
             to="/chats"
@@ -73,24 +77,26 @@ const Sidebar: FC = () => {
             Icon={FaUser}
           />
         </div>
-
-        {/* Add any other content that should be at the bottom here */}
-        <div className="px-5 py-4 flex items-center gap-4">
-          <img
-            src={avatarImg} // Update this to the path for the user's avatar
-            alt="User avatar"
-            className="w-10 h-10 rounded-full"
-          />
-          <div className="flex flex-col">
-            <span className="text-lg text-text">{user?.username}</span>
-            <button
-              onClick={handleLogout}
-              className="text-sm text-text hover:text-red-700"
-            >
-              Logout
-            </button>
+        <div>
+          <DarkModeToggle />
+          <div className="px-5 py-4 flex items-center gap-4">
+            <img
+              src={avatarImg} // Update this to the path for the user's avatar
+              alt="User avatar"
+              className="w-10 h-10 rounded-full"
+            />
+            <div className="flex flex-col">
+              <span className="text-lg text-text">{user?.username}</span>
+              <button
+                onClick={handleLogout}
+                className="text-sm text-text hover:text-red-700"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
+        {/* Add any other content that should be at the bottom here */}
       </nav>
     </aside>
   );
