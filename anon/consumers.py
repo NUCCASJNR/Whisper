@@ -107,7 +107,6 @@ class MessageConsumer(AsyncWebsocketConsumer):
         try:
             print(f"Json: {text_data}")
             text_data_json = json.loads(text_data)
-            
             if "pin" in text_data_json:
                 pin = text_data_json.get("pin")
                 logger.debug("Checking if conversation exists between sender and receiver")
