@@ -24,11 +24,17 @@ class Conversation(BaseModel):
 
     def set_pin(self, user_id: str, pin: str):
         """
-        Encrypts and stores a user' pin in the user_pins JSON field
+        Encrypts and stores a user's PIN in the user_pins JSON field
         """
-        encrypted_pin = cipher.encrypt(pin.encode()).decode()
-        self.user_pins[str(str(user_id))] = encrypted_pin
-        self.save()
+        try:
+            encrypted_pin = cipher.encrypt(str(pin).encode()).decode()
+            # Update the user_pins field
+            self.user_pins[str(user_id)] = encrypted_pin
+            # Use custom_save to persist the updated instance
+            Conversation.custom_save(instance=self, user_pins=self.user_pins)
+            return True
+        except Exception as e:
+            return f"An error occurred: {e}"
 
     def verify_pin(self, user_id: str, pin: str) -> bool:
         """
@@ -39,7 +45,8 @@ class Conversation(BaseModel):
             return False
         try:
             decrypted_pin = cipher.decrypt(encrypted_pin.encode()).decode()
-            return decrypted_pin == pin
+            print(f"Decrypted pin: {decrypted_pin} Type: {type(decrypted_pin)}")
+            return decrypted_pin == str(pin)
         except Exception:
             return False
 

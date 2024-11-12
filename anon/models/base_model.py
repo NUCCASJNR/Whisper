@@ -24,13 +24,22 @@ class BaseModel(models.Model):
         abstract = True
 
     @classmethod
-    def custom_save(cls, **kwargs: Dict[str, Any]):
+    def custom_save(cls, instance=None, **kwargs):
         """
-        Saves an instance of the class
+        Saves an instance of the class. If an instance is provided, update it;
+        otherwise, create a new instance.
         """
-        # cls.updated_at = datetime.now()
-        instance = cls.objects.create(**kwargs)
-        return instance
+        if instance:
+            # Updating fields in an existing instance
+            for key, value in kwargs.items():
+                setattr(instance, key, value)
+            instance.updated_at = timezone.now()  # Optional: Update timestamp
+            instance.save()
+            return instance
+        else:
+            # Creating a new instance
+            instance = cls.objects.create(**kwargs)
+            return instance
 
     @classmethod
     def custom_get(cls, **kwargs):
