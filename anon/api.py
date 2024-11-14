@@ -353,8 +353,8 @@ def get_conversations(request):
                         "messages": [
                             {
                                 "id": message.id,
-                                "sender": message.sender.username,
-                                "receiver": message.receiver.username,
+                                "sender": message.sender.id,
+                                "receiver": message.receiver.id,
                                 "content": message.content,
                             }
                             for message in conversation.messages.all()

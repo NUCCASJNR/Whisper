@@ -339,3 +339,4 @@ else:
             },
         },
     }
+CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
