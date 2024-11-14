@@ -15,7 +15,7 @@ class Conversation(BaseModel):
     Conversation Model
     """
 
-    name = models.CharField(max_length=150, unique=True)
+    name = models.CharField(max_length=150, default="WHISPER")
     participants = models.ManyToManyField(MainUser, related_name="conversations")
     user_pins = models.JSONField(default=dict)
 
