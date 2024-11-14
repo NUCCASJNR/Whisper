@@ -9,7 +9,7 @@ const DarkModeToggle: FC = () => {
     <div className="flex justify-center">
       <button
         onClick={toggleDarkMode}
-        className="relative flex items-center justify-between w-16 h-8 p-1 rounded-full bg-background dark:bg-background-dark transition duration-300"
+        className="relative flex items-center justify-between w-16 h-8 p-1 rounded-full bg-secondary dark:bg-secondary-dark transition duration-300"
       >
         {/* Sun and Moon icons */}
         <FaMoon

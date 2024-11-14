@@ -21,7 +21,7 @@ const DoubleLayout: FC<DoubleLayoutProps> = ({
           {/* Set a specific height for the header */}
           {firstChildHeader}
         </div>
-        <div className="flex-grow p-4 bg-white dark:bg-gray-100 h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)]">
+        <div className="flex-grow p-4 bg-white dark:bg-background-dark h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)]">
           {/* Use flex-grow to fill remaining space */}
           {firstChild}
         </div>
@@ -36,7 +36,7 @@ const DoubleLayout: FC<DoubleLayoutProps> = ({
           {/* Set a specific height for the header */}
           {secondChildHeader}
         </div>
-        <div className="flex-grow h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)]">
+        <div className="flex-grow h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] bg-white dark:bg-background-dark">
           {secondChild}
         </div>
         {/* Use flex-grow to fill remaining space */}

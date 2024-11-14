@@ -101,15 +101,15 @@ const ChatHeader: FC = () => {
     <Header>
       <div className="flex justify-between w-full">
         <div>
-          <h2 className="text-xl text-primary dark:text-primary-dark font-bold">
+          <h2 className="text-xl text-primary dark:text-text-dark font-bold">
             Chats
           </h2>
         </div>
         <div className="text-md flex gap-2">
-          <span className="rounded-full bg-background h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
+          <span className="rounded-full bg-background dark:bg-gray-100 dark:text-black h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
             <FiEdit size={16} />
           </span>
-          <span className="rounded-full bg-background h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
+          <span className="rounded-full bg-background dark:bg-gray-100 dark:text-black h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
             <FiSearch size={16} />
           </span>
         </div>
@@ -234,7 +234,7 @@ const ChatListPage: FC = () => {
         }
         secondChildHeader={
           <Header>
-            <h2 className="text-lg font-bold text-primary dark:text-primary-dark">
+            <h2 className="text-lg font-bold text-primary dark:text-text-dark">
               No Chat
             </h2>
           </Header>

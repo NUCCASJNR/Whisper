@@ -4,7 +4,7 @@ import { SingleLayoutProps } from '../interfaces';
 
 const SingleLayout: FC<SingleLayoutProps> = ({ children }) => {
   return (
-    <div className="bg-background dark:bg-background-dark text-text h-[625px]">
+    <div className="bg-background dark:bg-background-dark text-text h-[800px]">
       {children}
     </div>
   );

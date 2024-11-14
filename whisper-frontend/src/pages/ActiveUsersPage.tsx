@@ -111,7 +111,7 @@ const ActiveUsersPage: FC = () => {
         }
         firstChildHeader={
           <Header>
-            <h2 className="text-xl text-primary dark:text-primary-dark font-bold">
+            <h2 className="text-xl text-primary dark:text-text-dark font-bold">
               Active Users
             </h2>
           </Header>
@@ -134,7 +134,7 @@ const ActiveUsersPage: FC = () => {
             >
               <FiArrowLeft size={20} />
             </button>
-            <h2 className="text-lg font-bold text-primary dar:text-primary-dark">
+            <h2 className="text-lg font-bold text-primary dark:text-text-dark">
               {selectedChat ? 'Chat' : 'No Active Chat'}
             </h2>
           </Header>

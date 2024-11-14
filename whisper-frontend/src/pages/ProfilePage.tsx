@@ -2,16 +2,7 @@ import { FC, useState } from 'react';
 import { useApi } from '../contexts';
 import { useNavigate } from 'react-router-dom';
 import { Header, SingleLayout } from '../layouts';
-import {
-  FaUserCircle,
-  FaEye,
-  FaEyeSlash,
-  FaEdit,
-  FaSun,
-  FaMoon,
-} from 'react-icons/fa';
-import useDarkMode from '../contexts/DarkMode';
-import DarkModeToggle from '../components/DarkModeToggle';
+import { FaUserCircle, FaEye, FaEyeSlash, FaEdit } from 'react-icons/fa';
 
 const ProfilePage: FC = () => {
   const { logout, user, updateProfile } = useApi();
@@ -24,7 +15,6 @@ const ProfilePage: FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [isDarkMode, toggleDarkMode] = useDarkMode();
   // Store original values when editing starts
   const [initialUsername, setInitialUsername] = useState(username);
   const [initialBio, setInitialBio] = useState(userBio);

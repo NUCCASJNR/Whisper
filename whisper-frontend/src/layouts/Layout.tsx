@@ -12,7 +12,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <>
       {user ? (
-        <div className="flex h-screen overflow-y-clip bg-background dark:bg-background-dark relative">
+        <div className="flex h-screen overflow-y-clip bg-background dark:bg-gray-100 relative">
           {/* Mobile Sidebar Toggle */}
 
           {/* Overlay */}
