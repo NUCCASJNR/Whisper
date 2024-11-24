@@ -5,7 +5,6 @@ import logging
 from django.contrib.auth import authenticate, login
 from ninja import NinjaAPI, Router
 from rest_framework_simplejwt.tokens import RefreshToken
-from ninja import UploadedFile, File, Form, Body
 
 from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
@@ -25,11 +24,9 @@ from anon.schemas import (
     PermissionSchema,
     ProfileResponseSchema,
     StatusSchema,
-    UpdateProfileSchema,
     UserCreateSchema,
     WhisperResponseSchema,
-    WhisperSchema,
-    Optional
+    WhisperSchema
 )
 
 logger = logging.getLogger("apps")
