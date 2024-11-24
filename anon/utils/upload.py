@@ -4,7 +4,6 @@
 
 import logging
 
-from anon.models.user import MainUser
 from cloudinary.uploader import upload
 
 logger = logging.getLogger("apps")

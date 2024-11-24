@@ -2,7 +2,7 @@
 """Contains user related schemas definition"""
 from typing import Any, List, Optional
 
-from ninja import Schema, File, UploadedFile, Form, Body
+from ninja import Schema, File, UploadedFile, Form
 from pydantic import BaseModel, model_validator
 
 
