@@ -4,5 +4,6 @@
 .linux-venv
 **/__pycache__/
 /.app.log
-logs/djnago.log
-anon/migrations
+logs/
+djnago.log
+dump.rdb
