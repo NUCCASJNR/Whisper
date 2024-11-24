@@ -107,7 +107,7 @@ def list_active_users(request):
         if users.exists():
             exclude_user_id = str(current_user.id)
             users_info = {
-                str(user.id): {"id": str(user.id), "bio": user.bio}
+                str(user.id): {"id": str(user.id), "bio": user.bio, "profile_picture": user.profile_pic.url}
                 for user in users
                 if str(user.id) != exclude_user_id
             }
@@ -231,7 +231,7 @@ def profile(request):
                 "username": user.username,
                 "id": str(user.id),
                 "ready_to_chat": user.ready_to_chat,
-                "profile_picture": user.profile_pic
+                "profile_picture": user.profile_pic.url
             }
         else:
             logger.warning(f"No user found with ID {current_user.id}")

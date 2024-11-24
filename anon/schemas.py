@@ -102,7 +102,7 @@ class ProfileResponseSchema(Schema):
     username: str
     ready_to_chat: bool
     id: str
-    profile_picture: str
+    profile_picture: Optional[str]
 
 
 class UpdateProfileSchema(Schema):
