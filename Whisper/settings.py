@@ -73,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",  # Message framework
     "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Clickjacking prevention
     "honeybadger.contrib.DjangoHoneybadgerMiddleware",
+    "anon.middleware.PutAsPostMiddleware"
 ]
 
 if MODE == "PRODUCTION":
@@ -340,3 +341,4 @@ else:
         },
     }
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000

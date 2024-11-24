@@ -4,6 +4,7 @@
 
 from typing import Union
 
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 
@@ -27,6 +28,7 @@ class MainUser(AbstractUser, BaseModel):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=100)
     ready_to_chat = models.BooleanField(default=False)
+    profile_pic = CloudinaryField('image', null=True, blank=True, max_length=512)
     bio = models.TextField()
 
     class Meta:

@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from anon.auth import AccessTokenAuth, CustomJWTAuth
 from anon.models.token import BlacklistedToken
 from anon.utils.generator import generate_websocket_url
+from anon.utils.upload import upload_profile_pic
 
 from anon.models.user import MainUser
 from anon.models.message import Conversation
@@ -23,10 +24,9 @@ from anon.schemas import (
     PermissionSchema,
     ProfileResponseSchema,
     StatusSchema,
-    UpdateProfileSchema,
     UserCreateSchema,
     WhisperResponseSchema,
-    WhisperSchema,
+    WhisperSchema
 )
 
 logger = logging.getLogger("apps")
@@ -104,7 +104,7 @@ def list_active_users(request):
         if users.exists():
             exclude_user_id = str(current_user.id)
             users_info = {
-                str(user.id): {"id": str(user.id), "bio": user.bio}
+                str(user.id): {"id": str(user.id), "bio": user.bio, "profile_picture": user.profile_pic.url}
                 for user in users
                 if str(user.id) != exclude_user_id
             }
@@ -228,6 +228,7 @@ def profile(request):
                 "username": user.username,
                 "id": str(user.id),
                 "ready_to_chat": user.ready_to_chat,
+                "profile_picture": user.profile_pic.url
             }
         else:
             logger.warning(f"No user found with ID {current_user.id}")
@@ -237,53 +238,73 @@ def profile(request):
         return 500, {"error": str(e), "status": 500}
 
 
-@api.put(
+@api.api_operation(
+    ["POST", "PUT"],
     "/update-profile",
     auth=AccessTokenAuth(),
     response={
         200: MessageSchema,
         400: ErrorSchema,
         403: ErrorSchema,
-        404: ErrorSchema,
         500: ErrorSchema,
     },
 )
-def update_profile(request, payload: UpdateProfileSchema):
-    """
-    API view for updating user profile
-    """
+def update_profile(request):
+    logger.info(f"Request POST data: {request.POST}")
+    logger.info(f"Request FILES data: {request.FILES}")
     current_user = request.auth
-    payload_data = payload.dict()
-    if current_user is None:
-        return 400, {"error": "Invalid or expired token", "status": 400}
+    if not current_user.is_authenticated:
+        return 403, {"error": "Unauthorized", "status": 403}
 
     try:
-        user = MainUser.objects.get(id=current_user.id)
+        user = MainUser.custom_get(**{'id': current_user.id})
         if user:
-            logger.info(f"Payload Keys: {payload_data}")
-            update_kwargs = {
-                key: value for key, value in payload_data.items() if value is not None
-            }
-            if "username" in update_kwargs.keys():
-                existing_user = MainUser.objects.filter(
-                    username=update_kwargs.get("username")
-                )
-                if existing_user:
-                    return 400, {"error": "User with username Exists", "status": 400}
-                # Update the user with the filtered data
+            # Extract form data and files
+            username = request.POST.get("username")
+            chat = request.POST.get("ready_to_chat")
+            password = request.POST.get("password")
+            profile_picture = request.FILES.get("profile_picture")
+            bio = request.POST.get("bio")
+
+            logger.info(f"{username}: {chat}: {password}: {profile_picture}: {bio}")
+
+            # Prepare update fields
+            update_kwargs = {}
+            if username:
+                update_kwargs["username"] = username
+            if chat:
+                update_kwargs["ready_to_chat"] = chat
+            if password:
+                update_kwargs["password"] = password
+            if bio:
+                update_kwargs["bio"] = bio
+
+            if profile_picture:
+                try:
+                    file_data = profile_picture.read()
+                    result = upload_profile_pic(file_data, str(user.id))
+                    update_kwargs["profile_pic"] = result
+                except Exception as e:
+                    logger.error(f"Image upload failed: {e}")
+                    return 500, {"error": "Image upload failed", "status": 500}
+
+            # Check if email is unique
+            if "username" in update_kwargs:
+                existing_user = MainUser.objects.filter(username=update_kwargs["username"])
+                if existing_user.exists():
+                    return 400, {"error": "User with this username already exists", "status": 400}
+            logger.info(f"Updated Kwargs: {update_kwargs}")
+            # Update user fields
+            if update_kwargs:
                 MainUser.custom_update(
                     filter_kwargs={"id": current_user.id}, update_kwargs=update_kwargs
                 )
                 return 200, {"message": "Profile successfully updated.", "status": 200}
             else:
-                MainUser.custom_update(
-                    filter_kwargs={"id": current_user.id}, update_kwargs=update_kwargs
-                )
-                return 200, {"message": "Profile successfully updated.", "status": 200}
-        else:
-            return 404, {"error": "No such user found", "status": 404}
+                return 400, {"error": "No fields to update.", "status": 400}
+
     except Exception as e:
-        logger.error(f"Error updating user {current_user.id} Profile: {str(e)}")
+        logger.error(f"An error occurred: {e}")
         return 500, {"error": str(e), "status": 500}
 
 

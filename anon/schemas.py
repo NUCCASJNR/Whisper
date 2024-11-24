@@ -2,7 +2,7 @@
 """Contains user related schemas definition"""
 from typing import Any, List, Optional
 
-from ninja import Schema
+from ninja import Schema, File, UploadedFile, Form
 from pydantic import BaseModel, model_validator
 
 
@@ -102,21 +102,26 @@ class ProfileResponseSchema(Schema):
     username: str
     ready_to_chat: bool
     id: str
+    profile_picture: Optional[str]
 
 
 class UpdateProfileSchema(Schema):
-    """Schema for updating user profile
+    """
+    Schema for updating user profile.
+
     Args:
-        Schema ([type]): [description]
-        password ([type]): [description]
-        username ([type]): [description]
-        bio ([type]): [description]
+        password: User's password (optional).
+        username: User's username (optional).
+        bio: User's biography (optional).
+        ready_to_chat: Status if user is ready to chat (optional).
+        profile_picture: User's profile picture (optional).
     """
 
-    password: Optional[Any] = None
-    username: Optional[str] = None
-    bio: Optional[str] = None
-    ready_to_chat: Optional[bool] = None
+    password: Optional[str] = Form(None)
+    username: Optional[str] = Form(None)
+    bio: Optional[str] = Form(None)
+    ready_to_chat: Optional[bool] = Form(None)
+    profile_picture: Optional[UploadedFile] = File(None)
 
 
 class WhisperSchema(Schema):
