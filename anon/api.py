@@ -267,10 +267,9 @@ def update_profile(request):
             chat = request.POST.get("ready_to_chat")
             password = request.POST.get("password")
             profile_picture = request.FILES.get("profile_picture")
-            bio = request.FILES.get("bio")
+            bio = request.POST.get("bio")
 
-            logger.info(f"Received data - Name: {username}, chat:\
-                {chat}, Password: {password}, Profile Picture: {profile_picture}")
+            logger.info(f"{username}: {chat}: {password}: {profile_picture}: {bio}")
 
             # Prepare update fields
             update_kwargs = {}
@@ -287,7 +286,7 @@ def update_profile(request):
                 try:
                     file_data = profile_picture.read()
                     result = upload_profile_pic(file_data, str(user.id))
-                    update_kwargs["profile_picture"] = result
+                    update_kwargs["profile_pic"] = result
                 except Exception as e:
                     logger.error(f"Image upload failed: {e}")
                     return 500, {"error": "Image upload failed", "status": 500}
@@ -297,7 +296,7 @@ def update_profile(request):
                 existing_user = MainUser.objects.filter(username=update_kwargs["username"])
                 if existing_user.exists():
                     return 400, {"error": "User with this username already exists", "status": 400}
-
+            logger.info(f"Updated Kwargs: {update_kwargs}")
             # Update user fields
             if update_kwargs:
                 MainUser.custom_update(
