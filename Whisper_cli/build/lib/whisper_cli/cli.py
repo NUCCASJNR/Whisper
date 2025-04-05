@@ -1,10 +1,12 @@
 import argparse
-from whisper_cli.api import WhisperAPI
 import logging
 import sys
 
+from whisper_cli.api import WhisperAPI
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def handle_login(api, username, password):
@@ -25,7 +27,7 @@ def handle_ready_to_chat(api, username):
     """
     Handle setting user ready-to-chat option.
     """
-    user_input = input('Type Yes/Y to Turn ON and No/N to Turn OFF: ')
+    user_input = input("Type Yes/Y to Turn ON and No/N to Turn OFF: ")
     try:
         api.ready_to_chat(username, user_input)
     except Exception as e:
@@ -39,7 +41,7 @@ def handle_profile(api, username):
     """
     if not username:
         logging.error("Username is required to fetch profile.")
-        sys.exit(1) 
+        sys.exit(1)
     try:
         api.profile(username)
     except Exception as e:
@@ -53,7 +55,7 @@ def handle_active_users(api, username):
     """
     if not username:
         logging.error("Username is required to list active users.")
-        sys.exit(1)    
+        sys.exit(1)
     try:
         api.list_online_users(username)
     except Exception as e:
@@ -81,29 +83,33 @@ def main():
     Main function to handle CLI commands.
     """
     parser = argparse.ArgumentParser(description="Whisper CLI Tool")
-    parser.add_argument('command', choices=['login', 'ready_to_chat', 'signup', 'profile', 'active_users'], help='Command to run')
+    parser.add_argument(
+        "command",
+        choices=["login", "ready_to_chat", "signup", "profile", "active_users"],
+        help="Command to run",
+    )
 
-    parser.add_argument('--username', help='Your username', required=True)
-    parser.add_argument('--password', help='Your password')
+    parser.add_argument("--username", help="Your username", required=True)
+    parser.add_argument("--password", help="Your password")
 
     args = parser.parse_args()
     api = WhisperAPI()
 
     # Command handling
-    if args.command == 'login':
+    if args.command == "login":
         handle_login(api, args.username, args.password)
 
     elif args.command == "ready_to_chat":
         handle_ready_to_chat(api, args.username)
 
-    elif args.command == 'profile':
+    elif args.command == "profile":
         handle_profile(api, args.username)
-    elif args.command == 'active_users':
+    elif args.command == "active_users":
         handle_active_users(api, args.username)
 
-    elif args.command == 'signup':
+    elif args.command == "signup":
         handle_signup(api, args.username, args.password)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,14 +1,15 @@
-from setuptools import setup, find_packages
 import os
 
-readme_path = os.path.join(os.path.dirname(__file__), '..', 'README.md')
+from setuptools import find_packages, setup
+
+readme_path = os.path.join(os.path.dirname(__file__), "..", "README.md")
 
 with open(readme_path, "r", encoding="utf-8") as readme_file:
     long_description = readme_file.read()
 
 setup(
     name="whisper-chat",
-    version="1.0.7",
+    version="1.0.9",
     author="nuccasjr",
     author_email="alareefadegbite@gmail.com",
     description=(
@@ -20,13 +21,10 @@ setup(
     url="https://github.com/NUCCASJNR/Whisper",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     include_package_data=True,
-    install_requires=[
-        "requests>=2.25.1",
-        "python-dotenv"
-    ],
+    install_requires=["requests>=2.25.1", "python-dotenv"],
     entry_points={
-        'console_scripts': [
-            'whisper=whisper_cli.cli:main',
+        "console_scripts": [
+            "whisper=whisper_cli.cli:main",
         ],
     },
     classifiers=[
@@ -42,10 +40,10 @@ setup(
         "Operating System :: OS Independent",
     ],
     keywords="anonymous-chat cli secure-communication",
-    python_requires='>=3.6',
+    python_requires=">=3.6",
     project_urls={
-        'Documentation': 'https://github.com/NUCCASJNR/Whisper/tree/main/docs',
-        'Source': 'https://github.com/NUCCASJNR/Whisper',
-        'Tracker': 'https://github.com/NUCCASJNR/Whisper/issues',
+        "Documentation": "https://github.com/NUCCASJNR/Whisper/tree/main/docs",
+        "Source": "https://github.com/NUCCASJNR/Whisper",
+        "Tracker": "https://github.com/NUCCASJNR/Whisper/issues",
     },
 )

@@ -1,0 +1,83 @@
+name: Lint And Test CI
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m pip install pycodestyle flake8 isort black pytest python-dotenv
+
+      - name: Lint with pycodestyle
+        run: |
+          pycodestyle .
+
+      - name: Lint with flake8
+        run: |
+          flake8 .
+
+      - name: Check code style with black
+        run: |
+          black .
+
+      - name: Sort imports with isort
+        run: |
+          isort .
+
+      - name: Test with pytest
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          pytest
+
+# Uncomment if you want to add database migrations before testing
+#      - name: Run migrations
+#        env:
+#          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#          DEV_PORT: ${{ secrets.DEV_PORT }}
+#          DEV_NAME: ${{ secrets.DEV_NAME }}
+#          DEV_USER: ${{ secrets.DEV_USER }}
+#          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+#          DEV_HOST: ${{ secrets.DEV_HOST }}
+#        run: |
+#          python3 manage.py migrate
+
+# Uncomment if you want to test with environment variables
+#      - name: Test with pytest
+#        env:
+#          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#          DEV_PORT: ${{ secrets.DEV_PORT }}
+#          DEV_NAME: ${{ secrets.DEV_NAME }}
+#          DEV_USER: ${{ secrets.DEV_USER }}
+#          DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+#          DEV_HOST: ${{ secrets.DEV_HOST }}
+#        run: |
+#          pytest

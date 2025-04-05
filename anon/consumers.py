@@ -25,14 +25,18 @@ Methods:
 
 import json
 import logging
-from channels.generic.websocket import AsyncWebsocketConsumer
-from rest_framework_simplejwt.tokens import AccessToken
-from asgiref.sync import sync_to_async
-from django.db.models import Q
-from anon.models.message import MainUser, PlainTextMessage
 from datetime import datetime
 
-logging.basicConfig(level=logging.DEBUG, filename='app.log')
+from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework_simplejwt.tokens import AccessToken
+
+from anon.models.key import PublicKeyDirectory
+from anon.models.message import Conversation, MainUser, Message
+
+logger = logging.getLogger("apps")
 
 
 class MessageConsumer(AsyncWebsocketConsumer):
@@ -45,81 +49,115 @@ class MessageConsumer(AsyncWebsocketConsumer):
         Connect method
         :return: Nothing
         """
-        self.receiver_id = self.scope['url_route']['kwargs']['receiver_id']
-        self.sender_id = self.scope['url_route']['kwargs']['sender_id']
-        token = self.scope.get("query_string").decode().split("Bearer%20")[1]
-        auth_info = await self.get_auth_info(token)
+        self.receiver_id = self.scope["url_route"]["kwargs"]["receiver_id"]
+        self.sender_id = self.scope["url_route"]["kwargs"]["sender_id"]
+        headers = self.scope.get("headers")
+        token = await self.extract_auth_token(headers)
+        logger.info(f"Type of Headers: {type(headers)}")
+        logger.info(f"Extraction Result: {token}")
+        logger.info(f"B: {b'authorization' in dict(headers)}")
 
-        if not auth_info['status']:
+        if not token:
+            logger.error("Authorization header not found.")
+            await self.close(code=4002)
+            return None
+        else:
+            auth_info = await self.get_auth_info(token)
+            logger.debug(f"Auth Info: {auth_info}")
+
+        if not auth_info["status"]:
             await self.close()
             return f'Error: {auth_info["response"]}'
 
-        self.user_id = auth_info.get('user_id', None)
-        self.user = await self.get_user_by_id(auth_info['user_id'])
+        self.user_id = auth_info.get("user_id", None)
+        self.user = await self.get_user_by_id(auth_info["user_id"])
 
         if not self.user:
             await self.close()
-            return 'Error: User not found'
+            return "Error: User not found"
 
-        self.room_group_name = f"chat_{self.sender_id}_{self.receiver_id}"
+        self.group_names = [
+            f"chat_{self.sender_id}_{self.receiver_id}",
+            f"chat_{self.receiver_id}_{self.sender_id}",
+        ]
 
-        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        for group_name in self.group_names:
+            await self.channel_layer.group_add(group_name, self.channel_name)
+            logger.info(f"Room Group Name: {group_name}")
         await self.accept()
+        logger.info(f"Types: {type(self.sender_id)}: {type(self.receiver_id)}: {type(self.user.id)}")
 
         # Determine sender and receiver roles
         if str(self.user.id) == self.receiver_id:
             self.actual_receiver_id = self.sender_id
+        elif str(self.user.id) == self.sender_id:
+            self.actual_receiver_id = self.receiver_id
         else:
             self.actual_receiver_id = self.receiver_id
-
-        re = await self.process_stored_messages(str(self.user.id), self.actual_receiver_id)
-        print("messages:", re)
-
-    async def disconnect(self, close_code):
-        """
-        Disconnect method
-        :param close_code: Close code
-        :return:
-        """
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        self.message_sender = await self.get_user_by_id(self.sender_id)
+        self.message_receiver = await self.get_user_by_id(self.actual_receiver_id)
+        logger.info(f"Sender: {self.message_sender} Receiver: {self.message_receiver}")
+        self.pin_verified = False
+        await self.send(text_data=json.dumps({"prompt": "Enter PIN for secure connection"}))
 
     async def receive(self, text_data):
         """
-        Receives incoming messages
-        :param text_data: Incoming message
-        :return: Processed messages
+        Receives incoming messages and handles PIN verification or creation.
         """
         try:
+            print(f"Json: {text_data}")
             text_data_json = json.loads(text_data)
-            message = text_data_json["message"]
-            sender = text_data_json.get("sender", self.user.username)
-            if str(self.user.id) == self.sender_id:
-                self.message_sender = self.sender_id
-                self.message_receiver = self.receiver_id
-            elif str(self.user.id) == self.receiver_id:
-                self.message_sender = self.receiver_id
-                self.message_receiver = self.sender_id
-            else:
-                logging.error("User ID does not match sender or receiver")
-                return
-            response = await self.save_message(message, self.message_sender, self.message_receiver)
-            if response is not None:
-                obj = datetime.fromisoformat(str(response.updated_at))
-                time = obj.strftime("%A, %d %B %Y, %I:%M %p")
-                await self.channel_layer.group_send(
-                    self.room_group_name, {
-                        "type": "chat.message",
-                        "message": message,
-                        "sender": sender,
-                        "time": time
-                    }
-                )
-            else:
-                logging.error("Failed to save message")
-        except json.decoder.JSONDecodeError:
-            logging.warning("Received an empty or invalid JSON message")
+            if "pin" in text_data_json:
+                pin = text_data_json.get("pin")
+                logger.debug("Checking if conversation exists between sender and receiver")
+                conversation_exists = await self.conversation_exists(self.message_sender, self.message_receiver)
+                logger.debug(f"Conversation exists: {conversation_exists}")
+
+                if conversation_exists:
+                    # Existing conversation - verify PIN
+                    if await self.verify_pin(self.user_id, pin):
+                        await self.send(text_data=json.dumps({"status": "PIN verified"}))
+                        logger.info("PIN verified")
+                        self.pin_verified = True
+                        await self.process_stored_messages(self.sender_id, self.actual_receiver_id)
+                    else:
+                        await self.send(text_data=json.dumps({"status": "PIN verification failed"}))
+                else:
+                    convo_res = await self.get_or_create_conversation(str(self.user.id), self.receiver_id)
+                    logger.debug(f"Conversation result: {convo_res}")
+                    logger.info(f"Message Sender: {self.user.id} and receiver: {self.receiver_id}")
+                    res = await self.set_pin(self.user.id, pin)
+                    logger.debug(f"Pin set result: {res}")
+                    self.pin_verified = True
+                    await self.send(text_data=json.dumps({"status": "New conversation created and PIN set"}))
+
+            if self.pin_verified:
+                message = text_data_json["message"]
+                logger.info(f"Message: {message}")
+                message = await self.save_message_async(message)
+                if message:
+                    obj = datetime.fromisoformat(str(message.updated_at))
+                    time = obj.strftime("%A, %d %B %Y, %I:%M %p")
+                    await self.channel_layer.group_send(
+                        f"chat_{self.sender_id}_{self.receiver_id}",
+                        {
+                            "type": "chat_message",
+                            "message": message.content,
+                            "sender": message.sender.username,
+                            "time": time,
+                        },
+                    )
+                    await self.channel_layer.group_send(
+                        f"chat_{self.receiver_id}_{self.sender_id}",
+                        {
+                            "type": "chat_message",
+                            "message": message.content,
+                            "sender": message.sender.username,
+                            "time": time,
+                        },
+                    )
         except Exception as e:
-            logging.error(f"Error processing received message: {e}")
+            logger.error(f"Error receiving message: {str(e)}")
 
     async def chat_message(self, event):
         """
@@ -129,12 +167,154 @@ class MessageConsumer(AsyncWebsocketConsumer):
         """
         message = event["message"]
         sender = event["sender"]
-        logging.info("Sending message '%s' from sender '%s' to room '%s'", message, sender, self.room_group_name)
-        await self.send(text_data=json.dumps({
-            "message": message,
-            "sender": sender,
-            "time": event["time"]
-        }))
+        logger.info(f"sender: {sender} message{message}")
+        # for group_name in self.group_names:
+        await self.send(
+            text_data=json.dumps(
+                {"message": message, "sender": sender, "time": event["time"]}
+            )
+        )
+
+    @database_sync_to_async
+    def get_stored_messages_sync(self, user_1, user_2):
+        """
+        Synchronously get all the stored previous messages in a conversation
+        """
+        try:
+            conversation = (
+                Conversation.objects.filter(participants=user_1)
+                .filter(participants=user_2)
+                .distinct()
+                .first()
+            )
+            if conversation:
+                messages = Message.objects.filter(conversation_id=conversation.id)
+                print(messages)
+                return list(messages)
+            else:
+                return []
+        except ValueError:
+            logging.info("These users don't have previous chats")
+            return []
+
+    async def get_stored_messages(self, user1, user_2):
+        """
+        Asynchronously fetch stored messages by calling the sync method
+        """
+        messages = await self.get_stored_messages_sync(user1, user_2)
+        return messages
+
+    async def process_stored_messages(self, user_1, user_2):
+        """
+        Process the stored messages and display them upon successful connection
+        """
+        messages = await self.get_stored_messages(user_1, user_2)
+        for message in messages:
+            obj = datetime.fromisoformat(str(message.updated_at))
+            time = obj.strftime("%A, %d %B %Y, %I:%M %p")
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "message": message.content,
+                        "time": time,
+                    }
+                )
+            )
+
+    @database_sync_to_async
+    def confirm_convo_participant(self, user_id, convo_id):
+        """
+        Confirms if a user is a participant in a conversation before granting access.
+        """
+        convo = Conversation.custom_get(id=convo_id)
+
+        if convo:
+            if convo.participants.filter(id=user_id).exists():
+                return True
+            else:
+                return False
+        return False
+
+    @database_sync_to_async
+    def get_or_create_conversation(self, user_1, user_2):
+        """
+        Get or create a conversation between two users.
+        :param user_1: User instance (first participant)
+        :param user_2: User instance (second participant)
+        :return: Conversation object
+        """
+        try:
+            # Get an existing conversation where both users are participants
+            conversation = (
+                Conversation.objects.filter(participants=user_1)
+                .filter(participants=user_2)
+                .distinct()
+                .first()
+            )
+
+            if conversation:
+                return conversation
+            else:
+                # If no conversation exists, create a new one
+                conversation = Conversation.objects.create()
+                conversation.participants.add(user_1, user_2)
+                conversation.save()
+                return conversation
+        except Exception as e:
+            logging.error(f"Error creating or retrieving conversation: {e}")
+            return None
+
+    @database_sync_to_async
+    def conversation_exists(self, user_1, user_2):
+        """
+        Check if a conversation exists between two users
+        :param user_1: User instance (first participant)
+        :param user_2: User instance (second participant)
+        :return: True if conversation exists, else False
+        """
+        try:
+            conversation = (
+                Conversation.objects.filter(participants=user_1)
+                .filter(participants=user_2)
+                .distinct()
+                .first()
+            )
+            if conversation:
+                return True
+            return False
+        except Exception as e:
+            logging.error(f"Error checking conversation existence: {e}")
+            return False
+
+    # @database_sync_to_async
+    async def save_message_async(self, content):
+        try:
+            # Fetch the conversation asynchronously
+            conversation = await self.get_or_create_conversation(
+                self.message_sender, self.message_receiver
+            )
+            logger.info(f"Fetched Comvo: {conversation}")
+
+            # Save the message asynchronously
+            message = await sync_to_async(Message.objects.create)(
+                conversation_id=conversation.id,
+                sender=self.message_sender,
+                receiver=self.message_receiver,
+                content=content,
+            )
+            logger.info(f"Saved: {message}")
+            return message
+        except Exception as e:
+            logger.error(f"Error saving message: {e}")
+            return None
+
+    async def extract_auth_token(self, headers):
+        for header in headers:
+            if header[0] == b"authorization":
+                auth_header = header[1].decode("utf-8")
+                if auth_header.startswith("Bearer "):
+                    return auth_header[len("Bearer "):]
+        return None
 
     async def get_auth_info(self, token):
         """
@@ -145,16 +325,10 @@ class MessageConsumer(AsyncWebsocketConsumer):
         try:
             decoded_token = AccessToken(token)
             if decoded_token.get("user_id"):
-                return {
-                    "status": True,
-                    "user_id": decoded_token.get("user_id")
-                }
+                return {"status": True, "user_id": decoded_token.get("user_id")}
             return False
         except Exception as e:
-            return {
-                "status": False,
-                "response": str(e)
-            }
+            return {"status": False, "response": str(e)}
 
     @sync_to_async
     def get_user_by_id(self, user_id):
@@ -169,60 +343,62 @@ class MessageConsumer(AsyncWebsocketConsumer):
         except MainUser.DoesNotExist:
             return None
         except Exception as e:
-            return f'Error: {e}'
+            return f"Error: {e}"
 
     @sync_to_async
-    def save_message(self, content, sender_id, receiver_id):
+    def set_pin(self, user_id: str, pin: str):
         """
-        Save a new message to the database
-        :param content: Content of the message
-        :param sender_id: Sender ID
-        :param receiver_id: Receiver ID
-        :return: Saved message object
+        Encrypts and stores a user's PIN in the user_pins JSON field
+        params:
+            user_id: The user's ID.
+            pin: The user's PIN
         """
+        # Retrieve the specific conversation instance for this user
         try:
-            sender = MainUser.custom_get(id=sender_id)
-            receiver = MainUser.custom_get(id=receiver_id)
-            message = PlainTextMessage.custom_save(content=content, sender=sender, recipient=receiver)
-            return message
-        except MainUser.DoesNotExist:
-            logging.error("Sender or recipient does not exist")
-            return None
+            conversation = Conversation.objects.filter(participants=user_id).first()
+            logger.info(f"Fethched Conversation: {conversation}")
+            if conversation:
+                conversation.set_pin(user_id, pin)
+                logger.info(f"PIN set successfully for user {user_id}")
+                return f"PIN set successfully for user {user_id}"
+            logger.info("No conversation found")
+            return "No conversation found"
         except Exception as e:
-            logging.error(f"Error saving message: {e}")
-            return None
+            logger.debug(f"Error setting PIN: {e}")
+            return str(e)
 
     @sync_to_async
-    def get_stored_messages(self, recipient_id, sender_id):
+    def verify_pin(self, user_id: str, pin: str) -> bool:
         """
-        Fetch previously stored messages between two users
-        :param recipient_id: Recipient ID
-        :param sender_id: Sender ID
-        :return: List of message objects
+        Verify the user's PIN by decrypting and comparing.
+        params:
+            user_id: The user's ID.
+            pin: The user's PIN.
+        """
+        # Retrieve the specific conversation instance for this user
+        try:
+            conversation = Conversation.objects.filter(participants__id=user_id).first()
+            if conversation:
+                return conversation.verify_pin(user_id, pin)
+            return False
+        except Conversation.DoesNotExist:
+            return False
+
+    async def get_user_public_key(self, user_id):
+        """
+        Async wrapper for get_user_public_key_sync
+        """
+        return await sync_to_async(self.get_user_public_key_sync)(user_id)
+
+    def get_user_public_key_sync(self, user_id):
+        """
+        Fetches a user public key
+        :param user_id: ID of the user whose key is to be fetched
+        :return: Key of the user else None
         """
         try:
-            messages = PlainTextMessage.objects.filter(
-                (Q(recipient=recipient_id) & Q(sender=sender_id)) | (Q(recipient=sender_id) & Q(sender=recipient_id))
-            ).order_by('-updated_at')
-            return list(messages)
-        except ValueError:
-            logging.info(f"These users don't have previous chats")
-            return []
-
-    async def process_stored_messages(self, user_id, other_user_id):
-        """
-        Process and send previously stored messages to the client upon connection
-        :param user_id: User ID (either sender or receiver)
-        :param other_user_id: Other user ID (either receiver or sender)
-        :return: None
-        """
-        messages = await self.get_stored_messages(user_id, other_user_id)
-        for message in messages:
-            sender_user = await self.get_user_by_id(message.sender_id)
-            obj = datetime.fromisoformat(str(message.updated_at))
-            time = obj.strftime("%A, %d %B %Y, %I:%M %p")
-            await self.send(text_data=json.dumps({
-                "message": message.content,
-                "sender": sender_user.username if sender_user else "Anonymous",
-                "time": time
-            }))
+            user = MainUser.custom_get(id=user_id)
+            receiver_public_key = PublicKeyDirectory.custom_get(user=user)
+            return receiver_public_key.public_keys.get(str(user.id))
+        except ObjectDoesNotExist:
+            return {"error": "No such user found", "status": 404}

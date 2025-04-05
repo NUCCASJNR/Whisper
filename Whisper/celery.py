@@ -3,28 +3,30 @@
 """Celery configuration"""
 
 from __future__ import absolute_import, unicode_literals
+
 import os
+
 from celery import Celery
 
 # os.environ['DJANGO_SETTINGS_MODULE'] = os.getenv('DJANGO_SETTINGS_MODULE', 'RentEase.settings.dev')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Whisper.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Whisper.settings")
 
 
 # Create a Celery instance
-app = Celery('Whisper')
+app = Celery("Whisper")
 
 # Load the Django settings for Celery
-app.config_from_object('django.conf:settings', namespace='CELERY')
+app.config_from_object("django.conf:settings", namespace="CELERY")
 # Auto-discover tasks
-app.autodiscover_tasks(['anon.utils'])
+app.autodiscover_tasks(["anon.utils"])
 
 # Set Celery log level to debug
 app.conf.update(
     task_track_started=True,  # Track the started state of tasks (optional)
-    loglevel='DEBUG',         # Set log level to debug
+    loglevel="DEBUG",  # Set log level to debug
 )
 
 app.conf.broker_connection_max_retry_on_startup = True
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.start()

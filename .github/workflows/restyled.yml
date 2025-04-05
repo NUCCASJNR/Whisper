@@ -1,0 +1,43 @@
+# Restyled configuration file
+#
+# This file configures Restyled to automatically run code formatters on your PRs
+# Ensure you have Restyled installed for your project
+
+# List of formatters you want to apply
+restylers:
+    - black         # Python formatter
+    - flake8        # Python linter
+    - isort         # Organizes Python imports
+    - pycodestyle   # Python style checker
+ 
+  # Customize how the restylers will run
+  black:
+    arguments: ["--line-length", "88"]  # Customize line length (optional)
+  flake8:
+    arguments: ["--max-line-length", "88", "--ignore=E203,W503"]
+  isort:
+    arguments: ["--profile", "black"]
+  pycodestyle:
+    arguments: ["--max-line-length", "88", "--ignore=E501,E203"]
+  
+  # Exclude certain directories or files
+  exclude:
+    - "migrations/"
+    - "venv/"
+    - "tests/"
+    - "linux-venv"
+  
+  # Branch name Restyled will use for restyling commits
+  restyled-branch-prefix: "restyled-"
+  
+  # Set a merge label, so that when a PR is ready, it can be merged after restyling
+  merge_label: "ready-to-merge"
+  
+  # Apply restyling as comments or commits
+  apply_style: commit
+  
+  # Set pull request options
+  pull_requests:
+    auto: true
+    base: "main"
+  

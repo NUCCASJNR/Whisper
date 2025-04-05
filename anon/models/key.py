@@ -2,26 +2,33 @@
 
 """Contains model for storing users keyys"""
 
-from anon.models.user import BaseModel, models, MainUser
 from uuid import uuid4
+
+from anon.models.user import BaseModel, MainUser, models
 
 
 class EncryptionKey(BaseModel):
     """Model for storing users encrypted key"""
-    user = models.OneToOneField(MainUser, on_delete=models.CASCADE, related_name='private_key')
+
+    user = models.OneToOneField(
+        MainUser, on_delete=models.CASCADE, related_name="private_key"
+    )
     private_key = models.TextField()
 
     class Meta:
-        db_table = 'encryption_keys'
+        db_table = "encryption_keys"
 
 
 class PublicKeyDirectory(BaseModel):
     """PublicKey Directory models for storing users public keys"""
-    user = models.OneToOneField(MainUser, on_delete=models.CASCADE, related_name='public_key_directory')
+
+    user = models.OneToOneField(
+        MainUser, on_delete=models.CASCADE, related_name="public_key_directory"
+    )
     public_keys = models.JSONField(default=dict)
 
     class Meta:
-        db_table = 'public_keys'
+        db_table = "public_keys"
 
     def update_public_key(self, user_id: uuid4, public_key: bytes):
         """
